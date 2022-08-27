@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InvoicesListComponent } from './invoices-list/invoices-list.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -9,7 +10,8 @@ import { InvoicesListComponent } from './invoices-list/invoices-list.component';
     InvoicesListComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    HttpClientModule
   ],
   exports: [
     InvoicesListComponent

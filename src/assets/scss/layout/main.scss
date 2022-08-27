@@ -1,5 +1,6 @@
 @use '../utilities/' as *;
 
 .main {
-    margin-left: rem(200)
+    max-width: 850px;
+    margin: auto;
 }

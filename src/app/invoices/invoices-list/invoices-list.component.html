@@ -37,11 +37,29 @@
                         {{ invoice.status }}
                     </button>
                     <span class="text-muted">
-
                         <i class="fa-solid fa-chevron-right"></i>
                     </span>
                 </p>
             </div>
         </div>
     </ng-container>
+    <!-- NO invoice lists -->
+    <ng-container *ngIf="invoices.length == 0">
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="text-center">
+                <img src="../../../assets/images/illustration-empty.svg" alt="empty image">
+                <h2 class="my-3 mb-0">There is nothing here</h2>
+                <p class="text-black-50 mb-0">
+                    Create an invoice by clicking the
+                </p>
+                <p class="text-black-50">
+                    <a type="button" class="btn btn-link text-black-50 text-decoration-none fw-bold px-1 pb-2 mr-1">New
+                        Invoice</a>button and get started
+                </p>
+
+            </div>
+
+        </div>
+    </ng-container>
+
 </div>

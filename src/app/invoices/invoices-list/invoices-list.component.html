@@ -5,15 +5,26 @@
             <p class="text-muted">{{ totalInvoices }}</p>
         </div>
         <div class="d-flex ">
-            <div class="dropdown me-4">
-                <button class="btn dropdown-toggle btn-light" type="button" id="invoicesStatus"
-                    data-bs-toggle="dropdown" aria-expanded="false">Filter By Status</button>
-                <ul class="dropdown-menu" aria-labelledby="invoicesStatus">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
+            <div class="col text-end">
+                <form [formGroup]="statusForm">
+
+                    <div ngbDropdown class="d-inline-block me-3">
+                        <button type="button" class="btn btn-outline-primary b" id="invoiceDropdown" ngbDropdownToggle>
+                            Filter by status
+                        </button>
+                        <div class="px-2" ngbDropdownMenu aria-labelledby="invoiceDropdown">
+                            <div class="form-check" *ngFor="let stat of status">
+                                <input formControlName="status" class="form-check-input rounded" value="{{ stat }}"
+                                    type="radio" id="{{stat}}" (change)="selectStatus(stat)">
+                                <label class="form-check-label" for="{{ stat }}">
+                                    {{stat}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
+
             <button type="button" class="btn btn-primary rounded-pill"> <i class="fa fa-plus-circle"
                     aria-hidden="true"></i> Add
                 Invoice</button>

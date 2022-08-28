@@ -6,7 +6,9 @@
 //     "danger": rgb(236, 87, 87)
 // );
 
+@import "./assets/scss/main.scss";
 @import "node_modules/bootstrap/scss/bootstrap";
 
 
-@import "./assets/scss/main.scss"
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

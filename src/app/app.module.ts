@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InvoicesModule } from './invoices/invoices.module';
 import { SideNavBarComponent } from './layout/side-nav-bar/side-nav-bar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SideNavBarComponent } from './layout/side-nav-bar/side-nav-bar.componen
     InvoicesModule,
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
-    )
+    ),
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

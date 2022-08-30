@@ -11,9 +11,10 @@ import { InvoiceService } from '../invoice.service';
 export class InvoicesListComponent implements OnInit {
 
   invoices: Invoices[] = [];
-  totalInvoices: string = 'No invoices';
+  totalInvoicesMessage: string = 'No invoices';
   status: string[] = ['Draft', 'Pending', 'Paid'];
   tempInvoicesArray: Invoices[] = [];
+  showAllInvoices: boolean = false;
 
   statusForm = new FormGroup({
     status: new FormControl('', Validators.required)
@@ -29,14 +30,28 @@ export class InvoicesListComponent implements OnInit {
     this.invoiceService.getAllInvoices().subscribe(data => {
       this.tempInvoicesArray = data;
       this.invoices = data;
-      this.totalInvoices = `There are ${data.length} invoices`;
+      this.showInvoiceLengthMessage(data.length, 'total')
     })
   }
 
   selectStatus(status: string) {
     let stat = status.toLowerCase();
-    this.invoices = this.tempInvoicesArray.filter(invoice => invoice.status === stat);
-    this.totalInvoices = `There are ${this.invoices.length} ${stat} invoices`;
+    this.showAllInvoices = stat !== 'total' ? true : false;
+    this.invoices = stat === 'total' ? this.tempInvoicesArray : this.tempInvoicesArray.filter(invoice => invoice.status === stat);
+    this.showInvoiceLengthMessage(this.invoices.length, stat);
+
+  }
+
+  private showInvoiceLengthMessage(total: number, stat: string) {
+    console.log(total);
+    console.log(stat)
+    if (total > 0) {
+      this.totalInvoicesMessage = `There are ${total} ${stat} invoices`;
+    } else if (total <= 0 && stat != 'total') {
+      this.totalInvoicesMessage = `There are no ${stat} invoices`;
+    } else {
+      this.totalInvoicesMessage = 'No invoices';
+    }
   }
 
 }

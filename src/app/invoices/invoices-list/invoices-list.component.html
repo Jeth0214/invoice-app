@@ -8,21 +8,21 @@
             <div class="col text-end">
                 <form [formGroup]="statusForm">
 
-                    <div ngbDropdown class="d-inline-block me-3">
+                    <div ngbDropdown class="d-inline-block me-3" #myDrop="ngbDropdown">
                         <button type="button" class="btn btn-light " id="invoiceDropdown" ngbDropdownToggle>
                             Filter by status
                         </button>
                         <div class="px-2" ngbDropdownMenu aria-labelledby="invoiceDropdown">
                             <div class="form-check" *ngFor="let stat of status">
                                 <input formControlName="status" class="form-check-input rounded" value="{{ stat }}"
-                                    type="radio" id="{{stat}}" (change)="selectStatus(stat)">
+                                    type="radio" id="{{stat}}" (change)="selectStatus(stat); myDrop.close()">
                                 <label class="form-check-label" for="{{ stat }}">
                                     {{stat}}
                                 </label>
                             </div>
                             <div class="form-check" *ngIf="showAllInvoices">
                                 <input formControlName="status" class="form-check-input rounded" value="total"
-                                    type="radio" id="all" (change)="selectStatus('total')">
+                                    type="radio" id="all" (change)="selectStatus('total'); myDrop.close()">
                                 <label class="form-check-label" for="total">
                                     All Invoices
                                 </label>
@@ -37,6 +37,7 @@
                 Invoice</button>
         </div>
     </div>
+
 
     <!-- Invoices Lists -->
     <ng-container *ngIf="invoices.length > 0 else emptyInvoice">
@@ -61,6 +62,7 @@
             </div>
         </div>
     </ng-container>
+
     <!-- Empty lists -->
     <ng-template #emptyInvoice>
         <div class="d-flex justify-content-center align-items-center">

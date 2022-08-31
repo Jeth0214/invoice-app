@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Invoices } from '../invoice.model';
 import { InvoiceService } from '../invoice.service';
 
@@ -27,10 +28,14 @@ export class InvoicesListComponent implements OnInit {
   }
 
   getAllInvoice() {
+    this.totalInvoicesMessage = "Fetching invoices ...."
     this.invoiceService.getAllInvoices().subscribe(data => {
-      this.tempInvoicesArray = data;
-      this.invoices = data;
-      this.showInvoiceLengthMessage(data.length, 'total')
+      if (data.length > 0) {
+
+        this.tempInvoicesArray = data;
+        this.invoices = data;
+        this.showInvoiceLengthMessage(data.length, 'total')
+      }
     })
   }
 

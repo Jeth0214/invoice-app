@@ -1,0 +1,41 @@
+<div class="invoice-details">
+    <!-- <div class="my-5 d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="mb-0 lh-1">Invoices</h1>
+            <p class="text-muted">{{ totalInvoicesMessage }}</p>
+        </div>
+        <div class="d-flex ">
+            <div class="col text-end">
+                <form [formGroup]="statusForm">
+
+                    <div ngbDropdown class="d-inline-block me-3" #myDrop="ngbDropdown">
+                        <button type="button" class="btn btn-light " id="invoiceDropdown" ngbDropdownToggle>
+                            Filter by status
+                        </button>
+                        <div class="px-2" ngbDropdownMenu aria-labelledby="invoiceDropdown">
+                            <div class="form-check" *ngFor="let stat of status">
+                                <input formControlName="status" class="form-check-input rounded" value="{{ stat }}"
+                                    type="radio" id="{{stat}}" (change)="selectStatus(stat); myDrop.close()">
+                                <label class="form-check-label" for="{{ stat }}">
+                                    {{stat}}
+                                </label>
+                            </div>
+                            <div class="form-check" *ngIf="showAllInvoices">
+                                <input formControlName="status" class="form-check-input rounded" value="total"
+                                    type="radio" id="all" (change)="selectStatus('total'); myDrop.close()">
+                                <label class="form-check-label" for="total">
+                                    All Invoices
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <button type="button" class="btn btn-primary rounded-pill"> <i class="fa fa-plus-circle"
+                    aria-hidden="true"></i>
+                Add
+                Invoice</button>
+        </div>
+    </div> -->
+</div>

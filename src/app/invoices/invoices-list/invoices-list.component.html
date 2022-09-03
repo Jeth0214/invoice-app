@@ -1,4 +1,4 @@
-<div class="container">
+<div class="invoices">
     <div class="my-5 d-flex justify-content-between align-items-center">
         <div>
             <h1 class="mb-0 lh-1">Invoices</h1>
@@ -41,7 +41,7 @@
 
     <!-- Invoices Lists -->
     <ng-container *ngIf="invoices.length > 0 else emptyInvoice">
-        <div class="card px-4 py-2 mb-3" *ngFor="let invoice of invoices">
+        <div [routerLink]="['/invoices', invoice.id]" class="card px-4 py-2 mb-3" *ngFor="let invoice of invoices">
             <div class="d-flex flex-sm-wrap flex-md-nowrap justify-content-between align-items-center">
                 <p class="fw-bold mb-0 flex-fill"><small class="text-muted">#</small>{{ invoice.id }}
                 </p>

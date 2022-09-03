@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
-import { Invoices } from './invoice.model';
+import { Invoice } from './invoice.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +12,15 @@ export class InvoiceService {
 
   constructor(private http: HttpClient) { }
 
-  getAllInvoices(): Observable<Invoices[]> {
-    return this.http.get<Invoices[]>(this.url).pipe(
-      catchError(this.errorHandler<Invoices[]>('getAllInvoices', []))
+  getAllInvoices(): Observable<Invoice[]> {
+    return this.http.get<Invoice[]>(this.url).pipe(
+      catchError(this.errorHandler<Invoice[]>('getAllInvoices', []))
+    );
+  }
+
+  getInvoice(id: string): Observable<Invoice> {
+    return this.http.get<Invoice>(`${this.url}/${id}`).pipe(
+      catchError(this.errorHandler<Invoice>(`getInvoice id=${id}`))
     );
   }
 

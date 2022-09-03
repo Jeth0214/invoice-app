@@ -19,7 +19,7 @@ export interface Item {
     total: number;
 }
 
-export interface Invoices {
+export interface Invoice {
     id: string;
     createdAt: string;
     paymentDue: string;

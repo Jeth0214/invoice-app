@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Invoices } from '../invoice.model';
+import { Invoice } from '../invoice.model';
 import { InvoiceService } from '../invoice.service';
 
 @Component({
@@ -11,10 +11,10 @@ import { InvoiceService } from '../invoice.service';
 })
 export class InvoicesListComponent implements OnInit {
 
-  invoices: Invoices[] = [];
+  invoices: Invoice[] = [];
+  tempInvoicesArray: Invoice[] = [];
   totalInvoicesMessage: string = 'No invoices';
   status: string[] = ['Draft', 'Pending', 'Paid'];
-  tempInvoicesArray: Invoices[] = [];
   showAllInvoices: boolean = false;
 
   statusForm = new FormGroup({
@@ -28,7 +28,6 @@ export class InvoicesListComponent implements OnInit {
   }
 
   getAllInvoice() {
-    this.totalInvoicesMessage = "Fetching invoices ...."
     this.invoiceService.getAllInvoices().subscribe(data => {
       if (data.length > 0) {
 

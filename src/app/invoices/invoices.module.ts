@@ -5,12 +5,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { InvoiceDetailsComponent } from './invoice-details/invoice-details.component';
+import { RouterModule } from '@angular/router';
 
 
 
 @NgModule({
   declarations: [
-    InvoicesListComponent
+    InvoicesListComponent,
+    InvoiceDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -18,6 +21,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NgbDropdownModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
+    RouterModule
   ],
   exports: [
     InvoicesListComponent

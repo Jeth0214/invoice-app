@@ -47,8 +47,6 @@ export class InvoicesListComponent implements OnInit {
   }
 
   private showInvoiceLengthMessage(total: number, stat: string) {
-    console.log(total);
-    console.log(stat)
     if (total > 0) {
       this.totalInvoicesMessage = `There are ${total} ${stat} invoices`;
     } else if (total <= 0 && stat != 'total') {

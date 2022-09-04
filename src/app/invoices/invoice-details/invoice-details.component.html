@@ -1,4 +1,112 @@
 <div class="invoice-details">
+    <div class="mt-5 mb-3">
+        <button class="btn btn-light">
+            <i class="fa-solid fa-arrow-left"></i>
+            Go Back
+        </button>
+    </div>
+    <ng-container *ngIf="invoice">
+
+        <div class="border-0 card mb-5 d-flex justify-content-between flex-row px-3 py-3  mx-0  border-light">
+            <div class="status">
+                <span class="text-primary me-3">Status</span>
+                <button type="button"
+                    [ngClass]="{'btn-outline-success' : invoice.status === 'paid', 'btn-outline-warning' : invoice.status === 'pending', 'btn-outline-dark' : invoice.status === 'draft'}"
+                    class="btn  me-3 disabled">
+                    <i class="fa-solid fa-circle "></i>
+                    {{ invoice.status[0].toUpperCase() + invoice.status.slice(1) }}
+                </button>
+            </div>
+            <div class="action-buttons">
+                <div class="btn btn-light text-primary rounded-pill me-2">
+                    Edit
+                </div>
+                <div class="btn btn-danger text-white rounded-pill me-2">
+                    Delete
+                </div>
+                <div class="btn btn-primary rounded-pill">
+                    Mark as Paid
+                </div>
+            </div>
+        </div>
+
+        <div class="card px-5 py-5 text-primary">
+            <div class="d-flex justify-content-between mb-2">
+                <div>
+                    <h1 class="h5">#<span class="text-dark fw-bold">{{ invoice.id }}</span> </h1>
+                    <p>{{ invoice.description }}</p>
+                </div>
+                <div>
+                    <p class="mb-0">{{ invoice.senderAddress.street }}</p>
+                    <p class="mb-0">{{ invoice.senderAddress.city }}</p>
+                    <p class="mb-0">{{ invoice.senderAddress.postCode }}</p>
+                    <p>{{ invoice.senderAddress.country }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <p class="mb-0">Invoice Date</p>
+                    <p class="text-dark mb-2 h5 fw-bold">
+                        {{ invoice.createdAt }}
+                    </p>
+                    <p class="mb-0">Payment Due</p>
+                    <p class="text-dark h5 fw-bold">{{ invoice.paymentDue }}</p>
+                </div>
+                <div class="col-md-3">
+                    <p class="mb-0">Bill To</p>
+                    <p class="text-dark mb-2 h5 fw-bold">
+                        {{ invoice.clientName }}
+                    </p>
+                    <p class="mb-0">{{ invoice.clientAddress.street }}</p>
+                    <p class="mb-0">{{ invoice.clientAddress.city }}</p>
+                    <p class="mb-0">{{ invoice.clientAddress.postCode }}</p>
+                    <p>{{ invoice.clientAddress.country }}</p>
+                </div>
+                <div class="col-md-1">
+
+                </div>
+                <div class="col-md-5">
+                    <p class="mb-0">Sent To</p>
+                    <p class="text-dark mb-2 h5 fw-bold">
+                        {{ invoice.clientEmail }}
+                    </p>
+                </div>
+            </div>
+            <div class="bg-light rounded-4">
+                <table class="table table-borderless">
+                    <thead class="text-primary">
+                        <th>Item Name</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let item of invoice.items">
+                            <tr>
+                                <td class="h6 fw-bold">{{item.name}}</td>
+                                <td class="fw-bold text-primary">{{item.quantity}}</td>
+                                <td class="fw-bold text-primary">{{item.price}}</td>
+                                <td class="h6 fw-bold">{{item.total}}</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                    <tfoot class="bg-dark text-white">
+                        <tr>
+                            <td colspan="2">
+                                Amount
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ invoice.total }}
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </ng-container>
     <!-- <div class="my-5 d-flex justify-content-between align-items-center">
         <div>
             <h1 class="mb-0 lh-1">Invoices</h1>

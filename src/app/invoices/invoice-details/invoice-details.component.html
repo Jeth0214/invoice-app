@@ -1,13 +1,13 @@
 <div class="invoice-details">
     <div class="mt-5 mb-3">
-        <button class="btn btn-light">
+        <button class="btn btn-light" routerLink="/invoices">
             <i class="fa-solid fa-arrow-left"></i>
             Go Back
         </button>
     </div>
     <ng-container *ngIf="invoice">
 
-        <div class="border-0 card mb-5 d-flex justify-content-between flex-row px-3 py-3  mx-0  border-light">
+        <div class="border-0 card mb-5 d-flex justify-content-between flex-row px-5 py-3  mx-0  border-light">
             <div class="status">
                 <span class="text-primary me-3">Status</span>
                 <button type="button"
@@ -72,8 +72,8 @@
                     </p>
                 </div>
             </div>
-            <div class="bg-light rounded-4">
-                <table class="table table-borderless">
+            <div class="bg-light rounded-4 mt-4">
+                <table class="table table-borderless ">
                     <thead class="text-primary">
                         <th>Item Name</th>
                         <th>Qty</th>
@@ -92,13 +92,11 @@
                     </tbody>
                     <tfoot class="bg-dark text-white">
                         <tr>
-                            <td colspan="2">
+                            <td colspan="3">
                                 Amount
                             </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                {{ invoice.total }}
+                            <td>
+                                {{ invoice.total | currency:'GBP':'symbol-narrow' }}
                             </td>
                         </tr>
                     </tfoot>
@@ -107,43 +105,4 @@
         </div>
 
     </ng-container>
-    <!-- <div class="my-5 d-flex justify-content-between align-items-center">
-        <div>
-            <h1 class="mb-0 lh-1">Invoices</h1>
-            <p class="text-muted">{{ totalInvoicesMessage }}</p>
-        </div>
-        <div class="d-flex ">
-            <div class="col text-end">
-                <form [formGroup]="statusForm">
-
-                    <div ngbDropdown class="d-inline-block me-3" #myDrop="ngbDropdown">
-                        <button type="button" class="btn btn-light " id="invoiceDropdown" ngbDropdownToggle>
-                            Filter by status
-                        </button>
-                        <div class="px-2" ngbDropdownMenu aria-labelledby="invoiceDropdown">
-                            <div class="form-check" *ngFor="let stat of status">
-                                <input formControlName="status" class="form-check-input rounded" value="{{ stat }}"
-                                    type="radio" id="{{stat}}" (change)="selectStatus(stat); myDrop.close()">
-                                <label class="form-check-label" for="{{ stat }}">
-                                    {{stat}}
-                                </label>
-                            </div>
-                            <div class="form-check" *ngIf="showAllInvoices">
-                                <input formControlName="status" class="form-check-input rounded" value="total"
-                                    type="radio" id="all" (change)="selectStatus('total'); myDrop.close()">
-                                <label class="form-check-label" for="total">
-                                    All Invoices
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <button type="button" class="btn btn-primary rounded-pill"> <i class="fa fa-plus-circle"
-                    aria-hidden="true"></i>
-                Add
-                Invoice</button>
-        </div>
-    </div> -->
 </div>

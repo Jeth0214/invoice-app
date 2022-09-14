@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AddEditInvoicesComponent } from '../add-edit-invoices/add-edit-invoices.component';
 import { Invoice } from '../invoice.model';
 import { InvoiceService } from '../invoice.service';
 
@@ -21,11 +23,18 @@ export class InvoicesListComponent implements OnInit {
     status: new FormControl('', Validators.required)
   });
 
-  constructor(private invoiceService: InvoiceService) { }
+  constructor(private invoiceService: InvoiceService, private offcanvasService: NgbOffcanvas) {
+  }
 
   ngOnInit(): void {
     this.getAllInvoice();
+    // this.invoiceService.getAllUsers().subscribe(data => {
+    //   console.log(data)
+    // })
+    this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
   }
+
+
 
   getAllInvoice() {
     this.invoiceService.getAllInvoices().subscribe(data => {
@@ -43,6 +52,11 @@ export class InvoicesListComponent implements OnInit {
     this.showAllInvoices = stat !== 'total' ? true : false;
     this.invoices = stat === 'total' ? this.tempInvoicesArray : this.tempInvoicesArray.filter(invoice => invoice.status === stat);
     this.showInvoiceLengthMessage(this.invoices.length, stat);
+
+  }
+
+  openOffCanvas() {
+    this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
 
   }
 

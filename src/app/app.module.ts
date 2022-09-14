@@ -14,7 +14,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   declarations: [
     AppComponent,
-    SideNavBarComponent
+    SideNavBarComponent,
   ],
   imports: [
     BrowserModule,

@@ -7,13 +7,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { InvoiceDetailsComponent } from './invoice-details/invoice-details.component';
 import { RouterModule } from '@angular/router';
+import { AddEditInvoicesComponent } from './add-edit-invoices/add-edit-invoices.component';
+import { ComponentsModule } from '../components/components.module';
 
 
 
 @NgModule({
   declarations: [
     InvoicesListComponent,
-    InvoiceDetailsComponent
+    InvoiceDetailsComponent,
+    AddEditInvoicesComponent
   ],
   imports: [
     CommonModule,
@@ -21,10 +24,13 @@ import { RouterModule } from '@angular/router';
     NgbDropdownModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
-    RouterModule
+    RouterModule,
+    ComponentsModule,
+    ComponentsModule
   ],
   exports: [
-    InvoicesListComponent
+    InvoicesListComponent,
+    InvoiceDetailsComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

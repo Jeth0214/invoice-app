@@ -1,0 +1,23 @@
+<ng-container [formGroupName]="addressType">
+
+    <div class="mb-3">
+        <label for="street" class="form-label text-primary">Street Address</label>
+        <input formControlName="street" type="email" class="form-control" id="street">
+    </div>
+
+    <div class="row">
+
+        <div class="col">
+            <label for="city" class="form-label text-primary">City</label>
+            <input formControlName="city" type="text" class="form-control" id="city">
+        </div>
+        <div class="col">
+            <label for="postCode" class="form-label text-primary">Post Code</label>
+            <input formControlName="postCode" type="text" class="form-control" id="postCode">
+        </div>
+        <div class="col">
+            <label for="country" class="form-label text-primary">Country</label>
+            <input formControlName="country" type="text" class="form-control" id="country">
+        </div>
+    </div>
+</ng-container>

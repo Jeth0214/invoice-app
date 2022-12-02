@@ -1,0 +1,130 @@
+<div class="container add-edit my-4 ">
+    <div class="title">
+        <h1>New Invoice</h1>
+    </div>
+
+    <div class="row">
+        <form [formGroup]="invoiceForm">
+            <!-- Bill to section -->
+            <div class="my-4">
+                <h2 class="h5 text-primary">
+                    Bill From
+                </h2>
+                <!-- Sender Adress -->
+                <app-address-form [addressType]="'senderAddress'"></app-address-form>
+            </div>
+
+            <!-- Bill to section -->
+            <div class="my-4">
+                <h2 class="h5 text-primary">
+                    Bill To
+                </h2>
+                <!-- Clients Name -->
+                <div class="mb-3">
+                    <label for="clientName" class="form-label text-primary">Client's Name</label>
+                    <input formControlName="clientName" type="text" class="form-control" id="clientName">
+                </div>
+                <!-- Clients' Email -->
+                <div class="mb-3">
+                    <label for="clientEmail" class="form-label text-primary">Client's Email</label>
+                    <input formControlName="clientEmail" type="email" class="form-control" id="clientEmail">
+                </div>
+                <!-- Client Adsress -->
+                <app-address-form [addressType]="'clientAddress'"></app-address-form>
+            </div>
+
+            <!-- Invoice info section -->
+            <div class="row my-4">
+                <!-- Created At -->
+                <div class="col">
+                    <label for="createdAt" class="form-label text-primary">Invoice Date</label>
+                    <input type="date" formControlName="createdAt" class="form-control" aria-label="Created At">
+                </div>
+                <!--  Payment Terms -->
+                <div class="col">
+                    <label for="paymentTerms" class="form-label text-primary">Payment Terms</label>
+                    <div ngbDropdown class="d-block">
+                        <button type="button" class="btn btn-outline-secondary" id="paymentTerms" ngbDropdownToggle>
+                            {{ selectedTerms }}
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="paymentTerms">
+                            <button ngbDropdownItem *ngFor="let term of terms" (click)="selectTerms(term)">{{ term.name
+                                }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Project Description -->
+            <div class="row my-4">
+                <div class="col">
+                    <label for="description" class="form-label text-primary">Project Description</label>
+                    <input formControlName="description" type="text" class="form-control" id="description">
+                </div>
+            </div>
+
+            <!-- items section -->
+            <!-- <app-item-form></app-item-form> -->
+            <ng-container formArrayName="items">
+                <!-- Item Lists -->
+                <h2>Item List</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        Item
+                    </div>
+                    <div class="col-md-2">
+                        Qty
+                    </div>
+                    <div class="col-md-2">
+                        Price
+                    </div>
+                    <div class="col-md-2">
+                        Total
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+                </div>
+                <div *ngFor="let item of items.controls; index as i" [formGroupName]="i" class="my-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input formControlName="name" type="text" class="form-control">
+                        </div>
+                        <div class="col-md-2">
+                            <input formControlName="quantity" type="number" class="form-control" min="1"
+                                (input)="getValueForItemsTotal(item, i)">
+                        </div>
+                        <div class="col-md-2">
+                            <input formControlName="price" type="number" class="form-control" min="1"
+                                (input)="getValueForItemsTotal(item, i)">
+                        </div>
+                        <div class="col-md-2">
+                            <ng-container *ngIf="item.value.quantity && item.value.price">
+                                {{ item.value.quantity * item.value.price | number: '1.2-2'}}
+                            </ng-container>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-link text-danger"><i class="fa-solid fa-trash"
+                                    (click)="removeItem(i)"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add item button -->
+                <button class="w-100 rounded-pill btn btn-secondary my-4" (click)="addItem()">
+                    <i class="fa-solid fa-plus"></i> Add New Item
+                </button>
+            </ng-container>
+
+
+            <!-- form action buttons -->
+            <div class="row">
+                <div class="col-md-5">
+                    <button class="btn btn-light rounded-pill text-primary"> Discard </button>
+                </div>
+                <div class="col-md-7 me-auto d-flex justify-content-end">
+                    <button class="btn btn-dark rounded-pill text-secondary me-3"> Save as Draft </button>
+                    <button type="submit" (click)="onSubmit()" class="btn btn-primary rounded-pill"> Save & Send
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>

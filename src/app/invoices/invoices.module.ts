@@ -8,6 +8,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { InvoiceDetailsComponent } from './invoice-details/invoice-details.component';
 import { RouterModule } from '@angular/router';
 import { AddEditInvoicesComponent } from './add-edit-invoices/add-edit-invoices.component';
+import { ComponentsModule } from '../components/components.module';
 
 
 
@@ -23,7 +24,9 @@ import { AddEditInvoicesComponent } from './add-edit-invoices/add-edit-invoices.
     NgbDropdownModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
-    RouterModule
+    RouterModule,
+    ComponentsModule,
+    ComponentsModule
   ],
   exports: [
     InvoicesListComponent,

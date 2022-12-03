@@ -40,6 +40,27 @@ export class AddEditInvoicesComponent implements OnInit {
     return this.invoiceForm.get('items') as FormArray;
   }
 
+  onSubmit() {
+    // store invoice form inputs to as initial invoice data
+    let invoiceData = {
+      ...this.invoiceForm.value
+    };
+
+    // calculate all items sum and assign it  to invoice total data
+    let itemsValues = this.items.value;
+    invoiceData.total = itemsValues.reduce((total: any, item: any) => {
+      return total + +item.total;
+    }, 0);
+
+    // set the invoice id to created date in milliseconds and convert it to string;
+    let id = +new Date(invoiceData.createdAt);
+    invoiceData.id = `#${id.toString()}`;
+
+    // add payment due to invoice data
+    invoiceData.paymentDue = this.calculatePaymentDue(invoiceData.paymentTerms, invoiceData.createdAt);
+
+    console.log('Invoice', invoiceData);
+  }
   addItem() {
     this.items.push(this.insertNewItemForm());
   }
@@ -55,20 +76,11 @@ export class AddEditInvoicesComponent implements OnInit {
 
   selectTerms(term: any) {
     this.selectedTerms = term.name;
-    this.invoiceForm.patchValue({ 'paymentTerms': term.name })
+    this.invoiceForm.patchValue({ 'paymentTerms': term.value })
   }
 
-  onSubmit() {
-    console.log(this.invoiceForm.value);
-    let invoiceData = {
-      ...this.invoiceForm.value
-    };
-    console.log('Invoice Data', invoiceData)
-  }
 
   getValueForItemsTotal(item: any, index: number) {
-    // console.log(item);
-    // console.log(index);
     if (item.value.quantity && item.value.price) {
       let total: number = item.value.quantity * item.value.price;
       console.log(total.toFixed(2))
@@ -85,9 +97,15 @@ export class AddEditInvoicesComponent implements OnInit {
     })
   }
 
-  calculatePaymentDue(paymentTerm: number, createdDate: Date) {
-    let startDate = new Date(createdDate);
-    return startDate.setDate(startDate.getDay() + paymentTerm);
+  calculatePaymentDue(paymentTerm: number, createdDate: string) {
+    console.log(paymentTerm);
+    console.log(createdDate);
+    var result = new Date(createdDate);
+    result.setDate(result.getDate() + paymentTerm);
+    let day = result.getDate();
+    let year = result.getFullYear();
+    let month = result.getMonth() + 1;
+    return `${year}-${month}-${day}`;
   }
 
 }

@@ -21,13 +21,29 @@
                 </h2>
                 <!-- Clients Name -->
                 <div class="mb-3">
-                    <label for="clientName" class="form-label text-primary">Client's Name</label>
-                    <input formControlName="clientName" type="text" class="form-control" id="clientName">
+                    <div class="d-flex justify-content-between">
+                        <label for="clientName" class="form-label text-primary"
+                            [class.text-danger]="isSaving && formValidation['clientName'].errors">Client's Name</label>
+                        <div *ngIf="isSaving && formValidation['clientName'].errors" class="text-danger">
+                            <p>Can't be empty</p>
+                        </div>
+                    </div>
+                    <input formControlName="clientName" type="text" class="form-control" id="clientName"
+                        [class.is-invalid]="isSaving && formValidation['clientName'].errors">
                 </div>
                 <!-- Clients' Email -->
                 <div class="mb-3">
-                    <label for="clientEmail" class="form-label text-primary">Client's Email</label>
-                    <input formControlName="clientEmail" type="email" class="form-control" id="clientEmail">
+                    <div class="d-flex justify-content-between">
+                        <label for="clientEmail" class="form-label text-primary"
+                            [class.text-danger]="isSaving && formValidation['clientEmail'].errors">Client's
+                            Email</label>
+                        <div *ngIf="isSaving && formValidation['clientEmail'].errors" class="text-danger">
+                            <p *ngIf="formValidation['clientEmail']?.errors?.['required']">Can't be empty</p>
+                            <p *ngIf="formValidation['clientEmail']?.errors?.['email']">Invalid email address</p>
+                        </div>
+                    </div>
+                    <input formControlName="clientEmail" type="email" class="form-control" id="clientEmail"
+                        [class.is-invalid]="isSaving && formValidation['clientEmail'].errors">
                 </div>
                 <!-- Client Adsress -->
                 <app-address-form [addressType]="'clientAddress'"></app-address-form>
@@ -57,8 +73,16 @@
             <!-- Project Description -->
             <div class="row my-4">
                 <div class="col">
-                    <label for="description" class="form-label text-primary">Project Description</label>
-                    <input formControlName="description" type="text" class="form-control" id="description">
+                    <div class="d-flex justify-content-between">
+                        <label for="description" class="form-label text-primary"
+                            [class.text-danger]="isSaving && formValidation['description'].errors">Project
+                            Description</label>
+                        <div *ngIf="isSaving && formValidation['description'].errors" class="text-danger">
+                            Cannot be empty
+                        </div>
+                    </div>
+                    <input formControlName="description" type="text" class="form-control" id="description"
+                        [class.is-invalid]="isSaving && formValidation['description'].errors">
                 </div>
             </div>
 
@@ -85,6 +109,11 @@
                     </div>
                 </div>
                 <div *ngFor="let item of items.controls; index as i" [formGroupName]="i" class="my-3">
+                    <div class="d-flex justify-content-center mb-1">
+                        <div class="">
+                            text-secondary
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-4">
                             <input formControlName="name" type="text" class="form-control">
@@ -122,7 +151,7 @@
                 </div>
                 <div class="col-md-7 me-auto d-flex justify-content-end">
                     <button class="btn btn-dark rounded-pill text-secondary me-3"> Save as Draft </button>
-                    <button type="submit" (click)="onSubmit()" class="btn btn-primary rounded-pill"> Save & Send
+                    <button type="submit" (click)="onSaveNewInvoice()" class="btn btn-primary rounded-pill"> Save & Send
                     </button>
                 </div>
             </div>

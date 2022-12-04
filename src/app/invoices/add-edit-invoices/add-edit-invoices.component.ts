@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-edit-invoices',
@@ -9,6 +9,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 export class AddEditInvoicesComponent implements OnInit {
 
   invoiceForm: FormGroup;
+  isSaving: boolean = false;
 
   terms = [
     { name: "Net 1 Day", value: 1 },
@@ -22,8 +23,8 @@ export class AddEditInvoicesComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {
     this.invoiceForm = this.formBuilder.group({
       description: ['', Validators.required],
-      createdAt: ['', Validators.required],
-      paymentTerms: ['', Validators.required],
+      createdAt: [this.calculatePaymentDue(0, new Date()), Validators.required],
+      paymentTerms: [1, Validators.required],
       clientName: ['', Validators.required],
       clientEmail: ['', [Validators.required, Validators.email]],
       items: this.formBuilder.array([this.insertNewItemForm()])
@@ -40,8 +41,13 @@ export class AddEditInvoicesComponent implements OnInit {
     return this.invoiceForm.get('items') as FormArray;
   }
 
-  onSubmit() {
+  get formValidation(): { [key: string]: AbstractControl } {
+    return this.invoiceForm.controls;
+  }
+
+  onSaveNewInvoice() {
     // store invoice form inputs to as initial invoice data
+    this.isSaving = true;
     let invoiceData = {
       ...this.invoiceForm.value
     };
@@ -58,6 +64,9 @@ export class AddEditInvoicesComponent implements OnInit {
 
     // add payment due to invoice data
     invoiceData.paymentDue = this.calculatePaymentDue(invoiceData.paymentTerms, invoiceData.createdAt);
+
+    //set the invoice status pending as default
+    invoiceData.status = 'pending';
 
     console.log('Invoice', invoiceData);
   }
@@ -83,7 +92,6 @@ export class AddEditInvoicesComponent implements OnInit {
   getValueForItemsTotal(item: any, index: number) {
     if (item.value.quantity && item.value.price) {
       let total: number = item.value.quantity * item.value.price;
-      console.log(total.toFixed(2))
       this.items.controls[index].patchValue({ 'total': total.toFixed(2) })
     }
   }
@@ -91,15 +99,13 @@ export class AddEditInvoicesComponent implements OnInit {
   insertNewItemForm(): FormGroup {
     return new FormGroup({
       'name': new FormControl('', Validators.required),
-      'quantity': new FormControl('', [Validators.required, Validators.min(1)]),
-      'price': new FormControl('', [Validators.required, Validators.min(1)]),
+      'quantity': new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('/^([0-9]*[1-9][0-9]*(\.[0-9]+)?|[0]+\.[0-9]*[1-9][0-9]*)$/')]),
+      'price': new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('/^([0-9]*[1-9][0-9]*(\.[0-9]+)?|[0]+\.[0-9]*[1-9][0-9]*)$/')]),
       'total': new FormControl(''),
     })
   }
 
-  calculatePaymentDue(paymentTerm: number, createdDate: string) {
-    console.log(paymentTerm);
-    console.log(createdDate);
+  calculatePaymentDue(paymentTerm: number, createdDate: string | Date) {
     var result = new Date(createdDate);
     result.setDate(result.getDate() + paymentTerm);
     let day = result.getDate();

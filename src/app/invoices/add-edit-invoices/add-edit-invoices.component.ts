@@ -26,8 +26,7 @@ export class AddEditInvoicesComponent implements OnInit {
       createdAt: [this.calculatePaymentDue(0, new Date()), Validators.required],
       paymentTerms: [1, Validators.required],
       clientName: ['', Validators.required],
-      clientEmail: ['', [Validators.required, Validators.email]],
-      items: this.formBuilder.array([this.insertNewItemForm()])
+      clientEmail: ['', [Validators.required, Validators.email]]
     });
 
     this.selectedTerms = this.terms[0].name;
@@ -37,9 +36,7 @@ export class AddEditInvoicesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get items() {
-    return this.invoiceForm.get('items') as FormArray;
-  }
+
 
   get formValidation(): { [key: string]: AbstractControl } {
     return this.invoiceForm.controls;
@@ -53,7 +50,7 @@ export class AddEditInvoicesComponent implements OnInit {
     };
 
     // calculate all items sum and assign it  to invoice total data
-    let itemsValues = this.items.value;
+    let itemsValues = this.invoiceForm.get('items')?.value;
     invoiceData.total = itemsValues.reduce((total: any, item: any) => {
       return total + +item.total;
     }, 0);
@@ -70,17 +67,8 @@ export class AddEditInvoicesComponent implements OnInit {
 
     console.log('Invoice', invoiceData);
   }
-  addItem() {
-    this.items.push(this.insertNewItemForm());
-  }
 
-  removeItem(item: number) {
-    if (this.items.length == 1) {
-      this.items.reset();
-      this.addItem();
-    };
-    this.items.removeAt(item);
-  };
+
 
 
   selectTerms(term: any) {
@@ -88,22 +76,6 @@ export class AddEditInvoicesComponent implements OnInit {
     this.invoiceForm.patchValue({ 'paymentTerms': term.value })
   }
 
-
-  getValueForItemsTotal(item: any, index: number) {
-    if (item.value.quantity && item.value.price) {
-      let total: number = item.value.quantity * item.value.price;
-      this.items.controls[index].patchValue({ 'total': total.toFixed(2) })
-    }
-  }
-
-  insertNewItemForm(): FormGroup {
-    return new FormGroup({
-      'name': new FormControl('', Validators.required),
-      'quantity': new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('/^([0-9]*[1-9][0-9]*(\.[0-9]+)?|[0]+\.[0-9]*[1-9][0-9]*)$/')]),
-      'price': new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('/^([0-9]*[1-9][0-9]*(\.[0-9]+)?|[0]+\.[0-9]*[1-9][0-9]*)$/')]),
-      'total': new FormControl(''),
-    })
-  }
 
   calculatePaymentDue(paymentTerm: number, createdDate: string | Date) {
     var result = new Date(createdDate);

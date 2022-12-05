@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ControlContainer, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { AbstractControl, ControlContainer, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-address-form',
@@ -11,7 +11,7 @@ export class AddressFormComponent implements OnInit {
   @Input()
   addressType!: string;
   invoiceForm!: FormGroup;
-
+  @Input() isSaving!: boolean;
 
   constructor(
     private formParent: FormGroupDirective,
@@ -29,6 +29,23 @@ export class AddressFormComponent implements OnInit {
         country: ['', Validators.required]
       })
     )
+  };
+
+  get address() {
+    return this.invoiceForm.get(this.addressType) as FormGroup;
+  }
+
+  get street() {
+    return this.address.get('street');
+  }
+  get postCode() {
+    return this.address.get('postCode');
+  }
+  get city() {
+    return this.address.get('city');
+  }
+  get country() {
+    return this.address.get('country');
   }
 
 }

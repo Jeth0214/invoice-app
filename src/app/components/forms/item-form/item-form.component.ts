@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-item-form',
@@ -10,8 +10,10 @@ import { ControlContainer, FormArray, FormBuilder, FormGroup, FormGroupDirective
   ]
 })
 export class ItemFormComponent implements OnInit {
-
+  @Input()
+  isSaving!: boolean;
   invoiceForm!: FormGroup;
+
 
   constructor(
     private formParent: FormGroupDirective,
@@ -23,21 +25,39 @@ export class ItemFormComponent implements OnInit {
     this.invoiceForm.addControl(
       'items',
       this.formBuilder.array([
-        {
-          name: ['', Validators.required],
-          quantity: ['', Validators.required],
-          price: ['', Validators.required],
-        }
+        this.insertNewItemForm()
       ])
     )
   }
 
-  get items() {
-    return this.invoiceForm.controls['items'] as FormArray;
+  get items(): FormArray {
+    return this.invoiceForm.get('items') as FormArray;
   }
 
-  addNewItem() {
-    console.log('click');
+  addItem() {
+    console.log(this.items.controls)
+    this.items.push(this.insertNewItemForm());
+  }
+
+  removeItem(item: number) {
+    this.items.removeAt(item);
+  };
+
+  getValueForItemsTotal(item: any, index: number) {
+    if (item.value.quantity && item.value.price) {
+      let total: number = item.value.quantity * item.value.price;
+      this.items.controls[index].patchValue({ 'total': total.toFixed(2) })
+    }
+  }
+
+
+  insertNewItemForm(): FormGroup {
+    return new FormGroup({
+      'name': new FormControl('', Validators.required),
+      'quantity': new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('/^([0-9]*[1-9][0-9]*(\.[0-9]+)?|[0]+\.[0-9]*[1-9][0-9]*)$/')]),
+      'price': new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('/^([0-9]*[1-9][0-9]*(\.[0-9]+)?|[0]+\.[0-9]*[1-9][0-9]*)$/')]),
+      'total': new FormControl(''),
+    })
   }
 
 }

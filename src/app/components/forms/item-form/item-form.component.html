@@ -1,34 +1,57 @@
-<!-- <ng-container formArrayName="items">
+<ng-container formArrayName="items">
     <!-- Item Lists -->
-<!-- <h2>Item List</h2>
-    <div *ngFor="let item of items.controls; index as i">
+    <h2>Item List</h2>
+    <div class="row">
+        <div class="col-md-4">
+            Item
+        </div>
+        <div class="col-md-2">
+            Qty
+        </div>
+        <div class="col-md-2">
+            Price
+        </div>
+        <div class="col-md-2">
+            Total
+        </div>
+        <div class="col-md-2">
 
-        <div class="row">
-
-            <div class="col-md-4">
-                <label for="name" class="form-label text-primary">Item </label>
-                <input [formControlName]="i.name" type="text" class="form-control" id="name">
-            </div>
-            <div class="col-md-2">
-                <label for="quantity" class="form-label text-primary">Qty </label>
-                <input [formControlName]="i.quantity" type="number" class="form-control" id="quantity">
-            </div>
-            <div class="col-md-2">
-                <label for="price" class="form-label text-primary">Price </label>
-                <input [formControlName]="i.price" type="text" class="form-control" id="price">
-            </div>
-            <div class="col-md-2">
-                <label for="" class="form-label text-primary">Total </label>
-            </div>
-            <div class="col-md-2">
-                <div>
-                    <i class="fa-solid fa-trash"></i>
-                </div>
+        </div>
+    </div>
+    <div *ngFor="let item of items.controls; index as i" [formGroupName]="i" class="my-1">
+        <div class="d-flex justify-content-center mb-1">
+            <div class="">
+                text-secondary
             </div>
         </div>
-    </div> -->
-<!-- Add item button -->
-<!-- <button class="w-100 rounded-pill btn btn-secondary my-4" (click)="addNewItem()">
+        <div class="row">
+            <div class="col-md-4">
+                <input formControlName="name" type="text" class="form-control"
+                    [class.border-danger]="isSaving && item.get('name')?.errors">
+            </div>
+            <div class="col-md-2">
+                <input formControlName="quantity" type="number" class="form-control" min="1"
+                    (input)="getValueForItemsTotal(item, i)"
+                    [class.border-danger]="isSaving && item.get('quantity')?.errors?.['required']">
+            </div>
+            <div class="col-md-2">
+                <input formControlName="price" type="number" class="form-control" min="1"
+                    (input)="getValueForItemsTotal(item, i)"
+                    [class.border-danger]="isSaving && item.get('price')?.errors">
+            </div>
+            <div class="col-md-2">
+                <ng-container *ngIf="item.value.quantity && item.value.price">
+                    {{ item.value.quantity * item.value.price | number: '1.2-2'}}
+                </ng-container>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-link text-danger"><i class="fa-solid fa-trash"
+                        (click)="removeItem(i)"></i></button>
+            </div>
+        </div>
+    </div>
+    <!-- Add item button -->
+    <button class="w-100 rounded-pill btn btn-secondary my-4" (click)="addItem()">
         <i class="fa-solid fa-plus"></i> Add New Item
-    </button> -->
-<!-- </ng-container> --> -->
+    </button>
+</ng-container>

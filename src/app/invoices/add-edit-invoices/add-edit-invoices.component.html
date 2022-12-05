@@ -11,7 +11,7 @@
                     Bill From
                 </h2>
                 <!-- Sender Adress -->
-                <app-address-form [addressType]="'senderAddress'"></app-address-form>
+                <app-address-form [addressType]="'senderAddress'" [isSaving]="isSaving"></app-address-form>
             </div>
 
             <!-- Bill to section -->
@@ -46,7 +46,7 @@
                         [class.is-invalid]="isSaving && formValidation['clientEmail'].errors">
                 </div>
                 <!-- Client Adsress -->
-                <app-address-form [addressType]="'clientAddress'"></app-address-form>
+                <app-address-form [addressType]="'clientAddress'" [isSaving]="isSaving"></app-address-form>
             </div>
 
             <!-- Invoice info section -->
@@ -87,61 +87,7 @@
             </div>
 
             <!-- items section -->
-            <!-- <app-item-form></app-item-form> -->
-            <ng-container formArrayName="items">
-                <!-- Item Lists -->
-                <h2>Item List</h2>
-                <div class="row">
-                    <div class="col-md-4">
-                        Item
-                    </div>
-                    <div class="col-md-2">
-                        Qty
-                    </div>
-                    <div class="col-md-2">
-                        Price
-                    </div>
-                    <div class="col-md-2">
-                        Total
-                    </div>
-                    <div class="col-md-2">
-
-                    </div>
-                </div>
-                <div *ngFor="let item of items.controls; index as i" [formGroupName]="i" class="my-3">
-                    <div class="d-flex justify-content-center mb-1">
-                        <div class="">
-                            text-secondary
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <input formControlName="name" type="text" class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input formControlName="quantity" type="number" class="form-control" min="1"
-                                (input)="getValueForItemsTotal(item, i)">
-                        </div>
-                        <div class="col-md-2">
-                            <input formControlName="price" type="number" class="form-control" min="1"
-                                (input)="getValueForItemsTotal(item, i)">
-                        </div>
-                        <div class="col-md-2">
-                            <ng-container *ngIf="item.value.quantity && item.value.price">
-                                {{ item.value.quantity * item.value.price | number: '1.2-2'}}
-                            </ng-container>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-link text-danger"><i class="fa-solid fa-trash"
-                                    (click)="removeItem(i)"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Add item button -->
-                <button class="w-100 rounded-pill btn btn-secondary my-4" (click)="addItem()">
-                    <i class="fa-solid fa-plus"></i> Add New Item
-                </button>
-            </ng-container>
+            <app-item-form [isSaving]="isSaving"></app-item-form>
 
 
             <!-- form action buttons -->

@@ -45,6 +45,7 @@ export class AddEditInvoicesComponent implements OnInit {
   onSaveNewInvoice() {
     // store invoice form inputs to as initial invoice data
     this.isSaving = true;
+    console.log(this.invoiceForm.status)
     let invoiceData = {
       ...this.invoiceForm.value
     };

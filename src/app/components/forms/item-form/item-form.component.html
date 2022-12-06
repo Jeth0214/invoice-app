@@ -20,8 +20,8 @@
     </div>
     <div *ngFor="let item of items.controls; index as i" [formGroupName]="i" class="my-1">
         <div class="d-flex justify-content-center mb-1">
-            <div class="">
-                text-secondary
+            <div class="text-danger" *ngIf="isSaving && ( item.get('price')?.errors || item.get('quantity')?.errors)">
+                <div> Price Or Quantity can't must be greater than 0 </div>
             </div>
         </div>
         <div class="row">
@@ -31,15 +31,15 @@
             </div>
             <div class="col-md-2">
                 <input formControlName="quantity" type="number" class="form-control" min="1"
-                    (input)="getValueForItemsTotal(item, i)"
-                    [class.border-danger]="isSaving && item.get('quantity')?.errors?.['required']">
+                    (input)="getValueForItemsTotal(item, i, $event)"
+                    [class.border-danger]="isSaving && item.get('quantity')?.errors">
             </div>
             <div class="col-md-2">
                 <input formControlName="price" type="number" class="form-control" min="1"
-                    (input)="getValueForItemsTotal(item, i)"
-                    [class.border-danger]="isSaving && item.get('price')?.errors">
+                    (input)="getValueForItemsTotal(item, i, $event)"
+                    [class.border-danger]="isSaving &&  item.get('price')?.errors">
             </div>
-            <div class="col-md-2">
+            <div class=" col-md-2">
                 <ng-container *ngIf="item.value.quantity && item.value.price">
                     {{ item.value.quantity * item.value.price | number: '1.2-2'}}
                 </ng-container>

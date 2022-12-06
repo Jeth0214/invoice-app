@@ -1,5 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import {
+  ControlContainer,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  Validators
+} from '@angular/forms';
+import { ValidateMinNum } from 'src/app/shared/minNum.validator';
+
+
 
 @Component({
   selector: 'app-item-form',
@@ -43,19 +54,20 @@ export class ItemFormComponent implements OnInit {
     this.items.removeAt(item);
   };
 
-  getValueForItemsTotal(item: any, index: number) {
+  getValueForItemsTotal(item: any, index: number, e: Event) {
     if (item.value.quantity && item.value.price) {
       let total: number = item.value.quantity * item.value.price;
-      this.items.controls[index].patchValue({ 'total': total.toFixed(2) })
+      this.items.controls[index].patchValue({ 'total': +total.toFixed(2) })
     }
   }
 
 
   insertNewItemForm(): FormGroup {
+    const pattern = "^([0-9]*[1-9][0-9]*(\\.[0-9]+)?|[0]+\\.[0-9]*[1-9][0-9]*)$";
     return new FormGroup({
       'name': new FormControl('', Validators.required),
-      'quantity': new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('/^([0-9]*[1-9][0-9]*(\.[0-9]+)?|[0]+\.[0-9]*[1-9][0-9]*)$/')]),
-      'price': new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('/^([0-9]*[1-9][0-9]*(\.[0-9]+)?|[0]+\.[0-9]*[1-9][0-9]*)$/')]),
+      'quantity': new FormControl('', [Validators.required, Validators.min(0)]),
+      'price': new FormControl('', [Validators.required, ValidateMinNum]),
       'total': new FormControl(''),
     })
   }

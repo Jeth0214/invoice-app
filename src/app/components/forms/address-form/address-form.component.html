@@ -1,7 +1,4 @@
 <ng-container [formGroupName]="addressType">
-    <div *ngIf="isSaving && address.invalid" class="text-danger">
-        All Address field must be filled
-    </div>
     <div class="mb-3">
         <label for="street" class="form-label text-primary"
             [class.text-danger]="isSaving && street?.errors">Street</label>

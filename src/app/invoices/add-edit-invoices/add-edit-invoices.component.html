@@ -42,7 +42,8 @@
                             <p *ngIf="formValidation['clientEmail']?.errors?.['email']">Invalid email address</p>
                         </div>
                     </div>
-                    <input formControlName="clientEmail" type="email" class="form-control" id="clientEmail"
+                    <input formControlName="clientEmail" type="email" placeholder="e.g. email@example.com"
+                        class="form-control" id="clientEmail"
                         [class.border-danger]="isSaving && formValidation['clientEmail'].errors">
                 </div>
                 <!-- Client Address -->
@@ -81,7 +82,8 @@
                             Can't be empty
                         </div>
                     </div>
-                    <input formControlName="description" type="text" class="form-control" id="description"
+                    <input formControlName="description" type="text" placeholder="e.g. Graphic Design Service"
+                        class="form-control" id="description"
                         [class.border-danger]="isSaving && formValidation['description'].errors">
                 </div>
             </div>
@@ -102,8 +104,10 @@
                     <button class="btn btn-light rounded-pill text-primary"> Discard </button>
                 </div>
                 <div class="col-md-7 me-auto d-flex justify-content-end">
-                    <button class="btn btn-dark rounded-pill text-secondary me-3"> Save as Draft </button>
-                    <button type="submit" (click)="onSaveNewInvoice()" class="btn btn-primary rounded-pill"> Save & Send
+                    <button type="submit" (click)="onSaveNewInvoice('draft')"
+                        class="btn btn-dark rounded-pill text-secondary me-3"> Save as Draft </button>
+                    <button type="submit" (click)="onSaveNewInvoice('pending')" class="btn btn-primary rounded-pill">
+                        Save & Send
                     </button>
                 </div>
             </div>

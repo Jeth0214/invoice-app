@@ -1,11 +1,18 @@
-export interface SenderAddress {
-    street: string;
-    city: string;
-    postCode: string;
-    country: string;
+export interface Invoice {
+    id: string;
+    createdAt: string;
+    paymentDue: string;
+    description: string;
+    paymentTerms: number;
+    clientName: string;
+    clientEmail: string;
+    status: string;
+    senderAddress: Address;
+    clientAddress: Address;
+    items: Item[];
+    total: number;
 }
-
-export interface ClientAddress {
+export interface Address {
     street: string;
     city: string;
     postCode: string;
@@ -19,17 +26,7 @@ export interface Item {
     total: number;
 }
 
-export interface Invoice {
-    id: string;
-    createdAt: string;
-    paymentDue: string;
-    description: string;
-    paymentTerms: number;
-    clientName: string;
-    clientEmail: string;
-    status: string;
-    senderAddress: SenderAddress;
-    clientAddress: ClientAddress;
-    items: Item[];
-    total: number;
+export interface Term {
+    name: string,
+    value: number
 }

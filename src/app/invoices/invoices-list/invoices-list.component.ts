@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -11,7 +11,7 @@ import { InvoiceService } from '../invoice.service';
   templateUrl: './invoices-list.component.html',
   styleUrls: ['./invoices-list.component.scss']
 })
-export class InvoicesListComponent implements OnInit {
+export class InvoicesListComponent implements OnInit, AfterViewInit {
 
   invoices: Invoice[] = [];
   tempInvoicesArray: Invoice[] = [];
@@ -28,12 +28,12 @@ export class InvoicesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllInvoice();
-    // this.invoiceService.getAllUsers().subscribe(data => {
-    //   console.log(data)
-    // })
     this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
   }
 
+  ngAfterViewInit() {
+    this.getAllInvoice();
+  }
 
 
   getAllInvoice() {

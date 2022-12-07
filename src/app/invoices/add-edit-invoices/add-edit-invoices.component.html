@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <input formControlName="clientName" type="text" class="form-control" id="clientName"
-                        [class.is-invalid]="isSaving && formValidation['clientName'].errors">
+                        [class.border-danger]="isSaving && formValidation['clientName'].errors">
                 </div>
                 <!-- Clients' Email -->
                 <div class="mb-3">
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <input formControlName="clientEmail" type="email" class="form-control" id="clientEmail"
-                        [class.is-invalid]="isSaving && formValidation['clientEmail'].errors">
+                        [class.border-danger]="isSaving && formValidation['clientEmail'].errors">
                 </div>
                 <!-- Client Address -->
                 <app-address-form [addressType]="'clientAddress'" [isSaving]="isSaving"></app-address-form>
@@ -78,18 +78,24 @@
                             [class.text-danger]="isSaving && formValidation['description'].errors">Project
                             Description</label>
                         <div *ngIf="isSaving && formValidation['description'].errors" class="text-danger">
-                            Cannot be empty
+                            Can't be empty
                         </div>
                     </div>
                     <input formControlName="description" type="text" class="form-control" id="description"
-                        [class.is-invalid]="isSaving && formValidation['description'].errors">
+                        [class.border-danger]="isSaving && formValidation['description'].errors">
                 </div>
             </div>
 
             <!-- items section -->
             <app-item-form [isSaving]="isSaving"></app-item-form>
 
-
+            <!-- Show Invalid form and no item message -->
+            <ng-container *ngIf="showInvalidMessage">
+                <p class="text-danger mb-1"> - All fields must be added </p>
+            </ng-container>
+            <ng-container *ngIf="showNeedItemMessage">
+                <p class="text-danger"> - An Item must be added </p>
+            </ng-container>
             <!-- form action buttons -->
             <div class="row">
                 <div class="col-md-5">

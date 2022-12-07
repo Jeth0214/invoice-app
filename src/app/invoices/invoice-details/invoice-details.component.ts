@@ -25,7 +25,6 @@ export class InvoiceDetailsComponent implements OnInit {
       if (id) {
         this.invoiceService.getInvoice(id).subscribe(data => {
           this.invoice = data;
-          console.log(data)
         })
       } else {
         this.showNoInvoice = true;

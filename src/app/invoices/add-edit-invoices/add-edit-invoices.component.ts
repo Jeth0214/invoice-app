@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Invoice, Term } from '../invoice.model';
+import { InvoiceService } from '../invoice.service';
 
 @Component({
   selector: 'app-add-edit-invoices',
@@ -8,19 +10,23 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 })
 export class AddEditInvoicesComponent implements OnInit {
 
-  invoiceForm: FormGroup;
+  invoiceForm!: FormGroup;
   isSaving: boolean = false;
+  showInvalidMessage: boolean = false;
+  showNeedItemMessage: boolean = false;
+  selectedTerms!: string;
 
-  terms = [
+  terms: Term[] = [
     { name: "Net 1 Day", value: 1 },
     { name: "Net 7 Day", value: 7 },
     { name: "Net 14 Day", value: 14 },
     { name: "Net 30 Day", value: 30 }
   ];
 
-  selectedTerms!: string;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private invoiceService: InvoiceService) { }
+
+  ngOnInit(): void {
     this.invoiceForm = this.formBuilder.group({
       description: ['', Validators.required],
       createdAt: [this.calculatePaymentDue(0, new Date()), Validators.required],
@@ -30,12 +36,7 @@ export class AddEditInvoicesComponent implements OnInit {
     });
 
     this.selectedTerms = this.terms[0].name;
-
   }
-
-  ngOnInit(): void {
-  }
-
 
 
   get formValidation(): { [key: string]: AbstractControl } {
@@ -43,42 +44,67 @@ export class AddEditInvoicesComponent implements OnInit {
   }
 
   onSaveNewInvoice() {
-    // store invoice form inputs to as initial invoice data
     this.isSaving = true;
-    console.log(this.invoiceForm.status)
-    let invoiceData = {
-      ...this.invoiceForm.value
-    };
+    // console.log('status', this.invoiceForm.status);
+    // console.log('Invoice', this.invoiceForm.value);
+    // console.log('Item', this.invoiceForm.get('items')?.value.length);
+    //check if form is valid
+    if (this.invoiceForm.invalid) {
+      this.showInvalidMessage = true;
+    }
+    if (this.invoiceForm.get('items')?.value.length <= 0) {
+      this.showNeedItemMessage = true;
+    }
+    if (this.invoiceForm.valid && this.invoiceForm.get('items')?.value.length > 0) {
+      this.showInvalidMessage = false;
+      this.showNeedItemMessage = false;
+      // store invoice form inputs to as initial invoice data
+      let invoiceData: Invoice = {
+        ...this.invoiceForm.value
+      };
 
-    // calculate all items sum and assign it  to invoice total data
-    let itemsValues = this.invoiceForm.get('items')?.value;
-    invoiceData.total = itemsValues.reduce((total: any, item: any) => {
-      return total + +item.total;
-    }, 0);
+      // calculate all items sum and assign it  to invoice total data
+      let itemsValues = this.invoiceForm.get('items')?.value;
+      invoiceData.total = itemsValues.reduce((total: any, item: any) => {
+        return total + +item.total;
+      }, 0);
 
-    // set the invoice id to created date in milliseconds and convert it to string;
-    let id = +new Date(invoiceData.createdAt);
-    invoiceData.id = `#${id.toString()}`;
+      // set the invoice id to created date in milliseconds and convert it to string;
+      let id = +new Date(invoiceData.createdAt);
+      invoiceData.id = `#${id.toString()}`;
 
-    // add payment due to invoice data
-    invoiceData.paymentDue = this.calculatePaymentDue(invoiceData.paymentTerms, invoiceData.createdAt);
+      // add payment due to invoice data
+      invoiceData.paymentDue = this.calculatePaymentDue(invoiceData.paymentTerms, invoiceData.createdAt);
 
-    //set the invoice status pending as default
-    invoiceData.status = 'pending';
+      //set the invoice status pending as default
+      invoiceData.status = 'pending';
 
-    console.log('Invoice', invoiceData);
+      this.invoiceService.addInvoice(invoiceData).subscribe((invoice: Invoice) => {
+        console.log('Response', invoice);
+        if (invoice) {
+          this.resetForm()
+        }
+      })
+    }
+
+  }
+
+  resetForm(): void {
+    this.isSaving = false;
+    this.showInvalidMessage = false;
+    this.showNeedItemMessage = false;
+    this.selectedTerms = this.terms[0].name;
+    this.invoiceForm.reset();
   }
 
 
-
-
-  selectTerms(term: any) {
+  selectTerms(term: Term): void {
     this.selectedTerms = term.name;
     this.invoiceForm.patchValue({ 'paymentTerms': term.value })
   }
 
 
-  calculatePaymentDue(paymentTerm: number, createdDate: string | Date) {
+  calculatePaymentDue(paymentTerm: number, createdDate: string | Date): string {
     var result = new Date(createdDate);
     result.setDate(result.getDate() + paymentTerm);
     let day = result.getDate();

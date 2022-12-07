@@ -36,7 +36,6 @@ export class ItemFormComponent implements OnInit {
     this.invoiceForm.addControl(
       'items',
       this.formBuilder.array([
-        this.insertNewItemForm()
       ])
     )
   }
@@ -46,7 +45,6 @@ export class ItemFormComponent implements OnInit {
   }
 
   addItem() {
-    console.log(this.items.controls)
     this.items.push(this.insertNewItemForm());
   }
 
@@ -63,10 +61,9 @@ export class ItemFormComponent implements OnInit {
 
 
   insertNewItemForm(): FormGroup {
-    const pattern = "^([0-9]*[1-9][0-9]*(\\.[0-9]+)?|[0]+\\.[0-9]*[1-9][0-9]*)$";
     return new FormGroup({
       'name': new FormControl('', Validators.required),
-      'quantity': new FormControl('', [Validators.required, Validators.min(0)]),
+      'quantity': new FormControl('', [Validators.required, ValidateMinNum]),
       'price': new FormControl('', [Validators.required, ValidateMinNum]),
       'total': new FormControl(''),
     })

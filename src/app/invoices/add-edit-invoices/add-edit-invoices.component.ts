@@ -34,7 +34,6 @@ export class AddEditInvoicesComponent implements OnInit {
       clientName: ['', Validators.required],
       clientEmail: ['', [Validators.required, Validators.email]]
     });
-
     this.selectedTerms = this.terms[0].name;
   }
 
@@ -43,50 +42,63 @@ export class AddEditInvoicesComponent implements OnInit {
     return this.invoiceForm.controls;
   }
 
-  onSaveNewInvoice() {
-    this.isSaving = true;
-    // console.log('status', this.invoiceForm.status);
-    // console.log('Invoice', this.invoiceForm.value);
-    // console.log('Item', this.invoiceForm.get('items')?.value.length);
-    //check if form is valid
-    if (this.invoiceForm.invalid) {
-      this.showInvalidMessage = true;
+  onSaveNewInvoice(saveAs: string) {
+    console.log(saveAs);
+    //check if save status is 'pending' or 'draft;
+    // if draft , get the form value and save
+    if (saveAs === 'draft') {
+      this.saveInvoiceData(saveAs)
     }
-    if (this.invoiceForm.get('items')?.value.length <= 0) {
-      this.showNeedItemMessage = true;
-    }
-    if (this.invoiceForm.valid && this.invoiceForm.get('items')?.value.length > 0) {
-      this.showInvalidMessage = false;
-      this.showNeedItemMessage = false;
-      // store invoice form inputs to as initial invoice data
-      let invoiceData: Invoice = {
-        ...this.invoiceForm.value
-      };
-
-      // calculate all items sum and assign it  to invoice total data
-      let itemsValues = this.invoiceForm.get('items')?.value;
-      invoiceData.total = itemsValues.reduce((total: any, item: any) => {
-        return total + +item.total;
-      }, 0);
-
-      // set the invoice id to created date in milliseconds and convert it to string;
-      let id = +new Date(invoiceData.createdAt);
-      invoiceData.id = `#${id.toString()}`;
-
-      // add payment due to invoice data
-      invoiceData.paymentDue = this.calculatePaymentDue(invoiceData.paymentTerms, invoiceData.createdAt);
-
-      //set the invoice status pending as default
-      invoiceData.status = 'pending';
-
-      this.invoiceService.addInvoice(invoiceData).subscribe((invoice: Invoice) => {
-        console.log('Response', invoice);
-        if (invoice) {
-          this.resetForm()
-        }
-      })
+    // if pending , validate the form  before saving
+    if (saveAs == 'pending') {
+      this.isSaving = true;
+      // console.log('status', this.invoiceForm.status);
+      console.log('Invoice', this.invoiceForm.value);
+      // console.log('Item', this.invoiceForm.get('items')?.value.length);
+      //check if form is valid
+      if (this.invoiceForm.invalid) {
+        this.showInvalidMessage = true;
+      }
+      if (this.invoiceForm.get('items')?.value.length <= 0) {
+        this.showNeedItemMessage = true;
+      }
+      if (this.invoiceForm.valid && this.invoiceForm.get('items')?.value.length > 0) {
+        this.showInvalidMessage = false;
+        this.showNeedItemMessage = false;
+        this.saveInvoiceData(saveAs);
+      }
     }
 
+  }
+
+  saveInvoiceData(saveAs: string): void {
+    // store invoice form inputs to as initial invoice data
+    let invoiceData: Invoice = {
+      ...this.invoiceForm.value
+    };
+
+    // calculate all items sum and assign it  to invoice total data
+    let itemsValues = this.invoiceForm.get('items')?.value;
+    invoiceData.total = itemsValues.reduce((total: any, item: any) => {
+      return total + +item.total;
+    }, 0);
+
+    // set the invoice id to created date in milliseconds and convert it to string;
+    let id = +new Date(invoiceData.createdAt);
+    invoiceData.id = `#${id.toString()}`;
+
+    // add payment due to invoice data
+    invoiceData.paymentDue = this.calculatePaymentDue(invoiceData.paymentTerms, invoiceData.createdAt);
+
+    //set the invoice status according to saveAs state
+    invoiceData.status = saveAs;
+
+    this.invoiceService.addInvoice(invoiceData).subscribe((invoice: Invoice) => {
+      console.log('Response', invoice);
+      if (invoice) {
+        this.resetForm()
+      }
+    })
   }
 
   resetForm(): void {

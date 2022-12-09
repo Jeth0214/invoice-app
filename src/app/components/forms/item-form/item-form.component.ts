@@ -33,11 +33,6 @@ export class ItemFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.invoiceForm = this.formParent.form;
-    this.invoiceForm.addControl(
-      'items',
-      this.formBuilder.array([
-      ])
-    )
   }
 
   get items(): FormArray {
@@ -45,7 +40,17 @@ export class ItemFormComponent implements OnInit {
   }
 
   addItem() {
-    this.items.push(this.insertNewItemForm());
+    if (!this.invoiceForm.contains('items')) {
+      this.invoiceForm.addControl(
+        'items',
+        this.formBuilder.array([
+          this.insertNewItemForm()
+        ])
+      )
+    } else {
+
+      this.items.push(this.insertNewItemForm());
+    }
   }
 
   removeItem(item: number) {

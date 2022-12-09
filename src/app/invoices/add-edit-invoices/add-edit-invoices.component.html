@@ -93,7 +93,7 @@
 
             <!-- Show Invalid form and no item message -->
             <ng-container *ngIf="showInvalidMessage">
-                <p class="text-danger mb-1"> - All fields must be added </p>
+                <p class="text-danger mb-1"> - All fields must be filled </p>
             </ng-container>
             <ng-container *ngIf="showNeedItemMessage">
                 <p class="text-danger"> - An Item must be added </p>
@@ -101,7 +101,7 @@
             <!-- form action buttons -->
             <div class="row">
                 <div class="col-md-5">
-                    <button class="btn btn-light rounded-pill text-primary"> Discard </button>
+                    <button class="btn btn-light rounded-pill text-primary" (click)="onDiscard()"> Discard </button>
                 </div>
                 <div class="col-md-7 me-auto d-flex justify-content-end">
                     <button type="submit" (click)="onSaveNewInvoice('draft')"

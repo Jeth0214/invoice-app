@@ -1,6 +1,6 @@
 <div class="container add-edit my-4 ">
     <div class="title">
-        <h1>New Invoice</h1>
+        <h1>{{ title }}</h1>
     </div>
 
     <div class="row">
@@ -11,7 +11,8 @@
                     Bill From
                 </h2>
                 <!-- Sender Adress -->
-                <app-address-form [addressType]="'senderAddress'" [isSaving]="isSaving"></app-address-form>
+                <app-address-form [addressType]="'senderAddress'" [isSaving]="isSaving"
+                    [addressData]="invoice.senderAddress"></app-address-form>
             </div>
 
             <!-- Bill to section -->
@@ -47,7 +48,8 @@
                         [class.border-danger]="isSaving && formValidation['clientEmail'].errors">
                 </div>
                 <!-- Client Address -->
-                <app-address-form [addressType]="'clientAddress'" [isSaving]="isSaving"></app-address-form>
+                <app-address-form [addressType]="'clientAddress'" [isSaving]="isSaving"
+                    [addressData]="invoice.clientAddress"></app-address-form>
             </div>
 
             <!-- Invoice info section -->

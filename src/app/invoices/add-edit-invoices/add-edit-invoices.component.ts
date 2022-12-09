@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap';
-import { Invoice, Term } from '../invoice.model';
-import { InvoiceService } from '../invoice.service';
+import { Invoice, Term } from '../../shared/models/invoice.model';
+import { InvoiceService } from '../../shared/services/invoice.service';
 
 @Component({
   selector: 'app-add-edit-invoices',
@@ -10,6 +10,9 @@ import { InvoiceService } from '../invoice.service';
   styleUrls: ['./add-edit-invoices.component.scss']
 })
 export class AddEditInvoicesComponent implements OnInit {
+  // data from invoice list or invoice details offcanvas instance
+  @Input() title!: string;
+  @Input() invoice!: Invoice;
 
   invoiceForm!: FormGroup;
   isSaving: boolean = false;
@@ -19,24 +22,38 @@ export class AddEditInvoicesComponent implements OnInit {
 
   terms: Term[] = [
     { name: "Net 1 Day", value: 1 },
-    { name: "Net 7 Day", value: 7 },
-    { name: "Net 14 Day", value: 14 },
-    { name: "Net 30 Day", value: 30 }
+    { name: "Net 7 Days", value: 7 },
+    { name: "Net 14 Days", value: 14 },
+    { name: "Net 30 Days", value: 30 }
   ];
 
 
   constructor(
     private formBuilder: FormBuilder,
     private invoiceService: InvoiceService,
-    private activeOffcanvas: NgbActiveOffcanvas,
+    private activeOffcanvas: NgbActiveOffcanvas
   ) { }
 
   ngOnInit(): void {
-    this.setForm();
+    this.setInvoiceForm();
+    if (this.invoice) {
+      console.log('Invoice from detail page: ', this.invoice);
+      this.invoiceForm.patchValue({ 'description': this.invoice.description });
+      this.invoiceForm.patchValue({ 'createdAt': this.invoice.createdAt });
+      this.invoiceForm.patchValue({ 'paymentTerms': this.invoice.paymentTerms });
+      this.invoiceForm.patchValue({ 'clientName': this.invoice.clientName });
+      this.invoiceForm.patchValue({ 'clientEmail': this.invoice.clientEmail });
+      // this.invoiceForm.get('senderAddress')?.patchValue({
+      //   'street': this.invoice.senderAddress.street,
+      //   'city': this.invoice.senderAddress.city,
+      //   'postCode': this.invoice.senderAddress.postCode,
+      //   'country': this.invoice.senderAddress.country,
+      // })
+    }
     this.selectedTerms = this.terms[0].name;
   }
 
-  setForm() {
+  setInvoiceForm() {
     this.invoiceForm = this.formBuilder.group({
       description: ['', Validators.required],
       createdAt: [this.calculatePaymentDue(0, new Date()), Validators.required],
@@ -52,10 +69,10 @@ export class AddEditInvoicesComponent implements OnInit {
   }
 
   onSaveNewInvoice(saveAs: string) {
-    console.log(saveAs);
-    console.log('status', this.invoiceForm.status);
-    console.log('invoice', this.invoiceForm.value);
-    console.log('item', this.invoiceForm.get('items')?.value.length);
+    // console.log(saveAs);
+    // console.log('status', this.invoiceForm.status);
+    // console.log('invoice', this.invoiceForm.value);
+    // console.log('item', this.invoiceForm.get('items')?.value.length);
     //check if save status is 'pending' or 'draft;
     // if draft , get the form value and save
     if (saveAs === 'draft') {

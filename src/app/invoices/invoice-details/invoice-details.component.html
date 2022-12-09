@@ -18,15 +18,15 @@
                 </button>
             </div>
             <div class="action-buttons">
-                <div class="btn btn-light text-primary rounded-pill me-2">
+                <button type="button" (click)="onEdit()" class="btn btn-light text-primary rounded-pill me-2">
                     Edit
-                </div>
-                <div class="btn btn-danger text-white rounded-pill me-2">
+                </button>
+                <button type="button" (click)="onDelete()" class="btn btn-danger text-white rounded-pill me-2">
                     Delete
-                </div>
-                <div class="btn btn-primary rounded-pill">
+                </button>
+                <button type="button" (click)="onMarkAsPaid(invoice)" class="btn btn-primary rounded-pill">
                     Mark as Paid
-                </div>
+                </button>
             </div>
         </div>
 

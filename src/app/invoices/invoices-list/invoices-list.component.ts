@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AddEditInvoicesComponent } from '../add-edit-invoices/add-edit-invoices.component';
-import { Invoice } from '../invoice.model';
-import { InvoiceService } from '../invoice.service';
+import { Invoice } from '../../shared/models/invoice.model';
+import { InvoiceService } from '../../shared/services/invoice.service';
 
 @Component({
   selector: 'app-invoices-list',
@@ -28,7 +28,7 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getAllInvoice();
-    this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
+    // this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
   }
 
   ngAfterViewInit() {
@@ -56,8 +56,8 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
   }
 
   openOffCanvas() {
-    this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
-
+    const offCanvasRef = this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
+    offCanvasRef.componentInstance.title = "New Invoice";
   }
 
   private showInvoiceLengthMessage(total: number, stat: string) {

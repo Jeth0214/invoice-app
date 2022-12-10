@@ -39,7 +39,7 @@ export class InvoiceDetailsComponent implements OnInit {
 
   onEdit() {
     const offCanvasRef = this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
-    offCanvasRef.componentInstance.title = `Edit #${this.invoice.id}`;
+    offCanvasRef.componentInstance.title = `Edit`;
     offCanvasRef.componentInstance.invoice = this.invoice;
   }
 

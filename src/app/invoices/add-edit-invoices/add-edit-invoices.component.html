@@ -1,6 +1,6 @@
 <div class="container add-edit my-4 ">
     <div class="title">
-        <h1>{{ title }}</h1>
+        <h1>{{ title }} <span *ngIf="invoice"> #{{ invoice.id }}</span></h1>
     </div>
 
     <div class="row">
@@ -12,7 +12,7 @@
                 </h2>
                 <!-- Sender Adress -->
                 <app-address-form [addressType]="'senderAddress'" [isSaving]="isSaving"
-                    [addressData]="invoice.senderAddress"></app-address-form>
+                    [addressData]="invoice?.senderAddress"></app-address-form>
             </div>
 
             <!-- Bill to section -->
@@ -49,7 +49,7 @@
                 </div>
                 <!-- Client Address -->
                 <app-address-form [addressType]="'clientAddress'" [isSaving]="isSaving"
-                    [addressData]="invoice.clientAddress"></app-address-form>
+                    [addressData]="invoice?.clientAddress"></app-address-form>
             </div>
 
             <!-- Invoice info section -->
@@ -91,7 +91,7 @@
             </div>
 
             <!-- items section -->
-            <app-item-form [isSaving]="isSaving"></app-item-form>
+            <app-item-form [isSaving]="isSaving" [itemsFromInvoiceToEdit]="invoice?.items"></app-item-form>
 
             <!-- Show Invalid form and no item message -->
             <ng-container *ngIf="showInvalidMessage">
@@ -100,8 +100,27 @@
             <ng-container *ngIf="showNeedItemMessage">
                 <p class="text-danger"> - An Item must be added </p>
             </ng-container>
+
             <!-- form action buttons -->
-            <div class="row">
+            <div class="d-flex" [class.justify-content-end]="invoice">
+                <button [class.me-auto]="!invoice" class="btn btn-light rounded-pill text-primary me-auto"
+                    (click)="onDiscard()"> Discard </button>
+                <ng-container *ngIf="invoice else newInvoice">
+                    <button type="submit" (click)="onSaveNewInvoice(invoice.status)"
+                        class="btn btn-primary rounded-pill">
+                        Save Changes
+                    </button>
+                </ng-container>
+                <ng-template #newInvoice>
+                    <button type="submit" (click)="onSaveNewInvoice('draft')"
+                        class="btn btn-dark rounded-pill text-secondary me-1 "> Save as
+                        Draft </button>
+                    <button type="submit" (click)="onSaveNewInvoice('pending')" class="btn btn-primary rounded-pill">
+                        Save & Send
+                    </button>
+                </ng-template>
+            </div>
+            <!-- <div class="row">
                 <div class="col-md-5">
                     <button class="btn btn-light rounded-pill text-primary" (click)="onDiscard()"> Discard </button>
                 </div>
@@ -112,6 +131,6 @@
                         Save & Send
                     </button>
                 </div>
-            </div>
+            </div> -->
         </form>
     </div>

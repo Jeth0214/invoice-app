@@ -9,11 +9,11 @@ import { Address, Invoice } from 'src/app/shared/models/invoice.model';
   viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
 export class AddressFormComponent implements OnInit {
-  @Input()
-  addressType!: string;
-  invoiceForm!: FormGroup;
+  @Input() addressType!: string;
   @Input() isSaving!: boolean;
-  @Input() addressData!: Address;
+  @Input() addressData: Address | undefined;
+
+  invoiceForm!: FormGroup;
 
   constructor(
     private formParent: FormGroupDirective,

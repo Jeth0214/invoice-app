@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap';
-import { Invoice, Term } from '../../shared/models/invoice.model';
+import { Invoice, Item, Term, Address } from '../../shared/models/invoice.model';
 import { InvoiceService } from '../../shared/services/invoice.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { InvoiceService } from '../../shared/services/invoice.service';
 export class AddEditInvoicesComponent implements OnInit {
   // data from invoice list or invoice details offcanvas instance
   @Input() title!: string;
-  @Input() invoice!: Invoice;
+  @Input() invoice: Invoice | undefined;
 
   invoiceForm!: FormGroup;
   isSaving: boolean = false;
@@ -43,12 +43,6 @@ export class AddEditInvoicesComponent implements OnInit {
       this.invoiceForm.patchValue({ 'paymentTerms': this.invoice.paymentTerms });
       this.invoiceForm.patchValue({ 'clientName': this.invoice.clientName });
       this.invoiceForm.patchValue({ 'clientEmail': this.invoice.clientEmail });
-      // this.invoiceForm.get('senderAddress')?.patchValue({
-      //   'street': this.invoice.senderAddress.street,
-      //   'city': this.invoice.senderAddress.city,
-      //   'postCode': this.invoice.senderAddress.postCode,
-      //   'country': this.invoice.senderAddress.country,
-      // })
     }
     this.selectedTerms = this.terms[0].name;
   }
@@ -70,17 +64,18 @@ export class AddEditInvoicesComponent implements OnInit {
 
   onSaveNewInvoice(saveAs: string) {
     // console.log(saveAs);
-    // console.log('status', this.invoiceForm.status);
-    // console.log('invoice', this.invoiceForm.value);
-    // console.log('item', this.invoiceForm.get('items')?.value.length);
+    console.log('status', this.invoiceForm.status);
+    console.log('invoice', this.invoiceForm.value);
+    console.log('item', this.invoiceForm.get('items')?.value.length);
+
     //check if save status is 'pending' or 'draft;
     // if draft , get the form value and save
     if (saveAs === 'draft') {
       this.isSaving = false;
       this.saveInvoiceData(saveAs)
     }
-    // if pending , validate the form  before saving
-    if (saveAs == 'pending') {
+    // if pending or editing, validate the form  before saving
+    if (saveAs == 'pending' || this.invoice) {
       this.isSaving = true;
       let itemslength = this.invoiceForm.get('items')?.value.length;
       //check if form is valid
@@ -114,9 +109,15 @@ export class AddEditInvoicesComponent implements OnInit {
       }, 0);
     }
 
-    // set the invoice id to created date in milliseconds and convert it to string;
-    let id = +new Date(invoiceData.createdAt);
-    invoiceData.id = `#${id.toString()}`;
+    // check first if the status is edit invoice
+    // set the invoice id to created date in milliseconds and convert it to string temporarily;
+
+    if (this.invoice) {
+      invoiceData.id = this.invoice.id
+    } else {
+      let id = +new Date(invoiceData.createdAt);
+      invoiceData.id = `${id.toString()}`;
+    }
 
     // add payment due to invoice data
     invoiceData.paymentDue = this.calculatePaymentDue(invoiceData.paymentTerms, invoiceData.createdAt);
@@ -134,7 +135,7 @@ export class AddEditInvoicesComponent implements OnInit {
           this.onDiscard();
         }, 1000);
       }
-    })
+    }, (error) => console.log('Error:', error.message))
   }
 
   resetForm(): void {

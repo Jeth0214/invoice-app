@@ -66,7 +66,7 @@ export class AddEditInvoicesComponent implements OnInit {
     // console.log(saveAs);
     console.log('status', this.invoiceForm.status);
     console.log('invoice', this.invoiceForm.value);
-    console.log('item', this.invoiceForm.get('items')?.value.length);
+    //console.log('item', this.invoiceForm.get('items')?.value.length);
 
     //check if save status is 'pending' or 'draft;
     // if draft , get the form value and save
@@ -75,7 +75,7 @@ export class AddEditInvoicesComponent implements OnInit {
       this.saveInvoiceData(saveAs)
     }
     // if pending or editing, validate the form  before saving
-    if (saveAs == 'pending' || this.invoice) {
+    if (saveAs == 'pending') {
       this.isSaving = true;
       let itemslength = this.invoiceForm.get('items')?.value.length;
       //check if form is valid
@@ -107,6 +107,9 @@ export class AddEditInvoicesComponent implements OnInit {
       invoiceData.total = itemsValues.reduce((total: any, item: any) => {
         return total + +item.total;
       }, 0);
+    } else {
+      invoiceData.total = 0;
+      invoiceData.items = []
     }
 
     // check first if the status is edit invoice
@@ -115,8 +118,7 @@ export class AddEditInvoicesComponent implements OnInit {
     if (this.invoice) {
       invoiceData.id = this.invoice.id
     } else {
-      let id = +new Date(invoiceData.createdAt);
-      invoiceData.id = `${id.toString()}`;
+      invoiceData.id = this.generateId()
     }
 
     // add payment due to invoice data
@@ -125,17 +127,20 @@ export class AddEditInvoicesComponent implements OnInit {
     //set the invoice status according to saveAs state
     invoiceData.status = saveAs;
     console.log('Invoice Data: ', invoiceData);
+    if (this.invoice) {
+      this.invoiceService.updateInvoice(invoiceData).subscribe((response) => { console.log(response); })
+    } else {
 
-    // send data for storage
-    this.invoiceService.addInvoice(invoiceData).subscribe((invoice: Invoice) => {
-      console.log('Response', invoice);
-      if (invoice) {
+      // send data for storage
+      this.invoiceService.addInvoice(invoiceData).subscribe((invoice: Invoice) => {
+        console.log('Response', invoice);
+        // Todo: If backend is ready, check if the invoice was created or updated successfully
         this.resetForm();
         setTimeout(() => {
           this.onDiscard();
         }, 1000);
-      }
-    }, (error) => console.log('Error:', error.message))
+      })
+    }
   }
 
   resetForm(): void {
@@ -163,6 +168,12 @@ export class AddEditInvoicesComponent implements OnInit {
     let year = result.getFullYear();
     let month = result.getMonth() + 1;
     return `${year}-${month}-${day}`;
+  }
+
+  generateId(): string {
+    return Math.random().toString(36).substring(7).split("").map(char => {
+      return char.toUpperCase();
+    }).join("");
   }
 
   onDiscard() {

@@ -15,6 +15,7 @@ export class InvoiceDetailsComponent implements OnInit {
   // no invoice div to add later
   showNoInvoice: boolean = false;
   invoice!: Invoice;
+  isPaid: boolean = false;
 
   constructor(
     private invoiceService: InvoiceService,
@@ -29,6 +30,9 @@ export class InvoiceDetailsComponent implements OnInit {
       if (id) {
         this.invoiceService.getInvoice(id).subscribe(data => {
           this.invoice = data;
+          if (this.invoice.status === 'paid') {
+            this.isPaid = true
+          }
         })
       } else {
         this.showNoInvoice = true;
@@ -50,7 +54,11 @@ export class InvoiceDetailsComponent implements OnInit {
 
 
   onMarkAsPaid(invoice: Invoice) {
+    this.invoice.status = 'Paid';
     console.log('mark as paid this invoice', invoice);
+    this.invoiceService.updateInvoice(invoice).subscribe(data => {
+      this.isPaid = true
+    })
   }
 
 }

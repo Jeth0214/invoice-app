@@ -18,13 +18,15 @@
                 </button>
             </div>
             <div class="action-buttons">
-                <button type="button" (click)="onEdit()" class="btn btn-light text-primary rounded-pill me-2">
+                <button *ngIf="!isPaid" type="button" (click)="onEdit()"
+                    class="btn btn-light text-primary rounded-pill me-2">
                     Edit
                 </button>
                 <button type="button" (click)="onDelete()" class="btn btn-danger text-white rounded-pill me-2">
                     Delete
                 </button>
-                <button type="button" (click)="onMarkAsPaid(invoice)" class="btn btn-primary rounded-pill">
+                <button *ngIf="!isPaid" type="button" (click)="onMarkAsPaid(invoice)"
+                    class="btn btn-primary rounded-pill">
                     Mark as Paid
                 </button>
             </div>

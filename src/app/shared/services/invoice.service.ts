@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { Invoice } from '../models/invoice.model';
 
 @Injectable({
@@ -30,7 +30,15 @@ export class InvoiceService {
 
   addInvoice(invoice: Invoice): Observable<Invoice> {
     return this.http.post<Invoice>(this.url, invoice, this.httpOptions).pipe(
+      tap(invoice => console.log(invoice)),
       catchError(this.errorHandler<Invoice>('addInvoice'))
+    );
+  }
+
+  updateInvoice(invoice: Invoice): Observable<any> {
+    return this.http.put(this.url, invoice, this.httpOptions).pipe(
+      tap(_ => console.log(invoice)),
+      catchError(this.errorHandler<any>('updateInvoice'))
     );
   }
 

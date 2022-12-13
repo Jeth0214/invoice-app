@@ -42,6 +42,14 @@ export class InvoiceService {
     );
   }
 
+  deleteInvoice(id: string): Observable<Invoice> {
+    return this.http.delete<Invoice>(`${this.url}/${id}`, this.httpOptions).pipe(
+      tap(_ => console.log('Delete Invoice', id)),
+      catchError(this.errorHandler<Invoice>('deleteInvoice'))
+    )
+  }
+
+
 
   private errorHandler<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

@@ -22,10 +22,10 @@
                     class="btn btn-light text-primary rounded-pill me-2">
                     Edit
                 </button>
-                <button type="button" (click)="onDelete()" class="btn btn-danger text-white rounded-pill me-2">
+                <button type="button" (click)="onDelete(content)" class="btn btn-danger text-white rounded-pill me-2">
                     Delete
                 </button>
-                <button *ngIf="!isPaid" type="button" (click)="onMarkAsPaid(invoice)"
+                <button *ngIf="invoice.status === 'pending'" type="button" (click)="onMarkAsPaid(invoice)"
                     class="btn btn-primary rounded-pill">
                     Mark as Paid
                 </button>
@@ -107,4 +107,22 @@
         </div>
 
     </ng-container>
+
+    <!-- Modal Template -->
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Confirm Deletion</h4>
+        </div>
+        <div class="modal-body">
+            <p>
+                Are you sure you want to delete invoice #{{invoice.id}}? This action cannot be undone.
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light rounded-pill me-2 text-primary" (click)="modal.close()"
+                data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-danger rounded-pill text-white" (click)="deleteInvoice(invoice.id)"
+                data-dismiss="modal"> Delete </button>
+        </div>
+    </ng-template>
 </div>

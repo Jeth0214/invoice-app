@@ -1,17 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;700&display=swap');
 
-// $theme-colors: (
-//     "primary": rgb(124, 93, 250),
-//     "secondary": rgb(30, 33, 57),
-//     "danger": rgb(236, 87, 87)
-// );
+$theme-colors: (
+    "primary": rgb(124, 93, 250),
+    "secondary": rgb(30, 33, 57),
+    "success":rgba(51, 214, 159),
+    "warning": rgb(255, 143, 0),
+    "danger": rgb(236, 87, 87),
+    "light": rgb(223, 227, 250)
+);
+
+$font-family-sans-serif: 'League Spartan',
+    sans-serif;
 
 @import "./assets/scss/main.scss";
 @import "node_modules/bootstrap/scss/bootstrap";
 
-
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
 
 .off-canvas-width {
     width: 719px !important;

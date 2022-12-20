@@ -104,7 +104,14 @@
             <!-- form action buttons -->
             <div class="d-flex" [class.justify-content-end]="invoice">
                 <button [class.me-auto]="!invoice" class="btn btn-light rounded-pill text-primary me-auto"
-                    (click)="onDiscard()"> Discard </button>
+                    (click)="onDiscard()">
+                    <ng-container *ngIf="invoice else newInvoice">
+                        Cancel
+                    </ng-container>
+                    <ng-template #newInvoice>
+                        Discard
+                    </ng-template>
+                </button>
                 <button *ngIf="!invoice" type="submit" (click)="onSaveNewInvoice('draft')"
                     class="btn btn-dark rounded-pill text-secondary me-1 "> Save as
                     Draft </button>
@@ -118,32 +125,7 @@
                         <span> Save & Send</span>
                     </ng-template>
                 </button>
-                <!-- <ng-container *ngIf="invoice else newInvoice">
-                    <button type="submit" (click)="onSaveNewInvoice(invoice.status)"
-                        class="btn btn-primary rounded-pill">
-                        Save Changes
-                    </button>
-                </ng-container>
-                <ng-template #newInvoice>
-                    <button *ngIf="!invoice" type="submit" (click)="onSaveNewInvoice('draft')"
-                        class="btn btn-dark rounded-pill text-secondary me-1 "> Save as
-                        Draft </button>
-                    <button type="submit" (click)="onSaveNewInvoice('pending')" class="btn btn-primary rounded-pill">
-                        Save <span *ngIf=""></span> & Send
-                    </button>
-                </ng-template> -->
+
             </div>
-            <!-- <div class="row">
-                <div class="col-md-5">
-                    <button class="btn btn-light rounded-pill text-primary" (click)="onDiscard()"> Discard </button>
-                </div>
-                <div class="col-md-7 me-auto d-flex justify-content-end">
-                    <button type="submit" (click)="onSaveNewInvoice('draft')"
-                        class="btn btn-dark rounded-pill text-secondary me-3"> Save as Draft </button>
-                    <button type="submit" (click)="onSaveNewInvoice('pending')" class="btn btn-primary rounded-pill">
-                        Save & Send
-                    </button>
-                </div>
-            </div> -->
         </form>
     </div>

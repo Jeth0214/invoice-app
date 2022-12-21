@@ -1,20 +1,88 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;700&display=swap');
 
+:root {
+
+    //font-size
+    --fs-h1: 2rem;
+    --fs-800: 2.5rem;
+    --fs-600: 1.75rem;
+    --fs-400: 0.875rem;
+    --fs-300: 0.75rem;
+    --fs-200: 0.6875rem
+}
+
 $theme-colors: (
-    "primary": rgb(124, 93, 250),
-    "secondary": rgb(30, 33, 57),
-    "success":rgba(51, 214, 159),
-    "warning": rgb(255, 143, 0),
-    "danger": rgb(236, 87, 87),
-    "light": rgb(223, 227, 250)
+    "primary": #7C5DFA,
+    "secondary": #1E2139,
+    "success":#33d69f,
+    "warning": #ff8f00,
+    "danger": #ec5757,
+    "light": #dfe3fa
 );
 
-$font-family-sans-serif: 'League Spartan',
-    sans-serif;
+// custom properties for dark and light mode
+
+body.dark-mode {
+    --text-primary-color: #FFFFFF;
+    --text-secondary-color: #DFE3FA;
+
+    --bg-body-color: #141625;
+    --bg-element-color: #1E2139;
+    --bg-sidenav-color: #1E2139;
+
+    --bg-edit-btn-color: #252945;
+    --bg-hover-edit-btn-color: #FFFFFF;
+    --text-edit-btn-color: #7E88C3;
+    --text-hover-edit-btn-color: #DFE3FA;
+
+    --bg-hover-draft-btn-color: #1E2139;
+    --text-draft-btn-color: #DFE3FA;
+
+    --border-input-color: #252945;
+    --border-focus-input-color: #7C5DFA;
+}
+
+body.light-mode {
+    --text-primary-color: #0C0E16;
+    --text-secondary-color: #888EB0;
+
+    --bg-body-color: #F8F8FB;
+    --bg-element-color: #FFFFFF;
+    --bg-sidenav-color: #373B53;
+
+    --bg-edit-btn-color: #F9FAFE;
+    --bg-hover-edit-btn-color: #DFE3FA;
+    --text-edit-btn-color: #DFE3FA;
+    --text-hover-edit-btn-color: #7E88C3;
+
+    --bg-hover-draft-btn-color: #0C0E16;
+    --text-draft-btn-color: #888EB0;
+
+    --border-input-color: #DFE3FA;
+    --border-focus-input-color: #9277FF;
+}
+
+$font-family-sans-serif: 'League Spartan', sans-serif;
+$h1-font-size: 32px;
+
+// $utilities: (
+//     "text": (property: "font-size",
+//         class: "h",
+//         values: (1:)),
+// );
+
 
 @import "./assets/scss/main.scss";
 @import "node_modules/bootstrap/scss/bootstrap";
+
+
+body {
+    min-height: 100vh;
+    background-color: var(--bg-body-color);
+    color: var(--text-primary-color);
+}
+
 
 
 .off-canvas-width {
@@ -34,4 +102,37 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
     -moz-appearance: textfield;
+}
+
+/* button */
+button {
+    font: inherit;
+}
+
+/* remove animations for people who turned it off*/
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::after,
+    *::before {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+// show for screen readers only
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    ;
 }

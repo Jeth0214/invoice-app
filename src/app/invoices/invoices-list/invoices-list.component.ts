@@ -28,7 +28,6 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getAllInvoice();
-    // this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
   }
 
   ngAfterViewInit() {

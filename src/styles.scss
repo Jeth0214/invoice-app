@@ -107,6 +107,12 @@ input[type=number] {
 /* button */
 button {
     font: inherit;
+    box-shadow: none;
+}
+
+button:focus,
+input:focus {
+    box-shadow: none !important;
 }
 
 /* remove animations for people who turned it off*/

@@ -1,1 +1,27 @@
 @use '../utilities/' as *;
+
+header {
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+
+    @include breakpoint-up('medium') {
+        right: unset;
+        top: 0;
+        bottom: 0;
+    }
+}
+
+.navbar {
+    border-radius: 0;
+    flex-direction: row;
+
+    @include breakpoint-up('medium') {
+        flex-direction: column;
+        border-radius: 0px 20px 20px 0;
+        padding: 0;
+        height: 100%;
+    }
+}

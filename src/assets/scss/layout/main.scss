@@ -1,6 +1,11 @@
 @use '../utilities/' as *;
 
 .main {
-    max-width: 850px;
-    margin: auto;
+    margin-top: rem(100);
+
+    @include breakpoint-up('medium') {
+        margin-left: rem(100);
+        margin-top: 0;
+    }
+
 }

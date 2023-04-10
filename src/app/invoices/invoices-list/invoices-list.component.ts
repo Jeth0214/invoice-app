@@ -61,9 +61,9 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
 
   private showInvoiceLengthMessage(total: number, stat: string) {
     if (total > 0) {
-      this.totalInvoicesMessage = `There are ${total} ${stat} invoices`;
+      this.totalInvoicesMessage = `${total} ${stat} invoices`;
     } else if (total <= 0 && stat != 'total') {
-      this.totalInvoicesMessage = `There are no ${stat} invoices`;
+      this.totalInvoicesMessage = `no ${stat} invoices`;
     } else {
       this.totalInvoicesMessage = 'No invoices';
     }

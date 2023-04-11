@@ -18,6 +18,7 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
   totalInvoicesMessage: string = 'No invoices';
   status: string[] = ['Draft', 'Pending', 'Paid'];
   showAllInvoices: boolean = false;
+  hasInvoices: boolean = false;
 
   statusForm = new FormGroup({
     status: new FormControl('', Validators.required)
@@ -41,7 +42,10 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
 
         this.tempInvoicesArray = data;
         this.invoices = data;
-        this.showInvoiceLengthMessage(data.length, 'total')
+        this.showInvoiceLengthMessage(data.length, 'total');
+      } else {
+        this.hasInvoices = true;
+
       }
     })
   }

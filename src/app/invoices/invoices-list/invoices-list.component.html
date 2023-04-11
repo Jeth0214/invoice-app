@@ -9,7 +9,7 @@
                 <form [formGroup]="statusForm">
 
                     <div ngbDropdown class="d-inline-block me-3" #myDrop="ngbDropdown">
-                        <button type="button" class="btn btn-light " id="invoiceDropdown" ngbDropdownToggle>
+                        <button type="button" class="btn btn-light pt-2 " id="invoiceDropdown" ngbDropdownToggle>
                             Filter <span class="d-none d-md-inline">by status</span>
                         </button>
                         <div class="px-2" ngbDropdownMenu aria-labelledby="invoiceDropdown">
@@ -32,17 +32,18 @@
                 </form>
             </div>
 
-            <button type="button" class="btn btn-primary rounded-pill text-white" (click)="openOffCanvas()">
+            <button type="button" class="btn btn-primary rounded-pill text-white pt-2" (click)="openOffCanvas()">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                New <span class="d-none d-md-inline">Invoice</span>
+                <span> New <span class="d-none d-md-inline">Invoice</span></span>
             </button>
         </div>
     </div>
 
 
     <!-- Invoices Lists -->
-    <ng-container *ngIf="invoices.length > 0 else emptyInvoice">
-        <div [routerLink]="['/invoices', invoice.id]" class="card px-4 py-2 mb-3" *ngFor="let invoice of invoices">
+    <ng-container *ngIf="invoices.length > 0">
+        <div [routerLink]="['/invoices', invoice.id]" class="card p-3 mb-3 invoice-hover"
+            *ngFor="let invoice of invoices">
             <!-- <div class="d-flex flex-sm-wrap flex-md-nowrap justify-content-between align-items-center">
                 <p class="fw-bold mb-0"><small class="text-primary">#</small>{{ invoice.id }}
                 </p>
@@ -52,7 +53,7 @@
                 <p class="mb-0 ">
                     <button type="button"
                         [ngClass]="{'btn-outline-success' : invoice.status === 'paid', 'btn-outline-warning' : invoice.status === 'pending', 'btn-outline-dark' : invoice.status === 'draft'}"
-                        class="btn w-100 me-3 disabled">
+                        class="btn   me-3 disabled">
                         <i class="fa-solid fa-circle "></i>
                         {{ invoice.status | titlecase }}
                     </button>
@@ -60,49 +61,40 @@
                         <i class="fa-solid fa-chevron-right"></i>
                     </span>
                 </p>
-           
+
             </div> -->
-            <div class="row">
-                <div class="col-2">
+            <div class="row align-items-center">
+                <div class=" col-6 col-md-2 text-start text-md-center">
                     <p class="fw-bold mb-0"><small class="text-primary">#</small>{{ invoice.id }}
                     </p>
                 </div>
-                <div class="col-2">
+                <div class="col-6 col-md-2 text-end text-md-start">
                     <p class="text-primary mb-0">{{ invoice.paymentDue }}</p>
 
                 </div>
-                <div class="col-2">
+                <div class="col-6 col-md-3 text-md-start text-md-center">
                     <p class="text-primary mb-0">{{ invoice.clientName }}</p>
 
                 </div>
-                <div class="col-2">
+                <div class="col-6 col-md-2 text-end text-md-start">
                     <p class="fw-bold mb-0">{{ invoice.total | currency:'GBP':'symbol-narrow' }}</p>
-
                 </div>
-                <div class="col-2">
-
-                    <button type="button"
-                        [ngClass]="{'btn-outline-success' : invoice.status === 'paid', 'btn-outline-warning' : invoice.status === 'pending', 'btn-outline-dark' : invoice.status === 'draft'}"
-                        class="btn w-100  me-3 disabled">
-                        <i class="fa-solid fa-circle "></i>
-                        {{ invoice.status | titlecase }}
-                    </button>
-
-
+                <div class="col-12 col-md-2">
+                    <div class="text-center p-2 mb-0 bg-opacity-25  border rounded-3"
+                        [ngClass]="{'border-success bg-success text-success' : invoice.status === 'paid', 'border-warning bg-warning text-warning' : invoice.status === 'pending', 'border-secondary bg-secondary text-secondary ' : invoice.status === 'draft'}">
+                        <i class="fa-solid d-sm-inline d-md-none d-lg-inline fa-circle me-1 "></i>
+                        <span>{{ invoice.status | titlecase }}</span>
+                    </div>
                 </div>
-                <div class="col-2">
-
-                    <span class="text-muted">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </span>
-
+                <div class="col-md-1 text-center d-none d-md-inline">
+                    <i class="fa-solid fa-chevron-right"></i>
                 </div>
             </div>
         </div>
     </ng-container>
 
     <!-- Empty lists -->
-    <ng-template #emptyInvoice>
+    <ng-container *ngIf="hasInvoices">
         <div class="d-flex justify-content-center align-items-center">
             <div class="text-center">
                 <img src="../../../assets/images/illustration-empty.svg" alt="empty image">
@@ -118,6 +110,6 @@
             </div>
 
         </div>
-    </ng-template>
+    </ng-container>
 
 </div>

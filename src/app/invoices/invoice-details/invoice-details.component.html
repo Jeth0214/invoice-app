@@ -1,60 +1,66 @@
-<div class="invoice-details">
+<div class="invoice-details container">
     <div class="mt-5 mb-3">
         <button class="btn btn-light" routerLink="/invoices">
-            <i class="fa-solid fa-arrow-left"></i>
-            Go Back
+            <i class="fa-solid fa-chevron-left me-2"></i>
+            <span>Go Back</span>
         </button>
     </div>
     <ng-container *ngIf="invoice">
 
-        <div class="border-0 card mb-5 d-flex justify-content-between flex-row px-5 py-3  mx-0  border-light">
-            <div class="status">
-                <span class="text-primary me-3">Status</span>
-                <button type="button"
-                    [ngClass]="{'btn-outline-success' : invoice.status === 'paid', 'btn-outline-warning' : invoice.status === 'pending', 'btn-outline-dark' : invoice.status === 'draft'}"
-                    class="btn  me-3 disabled">
-                    <i class="fa-solid fa-circle "></i>
-                    {{ invoice.status[0].toUpperCase() + invoice.status.slice(1) }}
-                </button>
+        <div
+            class="invoice__status border-0 shadow-sm card mb-5 d-flex flex-md-row justify-content-between  px-5 py-3  mx-0  border-light">
+            <div class="status d-flex justify-content-between align-items-center">
+                <div class="text-primary me-3">Status</div>
+                <div class="text-center py-2 px-4 mb-0 bg-opacity-25 d-inline-block rounded-3"
+                    [ngClass]="{' bg-success text-success' : invoice.status === 'paid', ' bg-warning text-warning' : invoice.status === 'pending', 'bg-secondary text-secondary ' : invoice.status === 'draft'}">
+                    <i class="fa-solid  fa-circle me-1 "></i>
+                    <span>{{ invoice.status | titlecase }}</span>
+                </div>
+
             </div>
-            <div class="action-buttons">
+            <div class="invoice__action-buttons d-none d-md-block">
                 <button *ngIf="!isPaid" type="button" (click)="onEdit()"
-                    class="btn btn-light text-primary rounded-pill me-2">
+                    class="btn btn-light text-primary rounded-pill me-2 pt-2">
                     Edit
                 </button>
-                <button type="button" (click)="onDelete(content)" class="btn btn-danger text-white rounded-pill me-2">
+                <button type="button" (click)="onDelete(content)"
+                    class="btn btn-danger text-white rounded-pill me-2 pt-2">
                     Delete
                 </button>
                 <button *ngIf="invoice.status === 'pending'" type="button" (click)="onMarkAsPaid(invoice)"
-                    class="btn btn-primary rounded-pill">
+                    class="btn btn-primary rounded-pill text-white pt-2">
                     Mark as Paid
                 </button>
             </div>
         </div>
 
-        <div class="card px-5 py-5 text-primary">
-            <div class="d-flex justify-content-between mb-2">
-                <div>
+        <div class="card px-5 py-5 text-primary invoice mb-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between mb-2">
+                <div class=" invoice__description">
                     <h1 class="h5">#<span class="text-dark fw-bold">{{ invoice.id }}</span> </h1>
                     <p>{{ invoice.description }}</p>
                 </div>
-                <div>
-                    <p class="mb-0">{{ invoice.senderAddress.street }}</p>
-                    <p class="mb-0">{{ invoice.senderAddress.city }}</p>
-                    <p class="mb-0">{{ invoice.senderAddress.postCode }}</p>
+                <div class=" invoice__sender-add">
+                    <p class="mb-0 text-md-end">{{ invoice.senderAddress.street }}</p>
+                    <p class="mb-0 text-md-end">{{ invoice.senderAddress.city }}</p>
+                    <p class="mb-0 text-md-end">{{ invoice.senderAddress.postCode }}</p>
                     <p>{{ invoice.senderAddress.country }}</p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
-                    <p class="mb-0">Invoice Date</p>
-                    <p class="text-dark mb-2 h5 fw-bold">
-                        {{ invoice.createdAt }}
-                    </p>
-                    <p class="mb-0">Payment Due</p>
-                    <p class="text-dark h5 fw-bold">{{ invoice.paymentDue }}</p>
+                <div class="col-6 col-md-3">
+                    <div>
+                        <p class="mb-0">Invoice Date</p>
+                        <p class="text-dark mb-2 h5 fw-bold">
+                            {{ invoice.createdAt }}
+                        </p>
+                    </div>
+                    <div class=" mt-4">
+                        <p class="mb-0">Payment Due</p>
+                        <p class="text-dark h5 fw-bold">{{ invoice.paymentDue }}</p>
+                    </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-6 col-md-3">
                     <p class="mb-0">Bill To</p>
                     <p class="text-dark mb-2 h5 fw-bold">
                         {{ invoice.clientName }}
@@ -67,14 +73,15 @@
                 <div class="col-md-1">
 
                 </div>
-                <div class="col-md-5">
+                <div class="col-12 col-md-5">
                     <p class="mb-0">Sent To</p>
                     <p class="text-dark mb-2 h5 fw-bold">
                         {{ invoice.clientEmail }}
                     </p>
                 </div>
             </div>
-            <div class="bg-light rounded-4 mt-4">
+
+            <!-- <div class="bg-light rounded-4 mt-4 p-4">
                 <table class="table table-borderless ">
                     <thead class="text-primary">
                         <th>Item Name</th>
@@ -103,6 +110,51 @@
                         </tr>
                     </tfoot>
                 </table>
+            </div> -->
+            <div class="invoice__item bg-light rounded-3 overflow-hidden">
+                <div class="p-4">
+
+                    <div class="invoice__items-headers row pb-0 d-none d-md-flex">
+                        <div class="col-6">
+                            <h5>Item Name</h5>
+                        </div>
+                        <div class="col-2">
+                            <h5>QTY.</h5>
+                        </div>
+                        <div class="col-2">
+                            <h5>Price</h5>
+                        </div>
+                        <div class="col-2">
+                            <h5 class="text-end">Total</h5>
+                        </div>
+                    </div>
+                    <ng-container *ngFor="let item of invoice.items">
+
+                        <div class="row align-items-center">
+                            <div class="col-9">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 text-black fw-bold">
+                                        {{item.name}}
+                                    </div>
+                                    <div class="col-3 col-md-3 px-md-0 text-md-end">
+                                        <span class="me-3 me-md-0">{{item.quantity}}</span>
+                                        <span class="d-inline d-md-none">x</span>
+                                    </div>
+                                    <div class="col-9 col-md-3 text-md-end px-0">
+                                        {{item.price | currency:'GBP':'symbol-narrow'}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3 text-end text-black fw-bold">
+                                {{ item.total | currency:'GBP':'symbol-narrow' }}
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="bg-dark p-4 pb-2 d-flex text-white justify-content-between">
+                    <h5>Amount Due</h5>
+                    <h4>{{ invoice.total | currency:'GBP':'symbol-narrow' }}</h4>
+                </div>
             </div>
         </div>
 
@@ -125,4 +177,27 @@
                 data-dismiss="modal"> Delete </button>
         </div>
     </ng-template>
+</div>
+
+<!-- action buttons show on mobile only -->
+
+<div *ngIf="invoice"
+    class="invoice__action-buttons   d-md-none border-0 shadow-sm justify-content-between gap-1 bg-white mt-3 row  px-2 py-3  mx-0  border-light">
+    <div class="col-3 p-0  ">
+        <button *ngIf="!isPaid" type="button" (click)="onEdit()"
+            class="w-100 btn btn-light text-primary rounded-pill  py-3">
+            Edit
+        </button>
+    </div>
+    <div class="col-3 p-0">
+        <button type="button" (click)="onDelete(content)" class="w-100 btn btn-danger text-white rounded-pill py-3 ">
+            Delete
+        </button>
+    </div>
+    <div class="col-5 p-0">
+        <button *ngIf="invoice.status === 'pending'" type="button" (click)="onMarkAsPaid(invoice)"
+            class="w-100 btn btn-primary rounded-pill text-white py-3">
+            Mark as Paid
+        </button>
+    </div>
 </div>

@@ -2,9 +2,11 @@
 
 .main {
     margin-top: rem(100);
+    max-width: rem(1000);
+    margin-inline: auto;
 
     @include breakpoint-up('medium') {
-        margin-left: rem(100);
+        padding-left: rem(100);
         margin-top: 0;
     }
 

@@ -80,41 +80,10 @@
                     </p>
                 </div>
             </div>
-
-            <!-- <div class="bg-light rounded-4 mt-4 p-4">
-                <table class="table table-borderless ">
-                    <thead class="text-primary">
-                        <th>Item Name</th>
-                        <th>Qty</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                    </thead>
-                    <tbody>
-                        <ng-container *ngFor="let item of invoice.items">
-                            <tr>
-                                <td class="h6 fw-bold">{{item.name}}</td>
-                                <td class="fw-bold text-primary">{{item.quantity}}</td>
-                                <td class="fw-bold text-primary">{{item.price}}</td>
-                                <td class="h6 fw-bold">{{item.total}}</td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                    <tfoot class="bg-dark text-white">
-                        <tr>
-                            <td colspan="3">
-                                Amount
-                            </td>
-                            <td>
-                                {{ invoice.total | currency:'GBP':'symbol-narrow' }}
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div> -->
             <div class="invoice__item bg-light rounded-3 overflow-hidden">
                 <div class="p-4">
 
-                    <div class="invoice__items-headers row pb-0 d-none d-md-flex">
+                    <div class="invoice__items-headers row pb-0 mb-2 d-none d-md-flex">
                         <div class="col-6">
                             <h5>Item Name</h5>
                         </div>
@@ -130,7 +99,7 @@
                     </div>
                     <ng-container *ngFor="let item of invoice.items">
 
-                        <div class="row align-items-center">
+                        <div class="row align-items-center mb-3">
                             <div class="col-9">
                                 <div class="row">
                                     <div class="col-12 col-md-6 text-black fw-bold">

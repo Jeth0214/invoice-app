@@ -1,9 +1,10 @@
 @use '../utilities/' as *;
 
 .invoice-hover {
-    transition: border .3s ease-in-out;
+    transition: all .3s ease-in-out;
 
     &:hover {
         border: rem(1.5) solid #7C5DFA;
+        box-shadow: 0 .15rem .30rem rgba(0, 0, 0, .075);
     }
 }

@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;700&display=swap');
+@import './assets/scss/utilities/';
 
 :root {
 
@@ -87,8 +88,17 @@ body {
 
 
 .off-canvas-width {
-    width: 719px !important;
+    width: 700px !important;
     overflow-y: scroll;
+    border-radius: 0;
+
+    &::-webkit-scrollbar {
+        width: 0em;
+    }
+
+    @include breakpoint-up('medium') {
+        border-radius: rem(0) rem(15) rem(15) 0;
+    }
 }
 
 // Hide Arrows From Input Number

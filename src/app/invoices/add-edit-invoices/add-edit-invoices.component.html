@@ -1,9 +1,9 @@
-<div class="container add-edit my-4 ">
-    <div class="title">
+<div class=" add-edit mb-4 mt-md-4">
+    <div class="title fw-bold">
         <h1>{{ title }} <span *ngIf="invoice"> #{{ invoice.id }}</span></h1>
     </div>
 
-    <div class="row">
+    <div class="row p-0">
         <form [formGroup]="invoiceForm">
             <!-- Bill to section -->
             <div class="my-4">

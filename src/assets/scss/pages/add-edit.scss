@@ -1,0 +1,14 @@
+@use '../utilities/' as *;
+
+.add-edit {
+    max-width: rem(544);
+    margin-inline: auto;
+    scroll-behavior: smooth;
+    margin-top: rem(100);
+    padding-inline: rem(20);
+
+
+    @include breakpoint-up('medium') {
+        padding-inline: 40px 0px;
+    }
+}

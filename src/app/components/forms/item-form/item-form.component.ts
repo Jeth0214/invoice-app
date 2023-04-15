@@ -38,6 +38,10 @@ export class ItemFormComponent implements OnInit {
         this.addItem(item)
       });
     }
+    else {
+      this.addItem();
+    };
+
   }
 
   get items(): FormArray {
@@ -59,7 +63,11 @@ export class ItemFormComponent implements OnInit {
   }
 
   removeItem(item: number) {
+    //console.log('removeItem', this.items.length)
     this.items.removeAt(item);
+    if (this.items.length <= 0) {
+      this.addItem();
+    }
   };
 
   getValueForItemsTotal(item: any, index: number, e: Event) {

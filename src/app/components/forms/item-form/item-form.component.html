@@ -7,13 +7,13 @@
     <div class="col-md-2">
         Qty
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3">
         Price
     </div>
     <div class="col-md-2">
         Total
     </div>
-    <div class="col-md-2">
+    <div class="col-md-1">
 
     </div>
 </div>
@@ -26,7 +26,7 @@
                     <div> Price Or Quantity can't must be greater than 0 </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col-md-4">
                     <input formControlName="name" type="text" class="form-control"
                         [class.border-danger]="isSaving && item.get('name')?.errors">
@@ -36,7 +36,7 @@
                         (input)="getValueForItemsTotal(item, i, $event)"
                         [class.border-danger]="isSaving && item.get('quantity')?.errors?.['minNum']">
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <input formControlName="price" type="number" class="form-control" min="1"
                         (input)="getValueForItemsTotal(item, i, $event)"
                         [class.border-danger]="isSaving &&  item.get('price')?.errors?.['minNum']">
@@ -46,7 +46,7 @@
                         {{ item.value.quantity * item.value.price | number: '1.2-2'}}
                     </ng-container>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <button type="button" class="btn btn-link text-danger"><i class="fa-solid fa-trash"
                             (click)="removeItem(i)"></i></button>
                 </div>
@@ -55,6 +55,6 @@
     </ng-container>
 </ng-container>
 <!-- Add item button -->
-<button class="w-100 rounded-pill btn btn-light my-4" (click)="addItem()">
+<button class="w-100 text-primary rounded-pill btn btn-light my-4" (click)="addItem()">
     <i class="fa-solid fa-plus"></i> Add New Item
 </button>

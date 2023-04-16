@@ -55,29 +55,31 @@
             <!-- Invoice info section -->
             <div class="row my-4">
                 <!-- Created At -->
-                <div class="col-6">
+                <div class="col-12 col-md-6 mb-2 mb-md-0">
                     <label for="createdAt" class="form-label text-primary">Invoice Date</label>
                     <!-- <input type="date" formControlName="createdAt" class="form-control" aria-label="Created At"> -->
 
                     <div class="position-relative m-0 p-0">
-                        <input class="form-control" [placeholder]="dateToday | date : 'dd MMM YYYY'" name="createdAt"
-                            formControlName="createdAt" ngbDatepicker #d="ngbDatepicker" (dateSelect)="
+                        <input class="form-control" [placeholder]="dateToday | date : 'dd MMM YYYY'"
+                            [value]="dateToday | date : 'dd MMM YYYY'" name="createdAt" formControlName="createdAt"
+                            ngbDatepicker #d="ngbDatepicker" (dateSelect)="
                             onDateSelect($event)" />
                         <button class=" btn text-primary border-0 position-absolute top-0 end-0" (click)="d.toggle()"
                             type="button"><i class="fa-regular fa-calendar"></i></button>
                     </div>
                 </div>
                 <!--  Payment Terms -->
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     <label for="paymentTerms" class="form-label text-primary">Payment Terms</label>
                     <div ngbDropdown class="d-block">
                         <button type="button" class="btn w-100 border border-light text-dark" id="paymentTerms"
                             ngbDropdownToggle>
                             {{ selectedTerms }}
                         </button>
-                        <div ngbDropdownMenu aria-labelledby="paymentTerms" class="my-2 ms-0 w-100">
-                            <button ngbDropdownItem *ngFor="let term of terms" (click)="selectTerms(term)">{{ term.name
-                                }}</button>
+                        <div ngbDropdownMenu aria-labelledby="paymentTerms" class="my-2 ms-0 w-100 py-0">
+                            <button [class.border-0]="i.value == 1" class=" border-top text-primary " ngbDropdownItem
+                                *ngFor="let term of terms; let i as index" (click)="selectTerms(term)">{{ term.name
+                                }} </button>
                         </div>
                     </div>
                 </div>

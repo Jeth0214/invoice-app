@@ -2,33 +2,33 @@
 <h2>Item List</h2>
 <ng-container *ngIf="items">
     <ng-container formArrayName="items">
-        <div *ngFor="let item of items.controls; index as i" [formGroupName]="i" class="my-1">
+        <div *ngFor="let item of items.controls; index as i" [formGroupName]="i" class="">
             <div class="d-flex justify-content-center mb-1">
                 <div class="text-danger"
                     *ngIf="isSaving && ( item.get('price')?.errors?.['minNum'] || item.get('quantity')?.errors?.['minNum'])">
                     <div> Price Or Quantity can't must be greater than 0 </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row my-2 ">
                 <div class="col-12 mb-3 mb-md-0 col-md-4">
-                    <label for="name" class="form-label text-primary">Item Name</label>
+                    <label for="name" class="form-label text-primary mb-0">Item Name</label>
                     <input formControlName="name" type="text" class="form-control"
                         [class.border-danger]="isSaving && item.get('name')?.errors">
                 </div>
                 <div class="col-3 col-md-2">
-                    <label for="quantity" class="form-label text-primary">QTY.</label>
+                    <label for="quantity" class="form-label text-primary mb-0">Qty.</label>
                     <input formControlName="quantity" type="number" class="form-control" min="1"
                         (input)="getValueForItemsTotal(item, i, $event)"
                         [class.border-danger]="isSaving && item.get('quantity')?.errors?.['minNum']">
                 </div>
                 <div class="col-4 col-md-3">
-                    <label for="price" class="form-label text-primary">Price</label>
+                    <label for="price" class="form-label text-primary mb-0">Price</label>
                     <input formControlName="price" type="number" class="form-control" min="1"
                         (input)="getValueForItemsTotal(item, i, $event)"
                         [class.border-danger]="isSaving &&  item.get('price')?.errors?.['minNum']">
                 </div>
                 <div class="col-4 col-md-2">
-                    <label for="total" class="form-label text-primary">Total</label>
+                    <label for="total" class="form-label text-primary mb-0">Total</label>
                     <input formControlName="total" type="number"
                         [value]="item.value.quantity * item.value.price | number: '1.2-2'"
                         class="form-control border border-0 px-0 bg-white" min="1" aria-label="Disabled input"

@@ -50,7 +50,7 @@
                     </p>
                 </div>
                 <div class="col-6 col-md-2 text-end text-md-start">
-                    <p class="text-primary mb-0">{{ invoice.paymentDue }}</p>
+                    <p class="text-primary mb-0">{{ invoice.paymentDue | date : 'dd MMM YYYY' }}</p>
 
                 </div>
                 <div class="col-6 col-md-3 text-md-start text-md-center">

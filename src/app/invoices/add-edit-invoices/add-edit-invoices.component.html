@@ -3,7 +3,7 @@
         <h1>{{ title }} <span *ngIf="invoice"> <span class="text-primary">#</span>{{ invoice.id }}</span></h1>
     </div>
 
-    <div class="row p-0">
+    <div class="row p-0 form">
         <form [formGroup]="invoiceForm">
             <!-- Bill to section -->
             <div class="my-4">
@@ -57,11 +57,15 @@
                 <!-- Created At -->
                 <div class="col-6">
                     <label for="createdAt" class="form-label text-primary">Invoice Date</label>
-                    <input type="date" formControlName="createdAt" class="form-control" aria-label="Created At">
-                    <!-- <input class="form-control" placeholder="yyyy-mm-yyy" name="createdAt" formControlName="createdAt"
-                        ngbDatepicker #d="ngbDatepicker" />
-                    <button class="btn " (click)="d.toggle()" type="button"><i
-                            class="fa-regular fa-calendar"></i></button> -->
+                    <!-- <input type="date" formControlName="createdAt" class="form-control" aria-label="Created At"> -->
+
+                    <div class="position-relative m-0 p-0">
+                        <input class="form-control" [placeholder]="dateToday | date : 'dd MMM YYYY'" name="createdAt"
+                            formControlName="createdAt" ngbDatepicker #d="ngbDatepicker" (dateSelect)="
+                            onDateSelect($event)" />
+                        <button class=" btn text-primary border-0 position-absolute top-0 end-0" (click)="d.toggle()"
+                            type="button"><i class="fa-regular fa-calendar"></i></button>
+                    </div>
                 </div>
                 <!--  Payment Terms -->
                 <div class="col-6">

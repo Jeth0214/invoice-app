@@ -51,12 +51,12 @@
                     <div>
                         <p class="mb-0">Invoice Date</p>
                         <p class="text-dark mb-2 h5 fw-bold">
-                            {{ invoice.createdAt }}
+                            {{ invoice.createdAt | date : 'dd MMM YYYY' }}
                         </p>
                     </div>
                     <div class=" mt-4">
                         <p class="mb-0">Payment Due</p>
-                        <p class="text-dark h5 fw-bold">{{ invoice.paymentDue }}</p>
+                        <p class="text-dark h5 fw-bold">{{ invoice.paymentDue | date : 'dd MMM YYYY'}}</p>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">

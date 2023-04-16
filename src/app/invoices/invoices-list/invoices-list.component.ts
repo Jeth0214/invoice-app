@@ -29,6 +29,7 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getAllInvoice();
+    this.openOffCanvas();
   }
 
   ngAfterViewInit() {

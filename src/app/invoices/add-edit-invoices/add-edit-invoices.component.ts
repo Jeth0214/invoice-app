@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveOffcanvas, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Invoice, Item, Term, Address } from '../../shared/models/invoice.model';
 import { InvoiceService } from '../../shared/services/invoice.service';
 
@@ -19,6 +19,7 @@ export class AddEditInvoicesComponent implements OnInit {
   showInvalidMessage: boolean = false;
   showNeedItemMessage: boolean = false;
   selectedTerms!: string;
+  dateToday = new Date();
 
   terms: Term[] = [
     { name: "Net 1 Day", value: 1 },
@@ -36,6 +37,7 @@ export class AddEditInvoicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.setInvoiceForm();
+    console.log(this.invoice)
     if (this.invoice) {
       console.log('Invoice from detail page: ', this.invoice);
       this.invoiceForm.patchValue({ 'description': this.invoice.description });
@@ -181,6 +183,10 @@ export class AddEditInvoicesComponent implements OnInit {
   onDiscard() {
     this.resetForm();
     this.activeOffcanvas.dismiss()
+  }
+
+  onDateSelect(date: NgbDate) {
+
   }
 
 }

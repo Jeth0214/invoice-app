@@ -45,6 +45,7 @@ export class AddEditInvoicesComponent implements OnInit {
       this.invoiceForm.patchValue({ 'paymentTerms': this.invoice.paymentTerms });
       this.invoiceForm.patchValue({ 'clientName': this.invoice.clientName });
       this.invoiceForm.patchValue({ 'clientEmail': this.invoice.clientEmail });
+      this.dateToday = new Date(this.invoice.createdAt);
     }
     this.selectedTerms = this.terms[0].name;
   }
@@ -186,7 +187,7 @@ export class AddEditInvoicesComponent implements OnInit {
   }
 
   onDateSelect(date: NgbDate) {
-
+    this.dateToday = new Date(date.year, date.month - 1, date.day);
   }
 
 }

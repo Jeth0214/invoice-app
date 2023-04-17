@@ -101,6 +101,12 @@ body {
     }
 }
 
+.dropdown-toggle::after {
+    display: none
+}
+
+
+
 // Hide Arrows From Input Number
 
 /* Chrome, Safari, Edge, Opera */

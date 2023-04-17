@@ -33,9 +33,6 @@
                         [value]="item.value.quantity * item.value.price | number: '1.2-2'"
                         class="form-control border border-0 px-0 bg-white" min="1" aria-label="Disabled input"
                         [disabled]="true" readonly>
-                    <!-- <ng-container *ngIf="item.value.quantity && item.value.price">
-                        {{ item.value.quantity * item.value.price | number: '1.2-2'}}
-                    </ng-container> -->
                 </div>
                 <div class="col-1 col-md-1 align-self-end p-0">
                     <button type="button" class="btn btn-link text-danger"><i class="fa-solid fa-trash"

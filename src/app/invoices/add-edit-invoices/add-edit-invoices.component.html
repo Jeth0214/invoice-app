@@ -72,14 +72,17 @@
                 <div class="col-12 col-md-6">
                     <label for="paymentTerms" class="form-label text-primary">Payment Terms</label>
                     <div ngbDropdown class="d-block">
-                        <button type="button" class="btn w-100 border border-light text-dark" id="paymentTerms"
-                            ngbDropdownToggle>
-                            {{ selectedTerms }}
+                        <button type="button"
+                            class="btn  d-flex text-primary pt-2 justify-content-between w-100 border border-light text-dark"
+                            id="paymentTerms" ngbDropdownToggle>
+                            <span class="text-dark">{{ selectedTerms }}</span>
+                            <i class="fa-solid fa-chevron-down"></i>
                         </button>
                         <div ngbDropdownMenu aria-labelledby="paymentTerms" class="my-2 ms-0 w-100 py-0">
-                            <button [class.border-0]="i.value == 1" class=" border-top text-primary " ngbDropdownItem
-                                *ngFor="let term of terms; let i as index" (click)="selectTerms(term)">{{ term.name
-                                }} </button>
+                            <button class=" border-top text-primary " ngbDropdownItem *ngFor="let term of terms"
+                                (click)="selectTerms(term)">
+                                {{ term.name}}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -134,7 +137,7 @@
                         </span>
                     </ng-container>
                     <ng-template #newInvoice>
-                        <span> Save & Send</span>
+                        <span> Save & Send </span>
                     </ng-template>
                 </button>
 

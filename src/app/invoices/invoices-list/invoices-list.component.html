@@ -9,20 +9,24 @@
                 <form [formGroup]="statusForm">
 
                     <div ngbDropdown class="d-inline-block me-3" #myDrop="ngbDropdown">
-                        <button type="button" class="btn btn-light pt-2 " id="invoiceDropdown" ngbDropdownToggle>
-                            Filter <span class="d-none d-md-inline">by status</span>
+                        <button type="button"
+                            class="btn btn-light px-2  d-flex text-primary justify-content-between align-items-center"
+                            id="invoiceDropdown" ngbDropdownToggle>
+                            <span class="text-dark pt-1">Filter <span class="d-none d-md-inline">by status</span></span>
+                            <small><i class="fa-solid fa-chevron-down ms-2"></i></small>
+
                         </button>
                         <div class="px-2" ngbDropdownMenu aria-labelledby="invoiceDropdown">
                             <div class="form-check" *ngFor="let stat of status">
                                 <input formControlName="status" class="form-check-input rounded" value="{{ stat }}"
-                                    type="radio" id="{{stat}}" (change)="selectStatus(stat); myDrop.close()">
+                                    type="checkbox" id="{{stat}}" (change)="selectStatus(stat); myDrop.close()">
                                 <label class="form-check-label" for="{{ stat }}">
                                     {{stat}}
                                 </label>
                             </div>
                             <div class="form-check" *ngIf="showAllInvoices">
                                 <input formControlName="status" class="form-check-input rounded" value="total"
-                                    type="radio" id="all" (change)="selectStatus('total'); myDrop.close()">
+                                    type="checkbox" id="all" (change)="selectStatus('total'); myDrop.close()">
                                 <label class="form-check-label" for="total">
                                     All Invoices
                                 </label>

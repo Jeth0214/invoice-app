@@ -1,0 +1,65 @@
+@use '../abstracts/' as *;
+
+// Hide Arrows From Input Number
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* button */
+button {
+    font: inherit;
+    box-shadow: none;
+}
+
+button:focus,
+input:focus {
+    box-shadow: none !important;
+}
+
+// remove default hovered state on dropdown
+.hover-border-none {
+    &:hover {
+        border: 0;
+        border-radius: 0;
+        border-width: 0px;
+    }
+}
+
+
+
+/* remove animations for people who turned it off*/
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::after,
+    *::before {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+// show for screen readers only
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    ;
+}

@@ -13,29 +13,29 @@
                 <div class="col-12 mb-3 mb-md-0 col-md-4">
                     <label for="name" class="form-label text-primary mb-0">Item Name</label>
                     <input formControlName="name" type="text" class="form-control"
-                        [class.border-danger]="isSaving && item.get('name')?.errors">
+                        [class.border-danger]="isSaving && item.get('name')?.errors" autocomplete="off">
                 </div>
                 <div class="col-3 col-md-2">
                     <label for="quantity" class="form-label text-primary mb-0">Qty.</label>
                     <input formControlName="quantity" type="number" class="form-control" min="1"
                         (input)="getValueForItemsTotal(item, i, $event)"
-                        [class.border-danger]="isSaving && item.get('quantity')?.errors?.['minNum']">
+                        [class.border-danger]="isSaving && item.get('quantity')?.errors?.['minNum']" autocomplete="off">
                 </div>
                 <div class="col-4 col-md-3">
                     <label for="price" class="form-label text-primary mb-0">Price</label>
                     <input formControlName="price" type="number" class="form-control" min="1"
                         (input)="getValueForItemsTotal(item, i, $event)"
-                        [class.border-danger]="isSaving &&  item.get('price')?.errors?.['minNum']">
+                        [class.border-danger]="isSaving &&  item.get('price')?.errors?.['minNum']" autocomplete="off">
                 </div>
                 <div class="col-4 col-md-2">
                     <label for="total" class="form-label text-primary mb-0">Total</label>
                     <input formControlName="total" type="number"
                         [value]="item.value.quantity * item.value.price | number: '1.2-2'"
-                        class="form-control border border-0 px-0 bg-white" min="1" aria-label="Disabled input"
-                        [disabled]="true" readonly>
+                        class="form-control border border-0 px-0" min="1" aria-label="Disabled input" [disabled]="true"
+                        readonly>
                 </div>
                 <div class="col-1 col-md-1 align-self-end p-0">
-                    <button type="button" class="btn btn-link text-danger"><i class="fa-solid fa-trash"
+                    <button type="button" class="btn btn-link"><i class="fa-solid fa-trash"
                             (click)="removeItem(i)"></i></button>
                 </div>
             </div>

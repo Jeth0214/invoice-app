@@ -19,6 +19,7 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
   status: string[] = ['Draft', 'Pending', 'Paid'];
   showAllInvoices: boolean = false;
   hasInvoices: boolean = false;
+  isDropDownOpen = false;
 
   statusForm = new FormGroup({
     status: new FormControl('', Validators.required)
@@ -51,11 +52,16 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
   }
 
   selectStatus(status: string) {
+    this.isDropDownOpen = false;
     let stat = status.toLowerCase();
     this.showAllInvoices = stat !== 'total' ? true : false;
     this.invoices = stat === 'total' ? this.tempInvoicesArray : this.tempInvoicesArray.filter(invoice => invoice.status === stat);
     this.showInvoiceLengthMessage(this.invoices.length, stat);
 
+  }
+
+  changeDropDownArrow() {
+    this.isDropDownOpen = !this.isDropDownOpen;
   }
 
   openOffCanvas() {

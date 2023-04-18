@@ -1,0 +1,19 @@
+@use '../abstracts/' as *;
+
+.dropdown-menu {
+
+
+    .dropdown-item {
+        background-color: var(--bg-form);
+
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--border-form);
+        }
+
+        &:hover {
+            color: #9277FF;
+            background-color: var(--bg-form);
+        }
+
+    }
+}

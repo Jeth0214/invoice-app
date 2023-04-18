@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <input formControlName="clientName" type="text" class="form-control" id="clientName"
-                        [class.border-danger]="isSaving && formValidation['clientName'].errors">
+                        [class.border-danger]="isSaving && formValidation['clientName'].errors" autocomplete="off">
                 </div>
                 <!-- Clients' Email -->
                 <div class="mb-3">
@@ -45,7 +45,7 @@
                     </div>
                     <input formControlName="clientEmail" type="email" placeholder="e.g. email@example.com"
                         class="form-control" id="clientEmail"
-                        [class.border-danger]="isSaving && formValidation['clientEmail'].errors">
+                        [class.border-danger]="isSaving && formValidation['clientEmail'].errors" autocomplete="off">
                 </div>
                 <!-- Client Address -->
                 <app-address-form [addressType]="'clientAddress'" [isSaving]="isSaving"
@@ -55,7 +55,7 @@
             <!-- Invoice info section -->
             <div class="row my-4">
                 <!-- Created At -->
-                <div class="col-12 col-md-6 mb-2 mb-md-0">
+                <div class="col-12 col-md-6 mb-2 mb-md-0 date-picker ">
                     <label for="createdAt" class="form-label text-primary">Invoice Date</label>
                     <!-- <input type="date" formControlName="createdAt" class="form-control" aria-label="Created At"> -->
 
@@ -63,7 +63,7 @@
                         <input class="form-control" [placeholder]="dateToday | date : 'dd MMM YYYY'"
                             [value]="dateToday | date : 'dd MMM YYYY'" name="createdAt" formControlName="createdAt"
                             ngbDatepicker #d="ngbDatepicker" (dateSelect)="
-                            onDateSelect($event)" />
+                            onDateSelect($event)" autocomplete="off" />
                         <button class=" btn text-primary border-0 position-absolute top-0 end-0" (click)="d.toggle()"
                             type="button"><i class="fa-regular fa-calendar"></i></button>
                     </div>
@@ -72,14 +72,14 @@
                 <div class="col-12 col-md-6">
                     <label for="paymentTerms" class="form-label text-primary">Payment Terms</label>
                     <div ngbDropdown class="d-block">
-                        <button type="button"
-                            class="btn  d-flex text-primary pt-2 justify-content-between w-100 border border-light text-dark"
-                            id="paymentTerms" ngbDropdownToggle>
-                            <span class="text-dark">{{ selectedTerms }}</span>
-                            <i class="fa-solid fa-chevron-down"></i>
+                        <button type="button" class="btn  d-flex text-primary pt-2 justify-content-between w-100"
+                            id="paymentTerms" ngbDropdownToggle (click)="changeDropDownArrow()"
+                            (blur)="changeDropDownArrow()">
+                            <span class="text-2">{{ selectedTerms }}</span>
+                            <i class="fa-solid" [ngClass]="isDropDownOpen ? 'fa-chevron-up' : 'fa-chevron-down' "></i>
                         </button>
                         <div ngbDropdownMenu aria-labelledby="paymentTerms" class="my-2 ms-0 w-100 py-0">
-                            <button class=" border-top text-primary " ngbDropdownItem *ngFor="let term of terms"
+                            <button class="text-2 py-2" ngbDropdownItem *ngFor="let term of terms"
                                 (click)="selectTerms(term)">
                                 {{ term.name}}
                             </button>
@@ -100,7 +100,7 @@
                     </div>
                     <input formControlName="description" type="text" placeholder="e.g. Graphic Design Service"
                         class="form-control" id="description"
-                        [class.border-danger]="isSaving && formValidation['description'].errors">
+                        [class.border-danger]="isSaving && formValidation['description'].errors" autocomplete="off">
                 </div>
             </div>
 

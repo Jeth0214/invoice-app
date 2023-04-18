@@ -2,13 +2,12 @@
     <div class="mt-5 mb-3">
         <a class="text-decoration-none" routerLink="/invoices">
             <i class="fa-solid fa-chevron-left me-2"></i>
-            <span class=" text-dark">Go Back</span>
+            <span class="text-2">Go Back</span>
         </a>
     </div>
     <ng-container *ngIf="invoice">
-
         <div
-            class="invoice__status border-0 shadow-sm card mb-5 d-flex flex-md-row justify-content-between  px-5 py-3  mx-0  border-light">
+            class="invoice__status bg-container border-0 shadow-sm card mb-5 d-flex flex-md-row justify-content-between  px-5 py-3 border-0 mx-0  border-light">
             <div class="status d-flex justify-content-between align-items-center">
                 <div class="text-primary me-3">Status</div>
                 <div class="text-center py-2 px-4 mb-0 bg-opacity-25 d-inline-block rounded-3"
@@ -33,10 +32,10 @@
             </div>
         </div>
 
-        <div class="card px-5 py-5 text-primary invoice mb-4">
+        <div class="card shadow-sm border-0 bg-container p-4 p-md-5 text-3 invoice mb-4">
             <div class="d-flex flex-column flex-md-row justify-content-between mb-2">
                 <div class=" invoice__description">
-                    <h1 class="h5">#<span class="text-dark fw-bold">{{ invoice.id }}</span> </h1>
+                    <h1 class="h5">#<span class="fw-bold text-2">{{ invoice.id }}</span> </h1>
                     <p>{{ invoice.description }}</p>
                 </div>
                 <div class=" invoice__sender-add">
@@ -50,18 +49,18 @@
                 <div class="col-6 col-md-3">
                     <div>
                         <p class="mb-0">Invoice Date</p>
-                        <p class="text-dark mb-2 h5 fw-bold">
+                        <p class="text-2 mb-2 h5 fw-bold">
                             {{ invoice.createdAt | date : 'dd MMM YYYY' }}
                         </p>
                     </div>
                     <div class=" mt-4">
                         <p class="mb-0">Payment Due</p>
-                        <p class="text-dark h5 fw-bold">{{ invoice.paymentDue | date : 'dd MMM YYYY'}}</p>
+                        <p class="text-2 h5 fw-bold">{{ invoice.paymentDue | date : 'dd MMM YYYY'}}</p>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
                     <p class="mb-0">Bill To</p>
-                    <p class="text-dark mb-2 h5 fw-bold">
+                    <p class="text-2 mb-2 h5 fw-bold">
                         {{ invoice.clientName }}
                     </p>
                     <p class="mb-0">{{ invoice.clientAddress.street }}</p>
@@ -74,38 +73,38 @@
                 </div>
                 <div class="col-12 col-md-5">
                     <p class="mb-0">Sent To</p>
-                    <p class="text-dark mb-2 h5 fw-bold">
+                    <p class="text-2 mb-2 h5 fw-bold">
                         {{ invoice.clientEmail }}
                     </p>
                 </div>
             </div>
-            <div class="invoice__item bg-light rounded-3 overflow-hidden">
+            <div class="invoice__item bg-element rounded-3 overflow-hidden mt-5">
                 <div class="p-4">
 
                     <div class="invoice__items-headers row pb-0 mb-2 d-none d-md-flex">
-                        <div class="col-6">
-                            <h5>Item Name</h5>
+                        <div class="col-5">
+                            <p>Item Name</p>
+                        </div>
+                        <div class="col-3">
+                            <p>Qty.</p>
                         </div>
                         <div class="col-2">
-                            <h5>QTY.</h5>
+                            <p>Price</p>
                         </div>
                         <div class="col-2">
-                            <h5>Price</h5>
-                        </div>
-                        <div class="col-2">
-                            <h5 class="text-end">Total</h5>
+                            <p class="text-end">Total</p>
                         </div>
                     </div>
                     <ng-container *ngFor="let item of invoice.items">
 
                         <div class="row align-items-center mb-3">
-                            <div class="col-9">
+                            <div class="col-8">
                                 <div class="row">
-                                    <div class="col-12 col-md-6 text-black fw-bold">
+                                    <div class="col-12 col-md-6 text-2 fw-bold">
                                         {{item.name}}
                                     </div>
-                                    <div class="col-3 col-md-3 px-md-0 text-md-end">
-                                        <span class="me-3 me-md-0">{{item.quantity}}</span>
+                                    <div class="col-3 col-md-3 px-md-0 text-center">
+                                        <span class="me-1 me-md-0">{{item.quantity}}</span>
                                         <span class="d-inline d-md-none">x</span>
                                     </div>
                                     <div class="col-9 col-md-3 text-md-end px-0">
@@ -113,14 +112,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-3 text-end text-black fw-bold">
+                            <div class="col-4 text-end text-2 fw-bold">
                                 {{ item.total | currency:'GBP':'symbol-narrow' }}
                             </div>
                         </div>
                     </ng-container>
                 </div>
-                <div class="bg-dark p-4 pb-2 d-flex text-white justify-content-between">
-                    <h5>Amount Due</h5>
+                <div class="bg-amount-due p-4 pb-2 d-flex text-white justify-content-between">
+                    <p>Amount Due</p>
                     <h4>{{ invoice.total | currency:'GBP':'symbol-narrow' }}</h4>
                 </div>
             </div>
@@ -153,7 +152,7 @@
 <!-- action buttons show on mobile only -->
 
 <div *ngIf="invoice"
-    class="invoice__action-buttons   d-md-none border-0 shadow-sm justify-content-between gap-1 bg-white mt-3 row  px-2 py-3  mx-0  border-light">
+    class="invoice__action-buttons bg-container    d-md-none shadow-sm justify-content-between gap-1  mt-3 row  px-2 py-3  mx-0 ">
     <div class="col-3 p-0  ">
         <button type="button" (click)="onEdit()" class="w-100 btn btn-light text-primary rounded-pill  py-3">
             Edit

@@ -1,4 +1,4 @@
-@use '../utilities/' as *;
+@use '../abstracts/' as *;
 
 .navbar {
     border-radius: 0;
@@ -7,6 +7,7 @@
     left: 0;
     top: 0;
     align-items: normal;
+    background-color: var(--bg-sidenav);
 
 
     @include breakpoint-up('medium') {

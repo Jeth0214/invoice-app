@@ -20,6 +20,7 @@ export class AddEditInvoicesComponent implements OnInit {
   showNeedItemMessage: boolean = false;
   selectedTerms!: string;
   dateToday = new Date();
+  isDropDownOpen = false;
 
   terms: Term[] = [
     { name: "Net 1 Day", value: 1 },
@@ -161,8 +162,13 @@ export class AddEditInvoicesComponent implements OnInit {
 
 
   selectTerms(term: Term): void {
+    this.isDropDownOpen = false
     this.selectedTerms = term.name;
     this.invoiceForm.patchValue({ 'paymentTerms': term.value })
+  }
+
+  changeDropDownArrow() {
+    this.isDropDownOpen = !this.isDropDownOpen;
   }
 
 

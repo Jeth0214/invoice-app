@@ -1,6 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+$theme-colors: (
+    "primary": #7C5DFA,
+    "secondary": #1E2139,
+    "success":#33d69f,
+    "warning": #ff8f00,
+    "danger": #ec5757,
+    "light": #dfe3fa,
+    "dark": #212529,
+);
+
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;700&display=swap');
-@import './assets/scss/utilities/';
+@import "node_modules/bootstrap/scss/bootstrap";
+@import './assets/scss/abstracts/';
+@import "./assets/scss/main.scss";
 
 :root {
 
@@ -13,76 +25,81 @@
     --fs-200: 0.6875rem
 }
 
-$theme-colors: (
-    "primary": #7C5DFA,
-    "secondary": #1E2139,
-    "success":#33d69f,
-    "warning": #ff8f00,
-    "danger": #ec5757,
-    "light": #dfe3fa,
-
-);
-
 // custom properties for dark and light mode
 
 body.dark-mode {
-    --text-primary-color: #FFFFFF;
-    --text-secondary-color: #DFE3FA;
+    // background colors 
+    --bg-body: #141625;
+    --bg-sidenav: #1E2139;
+    // Card , OffCanvas
+    --bg-container: #1E2139;
+    // Items in Invoice Details, Inputs ,  dropdowns and Date picker
+    --bg-element: #252945;
+    --bg-item: #0C0E16;
 
-    --bg-body-color: #141625;
-    --bg-element-color: #1E2139;
-    --bg-sidenav-color: #1E2139;
+    //forms
+    --bg-form: #252945;
+    --border-form: #1E2139;
 
-    --bg-edit-btn-color: #252945;
-    --bg-hover-edit-btn-color: #FFFFFF;
-    --text-edit-btn-color: #7E88C3;
-    --text-hover-edit-btn-color: #DFE3FA;
 
-    --bg-hover-draft-btn-color: #1E2139;
-    --text-draft-btn-color: #DFE3FA;
+    // Text colors
+    --text-primary: #DFE3FA;
+    --text-secondary: #FFFFFF;
+    --text-tertiary: #DFE3FA;
 
-    --border-input-color: #252945;
-    --border-focus-input-color: #7C5DFA;
+    // Buttons
+    --btn-edit-text: #DFE3FA;
+    --btn-edit-hover-bg: #373B53;
+
+    --btn-save-text: #DFE3FA;
+    --btn-save-hover-bg: #373B53;
+
 }
 
 body.light-mode {
-    --text-primary-color: #0C0E16;
-    --text-secondary-color: #888EB0;
+    // background colors 
+    --bg-body: #F8F8FB;
+    --bg-sidenav: #373B53;
+    // Card , OffCanvas
+    --bg-container: #FFFFFF;
+    // Items in Invoice Details, Inputs , Dropdowns and Date picker
+    --bg-element: #F9FAFE;
+    --bg-item: #373B53;
 
-    --bg-body-color: #F8F8FB;
-    --bg-element-color: #FFFFFF;
-    --bg-sidenav-color: #373B53;
+    //form
+    --bg-form: #FFFFF;
+    --border-form: #DFE3FA;
 
-    --bg-edit-btn-color: #F9FAFE;
-    --bg-hover-edit-btn-color: #DFE3FA;
-    --text-edit-btn-color: #DFE3FA;
-    --text-hover-edit-btn-color: #7E88C3;
+    // Text colors
+    --text-primary: #888EB0;
+    --text-secondary: #0C0E16;
+    --text-tertiary: #7E88C3;
 
-    --bg-hover-draft-btn-color: #0C0E16;
-    --text-draft-btn-color: #888EB0;
+    // Buttons
+    --btn-edit-text: #7E88C3;
+    --btn-edit-hover-bg: #DFE3FA;
 
-    --border-input-color: #DFE3FA;
-    --border-focus-input-color: #9277FF;
+    --btn-save-text: #888EB0;
+    --btn-save-hover-bg: #0C0E16;
+
 }
+
+
+
+
+
+
+
 
 $font-family-sans-serif: 'League Spartan', sans-serif;
 $h1-font-size: 32px;
 
-// $utilities: (
-//     "text": (property: "font-size",
-//         class: "h",
-//         values: (1:)),
-// );
-
-
-@import "./assets/scss/main.scss";
-@import "node_modules/bootstrap/scss/bootstrap";
 
 
 body {
     min-height: 100vh;
-    background-color: var(--bg-body-color);
-    color: var(--text-primary-color);
+    background-color: var(--bg-body);
+    color: var(--text-secondary);
 }
 
 
@@ -91,6 +108,7 @@ body {
     width: 700px !important;
     overflow-y: scroll;
     border-radius: 0;
+    background-color: var(--bg-body);
 
     &::-webkit-scrollbar {
         width: 0em;
@@ -101,61 +119,77 @@ body {
     }
 }
 
-.dropdown-toggle::after {
-    display: none
-}
+.date-picker {
+    --primary-color: #7C5DFA;
 
+    .dropdown-menu {
+        background-color: var(--bg-form) !important;
+        margin: rem(10) 0 !important;
+        padding: rem(5) 0 rem(10);
 
+        .ngb-dp-header {
+            background-color: var(--bg-form) !important;
+            margin-bottom: rem(10);
+            padding: rem(10);
+        }
 
-// Hide Arrows From Input Number
+        .ngb-dp-arrow-btn {
+            background-color: transparent;
+            z-index: 1;
+            padding: 0;
+            margin: 0;
+            color: var(--primary-color);
+        }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
+        .form-select {
+            color: var(--text-secondary);
+            background-color: var(--bg-form);
+            background-image: none;
+            border-color: var(--bg-form);
+            outline: none;
+            cursor: pointer;
 
-/* Firefox */
-input[type=number] {
-    -moz-appearance: textfield;
-}
+            &:focus {
+                box-shadow: none;
+            }
+        }
 
-/* button */
-button {
-    font: inherit;
-    box-shadow: none;
-}
+        .form-select[title="Select month"] {
+            text-align: center;
+        }
 
-button:focus,
-input:focus {
-    box-shadow: none !important;
-}
+        // .form-select[title="Select year"] {
+        //     padding-left: 0;
+        // }
 
-/* remove animations for people who turned it off*/
-@media (prefers-reduced-motion: reduce) {
+        .ngb-dp-weekdays {
+            display: none;
+        }
 
-    *,
-    *::after,
-    *::before {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
+        [ngbDatepickerDayView]:hover:not(.bg-primary),
+        [ngbDatepickerDayView].active:not(.bg-primary) {
+            background-color: unset;
+            outline: unset;
+            color: var(--primary-color);
+        }
+
+        [ngbDatepickerDayView] {
+            color: var(--text-secondary)
+        }
+
+        [ngbDatepickerDayView].outside {
+            opacity: .08;
+            color: var(--text-secondary) !important;
+        }
+
+        .bg-primary {
+            background-color: transparent !important;
+        }
+
+        .text-white {
+            color: var(--primary-color) !important;
+        }
     }
-}
 
 
-// show for screen readers only
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-    ;
 }

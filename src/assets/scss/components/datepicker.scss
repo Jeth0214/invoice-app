@@ -1,0 +1,5 @@
+@use '../abstracts/' as *;
+
+ngbDatepicker {
+    background-color: var(--bg-form);
+}

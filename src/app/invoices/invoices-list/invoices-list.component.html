@@ -2,7 +2,7 @@
     <div class="my-5 d-flex justify-content-between align-items-center">
         <div>
             <h1 class="mb-0 lh-1 fw-bold">Invoices</h1>
-            <p class="text-muted"> <span class="d-none d-md-inline">There are</span> {{ totalInvoicesMessage }}</p>
+            <p class="text-1"> <span class="d-none d-md-inline">There are</span> {{ totalInvoicesMessage }}</p>
         </div>
         <div class="d-flex ">
             <div class="col text-end">
@@ -10,23 +10,27 @@
 
                     <div ngbDropdown class="d-inline-block me-3" #myDrop="ngbDropdown">
                         <button type="button"
-                            class="btn btn-light px-2  d-flex text-primary justify-content-between align-items-center"
-                            id="invoiceDropdown" ngbDropdownToggle>
-                            <span class="text-dark pt-1">Filter <span class="d-none d-md-inline">by status</span></span>
-                            <small><i class="fa-solid fa-chevron-down ms-2"></i></small>
+                            class="btn border-0  px-2 d-flex text-primary justify-content-between align-items-center"
+                            id="invoiceDropdown" ngbDropdownToggle (click)="changeDropDownArrow()"
+                            (blur)="changeDropDownArrow()">
+                            <p class="text-2 mb-0">
+                                <span>Filter <span class="d-none d-md-inline">by status</span></span>
+                            </p>
+                            <small><i class="fa-solid ms-2"
+                                    [ngClass]="isDropDownOpen ? 'fa-chevron-up' : 'fa-chevron-down' "></i></small>
 
                         </button>
                         <div class="px-2" ngbDropdownMenu aria-labelledby="invoiceDropdown">
                             <div class="form-check" *ngFor="let stat of status">
                                 <input formControlName="status" class="form-check-input rounded" value="{{ stat }}"
-                                    type="checkbox" id="{{stat}}" (change)="selectStatus(stat); myDrop.close()">
+                                    type="radio" id="{{stat}}" (change)="selectStatus(stat); myDrop.close()">
                                 <label class="form-check-label" for="{{ stat }}">
                                     {{stat}}
                                 </label>
                             </div>
                             <div class="form-check" *ngIf="showAllInvoices">
                                 <input formControlName="status" class="form-check-input rounded" value="total"
-                                    type="checkbox" id="all" (change)="selectStatus('total'); myDrop.close()">
+                                    type="radio" id="all" (change)="selectStatus('total'); myDrop.close()">
                                 <label class="form-check-label" for="total">
                                     All Invoices
                                 </label>
@@ -46,32 +50,33 @@
 
     <!-- Invoices Lists -->
     <ng-container *ngIf="invoices.length > 0">
-        <div [routerLink]="['/invoices', invoice.id]" class="card p-3 mb-3 invoice-hover"
+        <div [routerLink]="['/invoices', invoice.id]" class="card bg-container p-3 mb-3 invoice-hover "
             *ngFor="let invoice of invoices">
             <div class="row align-items-center">
                 <div class=" col-6 col-md-2 text-start text-md-center">
-                    <p class="fw-bold mb-0"><small class="text-primary">#</small>{{ invoice.id }}
+                    <p class="fw-bold mb-0">
+                        <small class="text-3">#</small>
+                        {{ invoice.id }}
                     </p>
                 </div>
                 <div class="col-6 col-md-2 text-end text-md-start">
-                    <p class="text-primary mb-0">{{ invoice.paymentDue | date : 'dd MMM YYYY' }}</p>
+                    <p class="text-1 mb-0">{{ invoice.paymentDue | date : 'dd MMM YYYY' }}</p>
 
                 </div>
                 <div class="col-6 col-md-3 text-md-start text-md-center">
-                    <p class="text-primary mb-0">{{ invoice.clientName }}</p>
-
+                    <p class="text-1 mb-0">{{ invoice.clientName }}</p>
                 </div>
                 <div class="col-6 col-md-2 text-end text-md-start">
                     <p class="fw-bold mb-0">{{ invoice.total | currency:'GBP':'symbol-narrow' }}</p>
                 </div>
                 <div class="col-12 col-md-2  mt-3 mt-md-0">
                     <div class="text-center p-2 mb-0 bg-opacity-25 rounded-3"
-                        [ngClass]="{' bg-success text-success' : invoice.status === 'paid', ' bg-warning text-warning' : invoice.status === 'pending', ' bg-secondary text-secondary ' : invoice.status === 'draft'}">
+                        [ngClass]="{' bg-success text-success' : invoice.status === 'paid', ' bg-warning text-warning' : invoice.status === 'pending', ' bg-element' : invoice.status === 'draft'}">
                         <i class="fa-solid d-sm-inline d-md-none d-lg-inline fa-circle me-1 "></i>
                         <span>{{ invoice.status | titlecase }}</span>
                     </div>
                 </div>
-                <div class="col-md-1 text-center d-none d-md-inline">
+                <div class="col-md-1 text-primary text-center d-none d-md-inline">
                     <i class="fa-solid fa-chevron-right"></i>
                 </div>
             </div>
@@ -80,18 +85,18 @@
 
     <!-- Empty lists -->
     <ng-container *ngIf="hasInvoices">
-        <div class="d-flex justify-content-center align-items-center">
-            <div class="text-center">
+        <div class="d-flex justify-content-center align-items-center mt-4">
+            <div class="text-center mt-4">
                 <img src="../../../assets/images/illustration-empty.svg" alt="empty image">
-                <h2 class="my-3 mb-0">There is nothing here</h2>
-                <p class="text-black-50 mb-0">
-                    Create an invoice by clicking the
-                </p>
-                <p class="text-black-50">
-                    <a type="button" class="btn btn-link text-black-50 text-decoration-none fw-bold px-1 pb-2 mr-1">New
-                        Invoice</a>button and get started
-                </p>
-
+                <h2 class="my-3">There is nothing here</h2>
+                <div class="text-1">
+                    <p class="mb-0 lh-sm">
+                        Create an invoice by clicking the
+                    </p>
+                    <p class="">
+                        <span class="fw-bold">New Invoice</span> button and get started
+                    </p>
+                </div>
             </div>
 
         </div>

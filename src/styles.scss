@@ -37,6 +37,9 @@ body.dark-mode {
     --bg-element: #252945;
     --bg-item: #0C0E16;
 
+    // off-canvas
+    --bg-offcanvas: #141625;
+
     //forms
     --bg-form: #252945;
     --border-form: #1E2139;
@@ -47,12 +50,13 @@ body.dark-mode {
     --text-secondary: #FFFFFF;
     --text-tertiary: #DFE3FA;
 
-    // Buttons
-    --btn-edit-text: #DFE3FA;
-    --btn-edit-hover-bg: #373B53;
 
-    --btn-save-text: #DFE3FA;
-    --btn-save-hover-bg: #373B53;
+    // Buttons
+    --btn-edit-bg: #252945;
+    --btn-edit-text: #DFE3FA;
+    --btn-edit-hover-bg: #F9FAFE;
+    --btn-edit-hover-text: #7E88C3;
+
 
 }
 
@@ -60,14 +64,16 @@ body.light-mode {
     // background colors 
     --bg-body: #F8F8FB;
     --bg-sidenav: #373B53;
-    // Card , OffCanvas
+    // Card 
     --bg-container: #FFFFFF;
-    // Items in Invoice Details, Inputs , Dropdowns and Date picker
+    // Inputs , Dropdowns and Date picker
     --bg-element: #F9FAFE;
     --bg-item: #373B53;
+    // off-canvas
+    --bg-offcanvas: #FFFFFF;
 
     //form
-    --bg-form: #FFFFF;
+    --bg-form: #FFFFFF;
     --border-form: #DFE3FA;
 
     // Text colors
@@ -76,120 +82,19 @@ body.light-mode {
     --text-tertiary: #7E88C3;
 
     // Buttons
+    --btn-edit-bg: #F9FAFE;
     --btn-edit-text: #7E88C3;
     --btn-edit-hover-bg: #DFE3FA;
+    --btn-edit-hover-text: #7E88C3;
 
-    --btn-save-text: #888EB0;
-    --btn-save-hover-bg: #0C0E16;
 
 }
 
-
-
-
-
-
-
-
 $font-family-sans-serif: 'League Spartan', sans-serif;
 $h1-font-size: 32px;
-
-
 
 body {
     min-height: 100vh;
     background-color: var(--bg-body);
     color: var(--text-secondary);
-}
-
-
-
-.off-canvas-width {
-    width: 700px !important;
-    overflow-y: scroll;
-    border-radius: 0;
-    background-color: var(--bg-body);
-
-    &::-webkit-scrollbar {
-        width: 0em;
-    }
-
-    @include breakpoint-up('medium') {
-        border-radius: rem(0) rem(15) rem(15) 0;
-    }
-}
-
-.date-picker {
-    --primary-color: #7C5DFA;
-
-    .dropdown-menu {
-        background-color: var(--bg-form) !important;
-        margin: rem(10) 0 !important;
-        padding: rem(5) 0 rem(10);
-
-        .ngb-dp-header {
-            background-color: var(--bg-form) !important;
-            margin-bottom: rem(10);
-            padding: rem(10);
-        }
-
-        .ngb-dp-arrow-btn {
-            background-color: transparent;
-            z-index: 1;
-            padding: 0;
-            margin: 0;
-            color: var(--primary-color);
-        }
-
-        .form-select {
-            color: var(--text-secondary);
-            background-color: var(--bg-form);
-            background-image: none;
-            border-color: var(--bg-form);
-            outline: none;
-            cursor: pointer;
-
-            &:focus {
-                box-shadow: none;
-            }
-        }
-
-        .form-select[title="Select month"] {
-            text-align: center;
-        }
-
-        // .form-select[title="Select year"] {
-        //     padding-left: 0;
-        // }
-
-        .ngb-dp-weekdays {
-            display: none;
-        }
-
-        [ngbDatepickerDayView]:hover:not(.bg-primary),
-        [ngbDatepickerDayView].active:not(.bg-primary) {
-            background-color: unset;
-            outline: unset;
-            color: var(--primary-color);
-        }
-
-        [ngbDatepickerDayView] {
-            color: var(--text-secondary)
-        }
-
-        [ngbDatepickerDayView].outside {
-            opacity: .08;
-            color: var(--text-secondary) !important;
-        }
-
-        .bg-primary {
-            background-color: transparent !important;
-        }
-
-        .text-white {
-            color: var(--primary-color) !important;
-        }
-    }
-
-
 }

@@ -10,7 +10,7 @@
 
                     <div ngbDropdown class="d-inline-block me-3" #myDrop="ngbDropdown">
                         <button type="button"
-                            class="btn border-0  px-2 d-flex text-primary justify-content-between align-items-center"
+                            class="btn border-0 dropdown-filter px-2 d-flex text-primary justify-content-between align-items-center"
                             id="invoiceDropdown" ngbDropdownToggle (click)="changeDropDownArrow()"
                             (blur)="changeDropDownArrow()">
                             <p class="text-2 mb-0">
@@ -20,18 +20,18 @@
                                     [ngClass]="isDropDownOpen ? 'fa-chevron-up' : 'fa-chevron-down' "></i></small>
 
                         </button>
-                        <div class="px-2" ngbDropdownMenu aria-labelledby="invoiceDropdown">
+                        <div class="px-2 " ngbDropdownMenu aria-labelledby="invoiceDropdown">
                             <div class="form-check" *ngFor="let stat of status">
-                                <input formControlName="status" class="form-check-input rounded" value="{{ stat }}"
+                                <input formControlName="status" class="form-check-input rounded " value="{{ stat }}"
                                     type="radio" id="{{stat}}" (change)="selectStatus(stat); myDrop.close()">
-                                <label class="form-check-label" for="{{ stat }}">
+                                <label class="form-check-label text-2" for="{{ stat }}">
                                     {{stat}}
                                 </label>
                             </div>
                             <div class="form-check" *ngIf="showAllInvoices">
                                 <input formControlName="status" class="form-check-input rounded" value="total"
                                     type="radio" id="all" (change)="selectStatus('total'); myDrop.close()">
-                                <label class="form-check-label" for="total">
+                                <label class="form-check-label text-2" for="total">
                                     All Invoices
                                 </label>
                             </div>
@@ -40,8 +40,8 @@
                 </form>
             </div>
 
-            <button type="button" class="btn btn-primary rounded-pill text-white pt-2" (click)="openOffCanvas()">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            <button type="button" class="btn btn-primary rounded-pill d-flex text-white" (click)="openOffCanvas()">
+                <i class="fa fa-plus-circle me-2" aria-hidden="true"></i>
                 <span> New <span class="d-none d-md-inline">Invoice</span></span>
             </button>
         </div>

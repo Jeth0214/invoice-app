@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { NgbActiveOffcanvas, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Invoice, Item, Term, Address } from '../../shared/models/invoice.model';
 import { InvoiceService } from '../../shared/services/invoice.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-edit-invoices',
@@ -33,12 +34,13 @@ export class AddEditInvoicesComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private invoiceService: InvoiceService,
-    private activeOffcanvas: NgbActiveOffcanvas
+    private activeOffcanvas: NgbActiveOffcanvas,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.setInvoiceForm();
-    console.log(this.invoice)
+    // console.log(this.invoice)
     if (this.invoice) {
       console.log('Invoice from detail page: ', this.invoice);
       this.invoiceForm.patchValue({ 'description': this.invoice.description });
@@ -68,8 +70,8 @@ export class AddEditInvoicesComponent implements OnInit {
 
   onSaveNewInvoice(saveAs: string) {
     // console.log(saveAs);
-    console.log('status', this.invoiceForm.status);
-    console.log('invoice', this.invoiceForm.value);
+    // console.log('status', this.invoiceForm.status);
+    // console.log('invoice', this.invoiceForm.value);
     //console.log('item', this.invoiceForm.get('items')?.value.length);
 
     //check if save status is 'pending' or 'draft;
@@ -195,5 +197,7 @@ export class AddEditInvoicesComponent implements OnInit {
   onDateSelect(date: NgbDate) {
     this.dateToday = new Date(date.year, date.month - 1, date.day);
   }
+
+
 
 }

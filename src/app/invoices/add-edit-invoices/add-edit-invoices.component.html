@@ -1,4 +1,9 @@
 <div class=" add-edit mb-4 mt-md-4">
+    <a class="text-decoration-none text-primary d-block d-md-none mb-2" (click)="onDiscard()">
+        <i class="fa-solid fa-chevron-left me-2"></i>
+        <span class="text-2 go-back">Go Back</span>
+    </a>
+
     <div class="title fw-bold">
         <h1>{{ title }} <span *ngIf="invoice"> <span class="text-primary">#</span>{{ invoice.id }}</span></h1>
     </div>
@@ -55,11 +60,11 @@
             <!-- Invoice info section -->
             <div class="row my-4">
                 <!-- Created At -->
-                <div class="col-12 col-md-6 mb-2 mb-md-0 date-picker ">
+                <div class="col-12 col-md-6 mb-2 mb-md-0  ">
                     <label for="createdAt" class="form-label text-primary">Invoice Date</label>
                     <!-- <input type="date" formControlName="createdAt" class="form-control" aria-label="Created At"> -->
 
-                    <div class="position-relative m-0 p-0">
+                    <div class="position-relative m-0 p-0 date-picker">
                         <input class="form-control" [placeholder]="dateToday | date : 'dd MMM YYYY'"
                             [value]="dateToday | date : 'dd MMM YYYY'" name="createdAt" formControlName="createdAt"
                             ngbDatepicker #d="ngbDatepicker" (dateSelect)="
@@ -78,7 +83,7 @@
                             <span class="text-2">{{ selectedTerms }}</span>
                             <i class="fa-solid" [ngClass]="isDropDownOpen ? 'fa-chevron-up' : 'fa-chevron-down' "></i>
                         </button>
-                        <div ngbDropdownMenu aria-labelledby="paymentTerms" class="my-2 ms-0 w-100 py-0">
+                        <div ngbDropdownMenu aria-labelledby="paymentTerms" class="my-2 ms-0 w-100 py-0 rounded">
                             <button class="text-2 py-2" ngbDropdownItem *ngFor="let term of terms"
                                 (click)="selectTerms(term)">
                                 {{ term.name}}
@@ -117,8 +122,7 @@
 
             <!-- form action buttons -->
             <div class="d-flex" [class.justify-content-end]="invoice">
-                <button [class.me-auto]="!invoice" class="btn btn-light rounded-pill text-primary me-auto pt-2"
-                    (click)="onDiscard()">
+                <button [class.me-auto]="!invoice" class="btn btn-edit rounded-pill me-auto pt-1" (click)="onDiscard()">
                     <ng-container *ngIf="invoice else newInvoice">
                         Cancel
                     </ng-container>
@@ -127,10 +131,10 @@
                     </ng-template>
                 </button>
                 <button *ngIf="!invoice" type="submit" (click)="onSaveNewInvoice('draft')"
-                    class="btn bg-dark text-white rounded-pill text-secondary pt-2 "> Save as
+                    class="btn btn-dark  rounded-pill pt-1"> Save as
                     Draft </button>
                 <button type="submit" (click)="onSaveNewInvoice('pending')"
-                    class="btn btn-primary rounded-pill text-white ms-2 pt-2">
+                    class="btn btn-primary rounded-pill text-white ms-2 pt-1">
                     <ng-container *ngIf="invoice else newInvoice">
                         <span>
                             Save Changes

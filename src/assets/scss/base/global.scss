@@ -63,3 +63,11 @@ input:focus {
     border: 0;
     ;
 }
+
+.go-back {
+    transition: opacity 0.5s ease-in-out;
+
+    &:hover {
+        opacity: 0.5;
+    }
+}

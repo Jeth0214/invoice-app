@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DarkModeService } from 'angular-dark-mode';
 
 @Component({
   selector: 'app-side-nav-bar',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SideNavBarComponent implements OnInit {
 
-  constructor() { }
+  darkMode$ = this.darkModeService.darkMode$;
+
+  constructor(private darkModeService: DarkModeService) { }
 
   ngOnInit(): void {
+  }
+
+  onToggle(): void {
+    this.darkModeService.toggle()
   }
 
 }

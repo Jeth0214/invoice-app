@@ -7,7 +7,11 @@
     <div
         class="nav-link d-flex flex-row flex-md-column align-items-center justify-content-center me-3 me-md-0 mb-0 mb-md-4">
         <div class="nav-link__theme  mb-md-4 me-4 me-md-0">
-            <img src="../assets/images/icon-moon.svg">
+            <input id="darkMode" type="checkbox" [checked]="darkMode$ | async" (change)="onToggle()" class="toggle" />
+            <label class="toggle-label" for="darkMode">
+                <img src="./../../../assets/images/icon-sun.svg" alt="light toggle" class="sun nav-link__theme-icon" />
+                <img src="./../../../assets/images/icon-moon.svg" alt="dark toggle" class="moon nav-link__theme-con" />
+            </label>
         </div>
         <div class="nav-link__profile">
             <img src="../assets/images/image-avatar.jpg" class="rounded-circle nav-profile-image">

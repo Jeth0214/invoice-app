@@ -28,7 +28,7 @@
 
     .nav-link {
 
-        img {
+        .nav-profile-image {
             max-width: rem(40);
             max-height: rem(40);
             width: 100%;
@@ -38,19 +38,60 @@
         .nav-link__theme {
             position: relative;
 
+            .toggle {
+                display: none;
+            }
+
+            .toggle-label {
+                position: relative;
+                display: inline-block;
+                width: 3rem;
+                height: 3rem;
+                overflow: hidden;
+                cursor: pointer;
+            }
+
+            .sun,
+            .moon {
+                position: absolute;
+                left: 0;
+                width: 20px;
+                height: 20px;
+                transition: top 0.3s;
+                user-select: none;
+            }
+
+            .moon {
+                bottom: 2px;
+                transform: translate(50%, -50%)
+            }
+
+            .sun {
+                top: -150%;
+            }
+
+            .toggle:checked+.toggle-label .moon {
+                top: 150%;
+            }
+
+            .toggle:checked+.toggle-label .sun {
+                top: 0;
+            }
+
+
             &::after {
                 position: absolute;
                 content: "";
                 width: rem(1);
                 height: rem(80);
                 background-color: #494E6E;
-                top: rem(-28);
+                top: rem(-13);
                 left: rem(32);
 
                 @include breakpoint-up('medium') {
 
-                    top: rem(35);
-                    left: rem(-31);
+                    top: rem(60);
+                    left: rem(-16);
                     width: rem(80);
                     height: rem(1);
                 }

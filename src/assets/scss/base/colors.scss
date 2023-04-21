@@ -27,3 +27,7 @@
 .bg-amount-due {
     background-color: var(--bg-item);
 }
+
+.bg-draft {
+    background-color: rgba(var(--bg-status-draft)) !important;
+}

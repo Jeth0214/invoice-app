@@ -38,6 +38,45 @@
         .nav-link__theme {
             position: relative;
 
+            // .toggle {
+            //     display: none;
+            // }
+
+            // .toggle-label {
+            //     position: relative;
+            //     display: inline-block;
+            //     width: 3rem;
+            //     height: 3rem;
+            //     overflow: hidden;
+            //     cursor: pointer;
+            // }
+
+            // .sun,
+            // .moon {
+            //     position: absolute;
+            //     left: 0;
+            //     width: 20px;
+            //     height: 20px;
+            //     transition: top 0.3s;
+            //     user-select: none;
+            // }
+
+            // .moon {
+            //     bottom: 2px;
+            //     transform: translate(50%, -50%)
+            // }
+
+            // .sun {
+            //     top: -150%;
+            // }
+
+            // .toggle:checked+.toggle-label .moon {
+            //     top: 150%;
+            // }
+
+            // .toggle:checked+.toggle-label .sun {
+            //     top: 0;
+            // }
             .toggle {
                 display: none;
             }
@@ -54,28 +93,48 @@
             .sun,
             .moon {
                 position: absolute;
-                left: 0;
-                width: 20px;
-                height: 20px;
+                left: rem(10);
+                max-width: rem(40);
+                height: auto;
                 transition: top 0.3s;
                 user-select: none;
             }
 
-            .moon {
-                bottom: 2px;
-                transform: translate(50%, -50%)
-            }
-
             .sun {
-                top: -150%;
+                top: rem(17);
+
+                @include breakpoint-up('medium') {
+
+                    top: rem(25);
+                }
+
             }
 
-            .toggle:checked+.toggle-label .moon {
-                top: 150%;
+            .moon {
+                top: -100%;
+
+                @include breakpoint-up('medium') {
+
+                    top: -100%;
+                }
             }
 
             .toggle:checked+.toggle-label .sun {
-                top: 0;
+                top: 100%;
+
+                @include breakpoint-up('medium') {
+
+                    top: 100%;
+                }
+            }
+
+            .toggle:checked+.toggle-label .moon {
+                top: rem(17);
+
+                @include breakpoint-up('medium') {
+
+                    top: rem(25);
+                }
             }
 
 
@@ -86,7 +145,7 @@
                 height: rem(80);
                 background-color: #494E6E;
                 top: rem(-13);
-                left: rem(32);
+                left: rem(48);
 
                 @include breakpoint-up('medium') {
 

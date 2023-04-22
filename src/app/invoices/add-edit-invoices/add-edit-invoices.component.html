@@ -10,7 +10,7 @@
 
     <div class="row p-0 form">
         <form [formGroup]="invoiceForm">
-            <!-- Bill to section -->
+            <!-- Bill From section -->
             <div class="my-4">
                 <h2 class="h5 text-primary">
                     Bill From
@@ -123,28 +123,17 @@
             <!-- form action buttons -->
             <div class="d-flex" [class.justify-content-end]="invoice">
                 <button [class.me-auto]="!invoice" class="btn btn-edit rounded-pill me-auto pt-1" (click)="onDiscard()">
-                    <ng-container *ngIf="invoice else newInvoice">
-                        Cancel
-                    </ng-container>
-                    <ng-template #newInvoice>
-                        Discard
-                    </ng-template>
+                    <span *ngIf="invoice">Cancel</span>
+                    <span *ngIf="!invoice">Discard</span>
                 </button>
                 <button *ngIf="!invoice" type="submit" (click)="onSaveNewInvoice('draft')"
                     class="btn btn-dark  rounded-pill pt-1"> Save as
                     Draft </button>
                 <button type="submit" (click)="onSaveNewInvoice('pending')"
                     class="btn btn-primary rounded-pill text-white ms-2 pt-1">
-                    <ng-container *ngIf="invoice else newInvoice">
-                        <span>
-                            Save Changes
-                        </span>
-                    </ng-container>
-                    <ng-template #newInvoice>
-                        <span> Save & Send </span>
-                    </ng-template>
+                    <span *ngIf="invoice"> Save Changes </span>
+                    <span *ngIf="!invoice"> Save & Send </span>
                 </button>
-
             </div>
         </form>
     </div>

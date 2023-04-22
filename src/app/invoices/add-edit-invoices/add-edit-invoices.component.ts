@@ -3,7 +3,6 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { NgbActiveOffcanvas, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Invoice, Item, Term, Address } from '../../shared/models/invoice.model';
 import { InvoiceService } from '../../shared/services/invoice.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-edit-invoices',
@@ -35,7 +34,6 @@ export class AddEditInvoicesComponent implements OnInit {
     private formBuilder: FormBuilder,
     private invoiceService: InvoiceService,
     private activeOffcanvas: NgbActiveOffcanvas,
-    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -61,6 +59,11 @@ export class AddEditInvoicesComponent implements OnInit {
       clientName: ['', Validators.required],
       clientEmail: ['', [Validators.required, Validators.email]]
     });
+  }
+
+  checkFormValues() {
+    return Object.keys(this.invoiceForm.controls).forEach(key => { console.log(key) }
+    )
   }
 
 
@@ -118,8 +121,8 @@ export class AddEditInvoicesComponent implements OnInit {
       invoiceData.items = []
     }
 
-    // check first if the status is edit invoice
-    // set the invoice id to created date in milliseconds and convert it to string temporarily;
+    // check first if the status is edit 
+    // set the invoice id to created date in milliseconds and convert it to string ;
 
     if (this.invoice) {
       invoiceData.id = this.invoice.id
@@ -136,6 +139,7 @@ export class AddEditInvoicesComponent implements OnInit {
     if (this.invoice) {
       this.invoiceService.updateInvoice(invoiceData).subscribe((response) => {
         // Todo: If backend is ready, check if the invoice was created or updated successfully
+        console.log('Edit Response: ' + response);
         setTimeout(() => {
           this.onDiscard();
         }, 1000);
@@ -144,6 +148,7 @@ export class AddEditInvoicesComponent implements OnInit {
       // send data for storage
       this.invoiceService.addInvoice(invoiceData).subscribe((invoice: Invoice) => {
         // Todo: If backend is ready, check if the invoice was created or updated successfully
+        console.log('Edit Response: ' + invoice);
         setTimeout(() => {
           this.onDiscard();
         }, 1000);
@@ -164,6 +169,7 @@ export class AddEditInvoicesComponent implements OnInit {
 
 
   selectTerms(term: Term): void {
+    console.log('Selected Term :' + term.name)
     this.isDropDownOpen = false
     this.selectedTerms = term.name;
     this.invoiceForm.patchValue({ 'paymentTerms': term.value })
@@ -196,6 +202,8 @@ export class AddEditInvoicesComponent implements OnInit {
 
   onDateSelect(date: NgbDate) {
     this.dateToday = new Date(date.year, date.month - 1, date.day);
+    console.log('Selected Date' + date);
+    //this.calculatePaymentDue(this.dateToday)
   }
 
 

@@ -1,0 +1,37 @@
+@use '../abstracts/' as *;
+
+.dropdown-menu {
+    .show {
+        background-color: var(--bg-element);
+        color: var(#9277FF)
+    }
+
+    .dropdown-item {
+        background-color: var(--bg-form);
+
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--border-form);
+        }
+
+        &:hover {
+            color: #9277FF;
+            background-color: var(--bg-form);
+        }
+
+    }
+}
+
+.dropdown-menu.show {
+    background-color: var(--bg-container);
+    color: #9277FF;
+    box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
+}
+
+.dropdown-toggle {
+    border-color: var(--border-form);
+    background-color: var(--bg-form);
+}
+
+.dropdown-filter {
+    background-color: transparent;
+}

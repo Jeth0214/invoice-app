@@ -1,0 +1,31 @@
+@use '../abstracts/' as *;
+
+.dropdown-toggle::after {
+    display: none
+}
+
+.form-control {
+    background-color: var(--bg-form);
+    border-color: var(--border-form);
+    color: var(--text-secondary);
+
+    // border-color: var()
+    &:focus {
+        background-color: var(--bg-form);
+        border-color: #9277FF;
+        color: var(--text-secondary);
+    }
+}
+
+;
+
+label,
+.form-label {
+    color: var(--text-tertiary) !important;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: transparent;
+    color: var(--text-secondary);
+}

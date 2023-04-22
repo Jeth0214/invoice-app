@@ -1,0 +1,29 @@
+<ng-container [formGroupName]="addressType">
+    <div class="mb-3">
+        <label for="street" class="form-label text-primary"
+            [class.text-danger]="isSaving && street?.errors">Street</label>
+        <input formControlName="street" type="text" class="form-control" id="street"
+            [class.border-danger]="isSaving && street?.errors" autocomplete="off">
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="city" class="form-label text-primary"
+                [class.text-danger]="isSaving && city?.errors">City</label>
+            <input formControlName="city" type="text" class="form-control" id="city"
+                [class.border-danger]="isSaving && city?.errors" autocomplete="off">
+        </div>
+        <div class="col">
+            <label for="postCode" class="form-label text-primary"
+                [class.text-danger]="isSaving && postCode?.errors">Post Code</label>
+            <input formControlName="postCode" type="text" class="form-control" id="postCode"
+                [class.border-danger]="isSaving && postCode?.errors" autocomplete="off">
+        </div>
+        <div class="col">
+            <label for="country" class="form-label text-primary"
+                [class.text-danger]="isSaving && country?.errors">Country</label>
+            <input formControlName="country" type="text" class="form-control" id="country"
+                [class.border-danger]="isSaving && country?.errors" autocomplete="off">
+        </div>
+    </div>
+</ng-container>

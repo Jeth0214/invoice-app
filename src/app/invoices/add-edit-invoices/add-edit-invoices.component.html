@@ -1,0 +1,139 @@
+<div class=" add-edit mb-4 mt-md-4">
+    <a class="text-decoration-none text-primary d-block d-md-none mb-2" (click)="onDiscard()">
+        <i class="fa-solid fa-chevron-left me-2"></i>
+        <span class="text-2 go-back">Go Back</span>
+    </a>
+
+    <div class="title fw-bold">
+        <h1>{{ title }} <span *ngIf="invoice"> <span class="text-primary">#</span>{{ invoice.id }}</span></h1>
+    </div>
+
+    <div class="row p-0 form">
+        <form [formGroup]="invoiceForm">
+            <!-- Bill From section -->
+            <div class="my-4">
+                <h2 class="h5 text-primary">
+                    Bill From
+                </h2>
+                <!-- Sender Adress -->
+                <app-address-form [addressType]="'senderAddress'" [isSaving]="isSaving"
+                    [addressData]="invoice?.senderAddress"></app-address-form>
+            </div>
+
+            <!-- Bill to section -->
+            <div class="my-4">
+                <h2 class="h5 text-primary">
+                    Bill To
+                </h2>
+                <!-- Clients Name -->
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <label for="clientName" class="form-label text-primary"
+                            [class.text-danger]="isSaving && formValidation['clientName'].errors">Client's Name</label>
+                        <div *ngIf="isSaving && formValidation['clientName'].errors" class="text-danger">
+                            <p>Can't be empty</p>
+                        </div>
+                    </div>
+                    <input formControlName="clientName" type="text" class="form-control" id="clientName"
+                        [class.border-danger]="isSaving && formValidation['clientName'].errors" autocomplete="off">
+                </div>
+                <!-- Clients' Email -->
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <label for="clientEmail" class="form-label text-primary"
+                            [class.text-danger]="isSaving && formValidation['clientEmail'].errors">Client's
+                            Email</label>
+                        <div *ngIf="isSaving && formValidation['clientEmail'].errors" class="text-danger">
+                            <p *ngIf="formValidation['clientEmail']?.errors?.['required']">Can't be empty</p>
+                            <p *ngIf="formValidation['clientEmail']?.errors?.['email']">Invalid email address</p>
+                        </div>
+                    </div>
+                    <input formControlName="clientEmail" type="email" placeholder="e.g. email@example.com"
+                        class="form-control" id="clientEmail"
+                        [class.border-danger]="isSaving && formValidation['clientEmail'].errors" autocomplete="off">
+                </div>
+                <!-- Client Address -->
+                <app-address-form [addressType]="'clientAddress'" [isSaving]="isSaving"
+                    [addressData]="invoice?.clientAddress"></app-address-form>
+            </div>
+
+            <!-- Invoice info section -->
+            <div class="row my-4">
+                <!-- Created At -->
+                <div class="col-12 col-md-6 mb-2 mb-md-0  ">
+                    <label for="createdAt" class="form-label text-primary">Invoice Date</label>
+                    <!-- <input type="date" formControlName="createdAt" class="form-control" aria-label="Created At"> -->
+
+                    <div class="position-relative m-0 p-0 date-picker">
+                        <input class="form-control" [placeholder]="dateToday | date : 'dd MMM YYYY'"
+                            [value]="dateToday | date : 'dd MMM YYYY'" name="createdAt" formControlName="createdAt"
+                            ngbDatepicker #d="ngbDatepicker" (dateSelect)="
+                            onDateSelect($event)" autocomplete="off" />
+                        <button class=" btn text-primary border-0 position-absolute top-0 end-0" (click)="d.toggle()"
+                            type="button"><i class="fa-regular fa-calendar"></i></button>
+                    </div>
+                </div>
+                <!--  Payment Terms -->
+                <div class="col-12 col-md-6">
+                    <label for="paymentTerms" class="form-label text-primary">Payment Terms</label>
+                    <div ngbDropdown class="d-block">
+                        <button type="button" class="btn  d-flex text-primary pt-2 justify-content-between w-100"
+                            id="paymentTerms" ngbDropdownToggle (click)="changeDropDownArrow()"
+                            (blur)="changeDropDownArrow()">
+                            <span class="text-2">{{ selectedTerms }}</span>
+                            <i class="fa-solid" [ngClass]="isDropDownOpen ? 'fa-chevron-up' : 'fa-chevron-down' "></i>
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="paymentTerms" class="my-2 ms-0 w-100 py-0 rounded">
+                            <button class="text-2 py-2" ngbDropdownItem *ngFor="let term of terms"
+                                (click)="selectTerms(term)">
+                                {{ term.name}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Project Description -->
+            <div class="row my-4">
+                <div class="col">
+                    <div class="d-flex justify-content-between">
+                        <label for="description" class="form-label text-primary"
+                            [class.text-danger]="isSaving && formValidation['description'].errors">Project
+                            Description</label>
+                        <div *ngIf="isSaving && formValidation['description'].errors" class="text-danger">
+                            Can't be empty
+                        </div>
+                    </div>
+                    <input formControlName="description" type="text" placeholder="e.g. Graphic Design Service"
+                        class="form-control" id="description"
+                        [class.border-danger]="isSaving && formValidation['description'].errors" autocomplete="off">
+                </div>
+            </div>
+
+            <!-- items section -->
+            <app-item-form [isSaving]="isSaving" [itemsFromInvoiceToEdit]="invoice?.items"></app-item-form>
+
+            <!-- Show Invalid form and no item message -->
+            <ng-container *ngIf="showInvalidMessage">
+                <p class="text-danger mb-1"> - All fields must be filled </p>
+            </ng-container>
+            <ng-container *ngIf="showNeedItemMessage">
+                <p class="text-danger"> - An Item must be added </p>
+            </ng-container>
+
+            <!-- form action buttons -->
+            <div class="d-flex" [class.justify-content-end]="invoice">
+                <button [class.me-auto]="!invoice" class="btn btn-edit rounded-pill me-auto pt-1" (click)="onDiscard()">
+                    <span *ngIf="invoice">Cancel</span>
+                    <span *ngIf="!invoice">Discard</span>
+                </button>
+                <button *ngIf="!invoice" type="submit" (click)="onSaveNewInvoice('draft')"
+                    class="btn btn-dark  rounded-pill pt-1"> Save as
+                    Draft </button>
+                <button type="submit" (click)="onSaveNewInvoice('pending')"
+                    class="btn btn-primary rounded-pill text-white ms-2 pt-1">
+                    <span *ngIf="invoice"> Save Changes </span>
+                    <span *ngIf="!invoice"> Save & Send </span>
+                </button>
+            </div>
+        </form>
+    </div>

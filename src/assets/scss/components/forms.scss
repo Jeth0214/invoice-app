@@ -29,3 +29,50 @@ label,
     background-color: transparent;
     color: var(--text-secondary);
 }
+
+.form-check-input:checked {
+    background-color: #7C5DFA;
+    border-color: #7C5DFA;
+}
+
+.form-check-input:checked[type=radio] {
+    background-image: url(../../images/icon-check.svg);
+    background-repeat: no-repeat;
+    background-size: 12px;
+    background-position: center;
+
+}
+
+.form-check-input[type=radio] {
+    border-radius: 2px;
+
+}
+
+
+
+.form-check-input {
+    background: #DFE3FA;
+    cursor: pointer;
+
+    &:hover {
+        border: 1px solid #7C5DFA;
+        cursor: pointer;
+    }
+}
+
+;
+
+.form-check {
+    cursor: pointer;
+
+    label {
+        cursor: pointer;
+    }
+
+    &:hover {
+        .form-check-input {
+            border: 1px solid #7C5DFA;
+
+        }
+    }
+}

@@ -83,7 +83,8 @@
                             <span class="text-2">{{ selectedTerms }}</span>
                             <i class="fa-solid" [ngClass]="isDropDownOpen ? 'fa-chevron-up' : 'fa-chevron-down' "></i>
                         </button>
-                        <div ngbDropdownMenu aria-labelledby="paymentTerms" class="my-2 ms-0 w-100 py-0 rounded">
+                        <div ngbDropdownMenu aria-labelledby="paymentTerms"
+                            class="my-2 ms-0 w-100 py-0 rounded overflow-hidden">
                             <button class="text-2 py-2" ngbDropdownItem *ngFor="let term of terms"
                                 (click)="selectTerms(term)">
                                 {{ term.name}}
@@ -127,7 +128,7 @@
                     <span *ngIf="!invoice">Discard</span>
                 </button>
                 <button *ngIf="!invoice" type="submit" (click)="onSaveNewInvoice('draft')"
-                    class="btn btn-dark  rounded-pill pt-1"> Save as
+                    class="btn btn-draft  rounded-pill pt-1"> Save as
                     Draft </button>
                 <button type="submit" (click)="onSaveNewInvoice('pending')"
                     class="btn btn-primary rounded-pill text-white ms-2 pt-1">

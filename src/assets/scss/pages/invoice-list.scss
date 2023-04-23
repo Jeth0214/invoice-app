@@ -1,0 +1,15 @@
+@use '../abstracts/' as *;
+
+.invoice-hover {
+    transition: all .3s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        border: rem(1.5) solid #7C5DFA;
+        box-shadow: 0 .15rem .30rem rgba(0, 0, 0, .075);
+    }
+}
+
+.fa-plus-circle {
+    font-size: rem(25);
+}

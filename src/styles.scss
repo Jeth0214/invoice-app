@@ -1,33 +1,102 @@
 /* You can add global styles to this file, and also import other style files */
+$theme-colors: (
+    "primary": #7C5DFA,
+    "secondary": #1E2139,
+    "success":#33d69f,
+    "warning": #ff8f00,
+    "danger": #ec5757,
+    "light": #dfe3fa,
+    "dark": #212529,
+);
 
-// $theme-colors: (
-//     "primary": rgb(124, 93, 250),
-//     "secondary": rgb(30, 33, 57),
-//     "danger": rgb(236, 87, 87)
-// );
-
-@import "./assets/scss/main.scss";
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;700&display=swap');
 @import "node_modules/bootstrap/scss/bootstrap";
+@import './assets/scss/abstracts/';
+@import "./assets/scss/main.scss";
 
+:root {
 
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
-
-.off-canvas-width {
-    width: 719px !important;
-    overflow-y: scroll;
+    //font-size
+    --fs-h1: 2rem;
+    --fs-800: 2.5rem;
+    --fs-600: 1.75rem;
+    --fs-400: 0.875rem;
+    --fs-300: 0.75rem;
+    --fs-200: 0.6875rem
 }
 
-// Hide Arrows From Input Number
+// custom properties for dark and light mode
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+body.dark-mode {
+    // background colors 
+    --bg-body: #141625;
+    --bg-sidenav: #1E2139;
+    // Card , OffCanvas
+    --bg-container: #1E2139;
+    // Items in Invoice Details, Inputs ,  dropdowns and Date picker
+    --bg-element: #252945;
+    --bg-item: #0C0E16;
+
+    // off-canvas
+    --bg-offcanvas: #141625;
+
+    //forms
+    --bg-form: #252945;
+    --border-form: #1E2139;
+    --bg-status-draft: 223, 227, 250, 0.06;
+
+
+    // Text colors
+    --text-primary: #DFE3FA;
+    --text-secondary: #FFFFFF;
+    --text-tertiary: #DFE3FA;
+
+
+    // Buttons
+    --btn-edit-bg: #252945;
+    --btn-edit-text: #DFE3FA;
+    --btn-edit-hover-bg: #F9FAFE;
+    --btn-edit-hover-text: #7E88C3;
+
+
 }
 
-/* Firefox */
-input[type=number] {
-    -moz-appearance: textfield;
+body.light-mode {
+    // background colors 
+    --bg-body: #F8F8FB;
+    --bg-sidenav: #373B53;
+    // Card 
+    --bg-container: #FFFFFF;
+    // Inputs , Dropdowns and Date picker
+    --bg-element: #F9FAFE;
+    --bg-item: #373B53;
+    // off-canvas
+    --bg-offcanvas: #FFFFFF;
+
+    //form
+    --bg-form: #FFFFFF;
+    --border-form: #DFE3FA;
+    --bg-status-draft: 55, 59, 83, 0.06;
+
+    // Text colors
+    --text-primary: #888EB0;
+    --text-secondary: #0C0E16;
+    --text-tertiary: #7E88C3;
+
+    // Buttons
+    --btn-edit-bg: #F9FAFE;
+    --btn-edit-text: #7E88C3;
+    --btn-edit-hover-bg: #DFE3FA;
+    --btn-edit-hover-text: #7E88C3;
+
+
+}
+
+$font-family-sans-serif: 'League Spartan', sans-serif;
+$h1-font-size: 32px;
+
+body {
+    min-height: 100vh;
+    background-color: var(--bg-body);
+    color: var(--text-secondary);
 }

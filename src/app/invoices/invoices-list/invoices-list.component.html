@@ -1,29 +1,37 @@
-<div class="invoices">
+<div class="invoices container">
     <div class="my-5 d-flex justify-content-between align-items-center">
         <div>
-            <h1 class="mb-0 lh-1">Invoices</h1>
-            <p class="text-muted">{{ totalInvoicesMessage }}</p>
+            <h1 class="mb-0 lh-1 fw-bold">Invoices</h1>
+            <p class="text-1"> <span class="d-none d-md-inline">There are</span> {{ totalInvoicesMessage }}</p>
         </div>
         <div class="d-flex ">
             <div class="col text-end">
                 <form [formGroup]="statusForm">
 
                     <div ngbDropdown class="d-inline-block me-3" #myDrop="ngbDropdown">
-                        <button type="button" class="btn btn-light " id="invoiceDropdown" ngbDropdownToggle>
-                            Filter by status
+                        <button type="button"
+                            class="btn border-0 dropdown-filter px-2 d-flex text-primary justify-content-between align-items-center"
+                            id="invoiceDropdown" ngbDropdownToggle (click)="changeDropDownArrow()"
+                            (blur)="changeDropDownArrow()">
+                            <p class="text-2 mb-0">
+                                <span>Filter <span class="d-none d-md-inline">by status</span></span>
+                            </p>
+                            <small><i class="fa-solid ms-2"
+                                    [ngClass]="isDropDownOpen ? 'fa-chevron-up' : 'fa-chevron-down' "></i></small>
+
                         </button>
-                        <div class="px-2" ngbDropdownMenu aria-labelledby="invoiceDropdown">
+                        <div class="px-2 " ngbDropdownMenu aria-labelledby="invoiceDropdown">
                             <div class="form-check" *ngFor="let stat of status">
-                                <input formControlName="status" class="form-check-input rounded" value="{{ stat }}"
+                                <input formControlName="status" class="form-check-input rounded " value="{{ stat }}"
                                     type="radio" id="{{stat}}" (change)="selectStatus(stat); myDrop.close()">
-                                <label class="form-check-label" for="{{ stat }}">
+                                <label class="form-check-label text-2" for="{{ stat }}">
                                     {{stat}}
                                 </label>
                             </div>
                             <div class="form-check" *ngIf="showAllInvoices">
                                 <input formControlName="status" class="form-check-input rounded" value="total"
                                     type="radio" id="all" (change)="selectStatus('total'); myDrop.close()">
-                                <label class="form-check-label" for="total">
+                                <label class="form-check-label text-2" for="total">
                                     All Invoices
                                 </label>
                             </div>
@@ -32,54 +40,66 @@
                 </form>
             </div>
 
-            <button type="button" class="btn btn-primary rounded-pill" (click)="openOffCanvas()"> <i
-                    class="fa fa-plus-circle" aria-hidden="true"></i> Add
-                Invoice</button>
+            <button type="button" class="btn btn-primary rounded-pill d-flex text-white" (click)="openOffCanvas()">
+                <i class="fa fa-plus-circle me-2" aria-hidden="true"></i>
+                <span> New <span class="d-none d-md-inline">Invoice</span></span>
+            </button>
         </div>
     </div>
 
 
     <!-- Invoices Lists -->
-    <ng-container *ngIf="invoices.length > 0 else emptyInvoice">
-        <div [routerLink]="['/invoices', invoice.id]" class="card px-4 py-2 mb-3" *ngFor="let invoice of invoices">
-            <div class="d-flex flex-sm-wrap flex-md-nowrap justify-content-between align-items-center">
-                <p class="fw-bold mb-0 flex-fill"><small class="text-muted">#</small>{{ invoice.id }}
-                </p>
-                <p class="text-primary mb-0 flex-fill">{{ invoice.paymentDue }}</p>
-                <p class="text-primary mb-0 flex-fill">{{ invoice.clientName }}</p>
-                <p class="fw-bold mb-0 flex-fill">{{ invoice.total | currency:'GBP':'symbol-narrow' }}</p>
-                <p class="mb-0 flex-fill text-center">
-                    <button type="button"
-                        [ngClass]="{'btn-outline-success' : invoice.status === 'paid', 'btn-outline-warning' : invoice.status === 'pending', 'btn-outline-dark' : invoice.status === 'draft'}"
-                        class="btn  me-3 disabled">
-                        <i class="fa-solid fa-circle "></i>
-                        {{ invoice.status }}
-                    </button>
-                    <span class="text-muted">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </span>
-                </p>
+    <ng-container *ngIf="invoices.length > 0">
+        <div [routerLink]="['/invoices', invoice.id]" class="card bg-container p-3 mb-3 invoice-hover "
+            *ngFor="let invoice of invoices">
+            <div class="row align-items-center">
+                <div class=" col-6 col-md-2 text-start text-md-center">
+                    <p class="fw-bold mb-0">
+                        <small class="text-3">#</small>
+                        <span>{{ invoice.id }}</span>
+                    </p>
+                </div>
+                <div class="col-6 col-md-2 text-end text-md-start">
+                    <p class="text-1 mb-0">{{ invoice.paymentDue | date : 'dd MMM YYYY' }}</p>
+
+                </div>
+                <div class="col-6 col-md-3 text-md-start text-md-center">
+                    <p class="text-1 mb-0">{{ invoice.clientName }}</p>
+                </div>
+                <div class="col-6 col-md-2 text-end text-md-start">
+                    <p class="fw-bold mb-0">{{ invoice.total | currency:'GBP':'symbol-narrow' }}</p>
+                </div>
+                <div class="col-12 col-md-2  mt-3 mt-md-0">
+                    <div class="text-center p-2 mb-0 bg-opacity-25 rounded-3"
+                        [ngClass]="{' bg-success text-success' : invoice.status === 'paid', ' bg-warning text-warning' : invoice.status === 'pending', ' bg-draft text-2' : invoice.status === 'draft'}">
+                        <i class="fa-solid d-sm-inline d-md-none d-lg-inline fa-circle me-1 "></i>
+                        <span>{{ invoice.status | titlecase }}</span>
+                    </div>
+                </div>
+                <div class="col-md-1 text-primary text-center d-none d-md-inline">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
             </div>
         </div>
     </ng-container>
 
     <!-- Empty lists -->
-    <ng-template #emptyInvoice>
-        <div class="d-flex justify-content-center align-items-center">
-            <div class="text-center">
+    <ng-container *ngIf="hasInvoices">
+        <div class="d-flex justify-content-center align-items-center mt-4">
+            <div class="text-center mt-4">
                 <img src="../../../assets/images/illustration-empty.svg" alt="empty image">
-                <h2 class="my-3 mb-0">There is nothing here</h2>
-                <p class="text-black-50 mb-0">
-                    Create an invoice by clicking the
-                </p>
-                <p class="text-black-50">
-                    <a type="button" class="btn btn-link text-black-50 text-decoration-none fw-bold px-1 pb-2 mr-1">New
-                        Invoice</a>button and get started
-                </p>
-
+                <h2 class="my-3">There is nothing here</h2>
+                <div class="text-1">
+                    <p class="mb-0 lh-sm">
+                        Create an invoice by clicking the
+                    </p>
+                    <p class="">
+                        <span class="fw-bold">New Invoice</span> button and get started
+                    </p>
+                </div>
             </div>
 
         </div>
-    </ng-template>
+    </ng-container>
 
 </div>

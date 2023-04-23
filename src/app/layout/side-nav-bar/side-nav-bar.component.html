@@ -1,21 +1,20 @@
-<!-- <header class="p-0">
-    <nav class="navbar navbar-dark bg-dark p-0  side-navbar">
-        <a class="navbar-brand p-0 me-0">
-            <img src="../assets/images/brand-logo.svg" alt="invoice app logo">
-        </a>
+<nav class="navbar position-fixed flex-row flex-md-column p-0">
+    <a class="navbar-brand p-0 me-0">
+        <img class="navbar-brand__logo" src="../assets/images/brand-logo.svg" alt="invoice app">
+    </a>
 
 
-        <ul class="nav-profile d-flex">
-            <li>
-
-                <img src="../assets/images/icon-moon.svg">
-            </li>
-            <li>
-
-                <img src="../assets/images/image-avatar.jpg" class="rounded-circle nav-profile-image">
-            </li>
-        </ul>
-
-
-    </nav>
-</header> -->
+    <div
+        class="nav-link d-flex flex-row flex-md-column align-items-center justify-content-center me-3 me-md-0 mb-0 mb-md-4">
+        <div class="nav-link__theme  mb-md-4 me-4 me-md-0">
+            <input id="darkMode" type="checkbox" [checked]="darkMode$ | async" (change)="onToggle()" class="toggle" />
+            <label class="toggle-label" for="darkMode">
+                <img src="./../../../assets/images/icon-sun.svg" alt="light toggle" class="sun nav-link__theme-icon" />
+                <img src="./../../../assets/images/icon-moon.svg" alt="dark toggle" class="moon nav-link__theme-con" />
+            </label>
+        </div>
+        <div class="nav-link__profile">
+            <img src="../assets/images/image-avatar.jpg" class="rounded-circle nav-profile-image">
+        </div>
+    </div>
+</nav>

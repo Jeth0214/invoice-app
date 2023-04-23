@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AddEditInvoicesComponent } from '../add-edit-invoices/add-edit-invoices.component';
-import { Invoice } from '../invoice.model';
-import { InvoiceService } from '../invoice.service';
+import { Invoice } from '../../shared/models/invoice.model';
+import { InvoiceService } from '../../shared/services/invoice.service';
 
 @Component({
   selector: 'app-invoices-list',
@@ -18,6 +18,8 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
   totalInvoicesMessage: string = 'No invoices';
   status: string[] = ['Draft', 'Pending', 'Paid'];
   showAllInvoices: boolean = false;
+  hasInvoices: boolean = false;
+  isDropDownOpen = false;
 
   statusForm = new FormGroup({
     status: new FormControl('', Validators.required)
@@ -28,7 +30,7 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getAllInvoice();
-    this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
+    this.openOffCanvas();
   }
 
   ngAfterViewInit() {
@@ -42,12 +44,16 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
 
         this.tempInvoicesArray = data;
         this.invoices = data;
-        this.showInvoiceLengthMessage(data.length, 'total')
+        this.showInvoiceLengthMessage(data.length, 'total');
+      } else {
+        this.hasInvoices = true;
+
       }
     })
   }
 
   selectStatus(status: string) {
+    this.isDropDownOpen = false;
     let stat = status.toLowerCase();
     this.showAllInvoices = stat !== 'total' ? true : false;
     this.invoices = stat === 'total' ? this.tempInvoicesArray : this.tempInvoicesArray.filter(invoice => invoice.status === stat);
@@ -55,16 +61,20 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
 
   }
 
-  openOffCanvas() {
-    this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
+  changeDropDownArrow() {
+    this.isDropDownOpen = !this.isDropDownOpen;
+  }
 
+  openOffCanvas() {
+    const offCanvasRef = this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
+    offCanvasRef.componentInstance.title = "New Invoice";
   }
 
   private showInvoiceLengthMessage(total: number, stat: string) {
     if (total > 0) {
-      this.totalInvoicesMessage = `There are ${total} ${stat} invoices`;
+      this.totalInvoicesMessage = `${total} ${stat} invoices`;
     } else if (total <= 0 && stat != 'total') {
-      this.totalInvoicesMessage = `There are no ${stat} invoices`;
+      this.totalInvoicesMessage = `no ${stat} invoices`;
     } else {
       this.totalInvoicesMessage = 'No invoices';
     }

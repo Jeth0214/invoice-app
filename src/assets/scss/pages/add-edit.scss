@@ -1,0 +1,21 @@
+@use '../abstracts/' as *;
+
+.add-edit {
+    max-width: rem(544);
+    margin-inline: auto;
+    scroll-behavior: smooth;
+    margin-top: rem(100);
+    padding-inline: rem(20);
+
+    @include breakpoint-up('medium') {
+        padding-inline: rem(55) 0;
+    }
+
+    .fa-trash {
+        color: #888EB0;
+
+        &:hover {
+            color: #ec5757
+        }
+    }
+}

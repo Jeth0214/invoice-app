@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap';
-import { Invoice, Term } from '../invoice.model';
-import { InvoiceService } from '../invoice.service';
+import { NgbActiveOffcanvas, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { Invoice, Item, Term, Address } from '../../shared/models/invoice.model';
+import { InvoiceService } from '../../shared/services/invoice.service';
 
 @Component({
   selector: 'app-add-edit-invoices',
@@ -10,18 +10,23 @@ import { InvoiceService } from '../invoice.service';
   styleUrls: ['./add-edit-invoices.component.scss']
 })
 export class AddEditInvoicesComponent implements OnInit {
+  // data from invoice list or invoice details offcanvas instance
+  @Input() title!: string;
+  @Input() invoice: Invoice | undefined;
 
   invoiceForm!: FormGroup;
   isSaving: boolean = false;
   showInvalidMessage: boolean = false;
   showNeedItemMessage: boolean = false;
   selectedTerms!: string;
+  dateToday = new Date();
+  isDropDownOpen = false;
 
   terms: Term[] = [
     { name: "Net 1 Day", value: 1 },
-    { name: "Net 7 Day", value: 7 },
-    { name: "Net 14 Day", value: 14 },
-    { name: "Net 30 Day", value: 30 }
+    { name: "Net 7 Days", value: 7 },
+    { name: "Net 14 Days", value: 14 },
+    { name: "Net 30 Days", value: 30 }
   ];
 
 
@@ -32,11 +37,21 @@ export class AddEditInvoicesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.setForm();
+    this.setInvoiceForm();
+    // console.log(this.invoice)
+    if (this.invoice) {
+      console.log('Invoice from detail page: ', this.invoice);
+      this.invoiceForm.patchValue({ 'description': this.invoice.description });
+      this.invoiceForm.patchValue({ 'createdAt': this.invoice.createdAt });
+      this.invoiceForm.patchValue({ 'paymentTerms': this.invoice.paymentTerms });
+      this.invoiceForm.patchValue({ 'clientName': this.invoice.clientName });
+      this.invoiceForm.patchValue({ 'clientEmail': this.invoice.clientEmail });
+      this.dateToday = new Date(this.invoice.createdAt);
+    }
     this.selectedTerms = this.terms[0].name;
   }
 
-  setForm() {
+  setInvoiceForm() {
     this.invoiceForm = this.formBuilder.group({
       description: ['', Validators.required],
       createdAt: [this.calculatePaymentDue(0, new Date()), Validators.required],
@@ -46,23 +61,29 @@ export class AddEditInvoicesComponent implements OnInit {
     });
   }
 
+  checkFormValues() {
+    return Object.keys(this.invoiceForm.controls).forEach(key => { console.log(key) }
+    )
+  }
+
 
   get formValidation(): { [key: string]: AbstractControl } {
     return this.invoiceForm.controls;
   }
 
   onSaveNewInvoice(saveAs: string) {
-    console.log(saveAs);
-    console.log('status', this.invoiceForm.status);
-    console.log('invoice', this.invoiceForm.value);
-    console.log('item', this.invoiceForm.get('items')?.value.length);
+    // console.log(saveAs);
+    // console.log('status', this.invoiceForm.status);
+    // console.log('invoice', this.invoiceForm.value);
+    //console.log('item', this.invoiceForm.get('items')?.value.length);
+
     //check if save status is 'pending' or 'draft;
     // if draft , get the form value and save
     if (saveAs === 'draft') {
       this.isSaving = false;
       this.saveInvoiceData(saveAs)
     }
-    // if pending , validate the form  before saving
+    // if pending or editing, validate the form  before saving
     if (saveAs == 'pending') {
       this.isSaving = true;
       let itemslength = this.invoiceForm.get('items')?.value.length;
@@ -95,11 +116,19 @@ export class AddEditInvoicesComponent implements OnInit {
       invoiceData.total = itemsValues.reduce((total: any, item: any) => {
         return total + +item.total;
       }, 0);
+    } else {
+      invoiceData.total = 0;
+      invoiceData.items = []
     }
 
-    // set the invoice id to created date in milliseconds and convert it to string;
-    let id = +new Date(invoiceData.createdAt);
-    invoiceData.id = `#${id.toString()}`;
+    // check first if the status is edit 
+    // set the invoice id to created date in milliseconds and convert it to string ;
+
+    if (this.invoice) {
+      invoiceData.id = this.invoice.id
+    } else {
+      invoiceData.id = this.generateId()
+    }
 
     // add payment due to invoice data
     invoiceData.paymentDue = this.calculatePaymentDue(invoiceData.paymentTerms, invoiceData.createdAt);
@@ -107,17 +136,24 @@ export class AddEditInvoicesComponent implements OnInit {
     //set the invoice status according to saveAs state
     invoiceData.status = saveAs;
     console.log('Invoice Data: ', invoiceData);
-
-    // send data for storage
-    this.invoiceService.addInvoice(invoiceData).subscribe((invoice: Invoice) => {
-      console.log('Response', invoice);
-      if (invoice) {
-        this.resetForm();
+    if (this.invoice) {
+      this.invoiceService.updateInvoice(invoiceData).subscribe((response) => {
+        // Todo: If backend is ready, check if the invoice was created or updated successfully
+        console.log('Edit Response: ' + response);
         setTimeout(() => {
           this.onDiscard();
         }, 1000);
-      }
-    })
+      })
+    } else {
+      // send data for storage
+      this.invoiceService.addInvoice(invoiceData).subscribe((invoice: Invoice) => {
+        // Todo: If backend is ready, check if the invoice was created or updated successfully
+        console.log('Edit Response: ' + invoice);
+        setTimeout(() => {
+          this.onDiscard();
+        }, 1000);
+      })
+    }
   }
 
   resetForm(): void {
@@ -133,8 +169,14 @@ export class AddEditInvoicesComponent implements OnInit {
 
 
   selectTerms(term: Term): void {
+    console.log('Selected Term :' + term.name)
+    this.isDropDownOpen = false
     this.selectedTerms = term.name;
     this.invoiceForm.patchValue({ 'paymentTerms': term.value })
+  }
+
+  changeDropDownArrow() {
+    this.isDropDownOpen = !this.isDropDownOpen;
   }
 
 
@@ -147,9 +189,23 @@ export class AddEditInvoicesComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
+  generateId(): string {
+    return Math.random().toString(36).substring(7).split("").map(char => {
+      return char.toUpperCase();
+    }).join("");
+  }
+
   onDiscard() {
     this.resetForm();
     this.activeOffcanvas.dismiss()
   }
+
+  onDateSelect(date: NgbDate) {
+    this.dateToday = new Date(date.year, date.month - 1, date.day);
+    console.log('Selected Date' + date);
+    //this.calculatePaymentDue(this.dateToday)
+  }
+
+
 
 }

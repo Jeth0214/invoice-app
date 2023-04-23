@@ -1,53 +1,41 @@
 <!-- Item Lists -->
 <h2>Item List</h2>
-<div class="row">
-    <div class="col-md-4">
-        Item
-    </div>
-    <div class="col-md-2">
-        Qty
-    </div>
-    <div class="col-md-2">
-        Price
-    </div>
-    <div class="col-md-2">
-        Total
-    </div>
-    <div class="col-md-2">
-
-    </div>
-</div>
 <ng-container *ngIf="items">
     <ng-container formArrayName="items">
-        <div *ngFor="let item of items.controls; index as i" [formGroupName]="i" class="my-1">
+        <div *ngFor="let item of items.controls; index as i" [formGroupName]="i" class="">
             <div class="d-flex justify-content-center mb-1">
                 <div class="text-danger"
                     *ngIf="isSaving && ( item.get('price')?.errors?.['minNum'] || item.get('quantity')?.errors?.['minNum'])">
                     <div> Price Or Quantity can't must be greater than 0 </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4">
+            <div class="row my-2 ">
+                <div class="col-12 mb-3 mb-md-0 col-md-4">
+                    <label for="name" class="form-label text-primary mb-0">Item Name</label>
                     <input formControlName="name" type="text" class="form-control"
-                        [class.border-danger]="isSaving && item.get('name')?.errors">
+                        [class.border-danger]="isSaving && item.get('name')?.errors" autocomplete="off">
                 </div>
-                <div class="col-md-2">
+                <div class="col-3 col-md-2">
+                    <label for="quantity" class="form-label text-primary mb-0">Qty.</label>
                     <input formControlName="quantity" type="number" class="form-control" min="1"
                         (input)="getValueForItemsTotal(item, i, $event)"
-                        [class.border-danger]="isSaving && item.get('quantity')?.errors?.['minNum']">
+                        [class.border-danger]="isSaving && item.get('quantity')?.errors?.['minNum']" autocomplete="off">
                 </div>
-                <div class="col-md-2">
+                <div class="col-4 col-md-3">
+                    <label for="price" class="form-label text-primary mb-0">Price</label>
                     <input formControlName="price" type="number" class="form-control" min="1"
                         (input)="getValueForItemsTotal(item, i, $event)"
-                        [class.border-danger]="isSaving &&  item.get('price')?.errors?.['minNum']">
+                        [class.border-danger]="isSaving &&  item.get('price')?.errors?.['minNum']" autocomplete="off">
                 </div>
-                <div class=" col-md-2">
-                    <ng-container *ngIf="item.value.quantity && item.value.price">
-                        {{ item.value.quantity * item.value.price | number: '1.2-2'}}
-                    </ng-container>
+                <div class="col-4 col-md-2">
+                    <label for="total" class="form-label text-primary mb-0">Total</label>
+                    <input formControlName="total" type="number"
+                        [value]="item.value.quantity * item.value.price | number: '1.2-2'"
+                        class="form-control border border-0 px-0" min="1" aria-label="Disabled input" [disabled]="true"
+                        readonly>
                 </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-link text-danger"><i class="fa-solid fa-trash"
+                <div class="col-1 col-md-1 align-self-end p-0">
+                    <button type="button" class="btn btn-link"><i class="fa-solid fa-trash"
                             (click)="removeItem(i)"></i></button>
                 </div>
             </div>
@@ -55,6 +43,6 @@
     </ng-container>
 </ng-container>
 <!-- Add item button -->
-<button class="w-100 rounded-pill btn btn-secondary my-4" (click)="addItem()">
+<button class="w-100  rounded-pill btn btn-edit mt-3 mb-4 py-2" (click)="addItem()">
     <i class="fa-solid fa-plus"></i> Add New Item
 </button>

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, ControlContainer, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { Address, Invoice } from 'src/app/shared/models/invoice.model';
 
 @Component({
   selector: 'app-address-form',
@@ -8,10 +9,11 @@ import { AbstractControl, ControlContainer, FormBuilder, FormGroup, FormGroupDir
   viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
 export class AddressFormComponent implements OnInit {
-  @Input()
-  addressType!: string;
-  invoiceForm!: FormGroup;
+  @Input() addressType!: string;
   @Input() isSaving!: boolean;
+  @Input() addressData: Address | undefined;
+
+  invoiceForm!: FormGroup;
 
   constructor(
     private formParent: FormGroupDirective,
@@ -29,6 +31,14 @@ export class AddressFormComponent implements OnInit {
         country: ['', Validators.required]
       })
     )
+    if (this.addressData) {
+      (<FormGroup>this.invoiceForm.controls[this.addressType]).patchValue({
+        'street': this.addressData.street,
+        'city': this.addressData.city,
+        'postCode': this.addressData.postCode,
+        'country': this.addressData.country,
+      })
+    }
   };
 
   get address() {

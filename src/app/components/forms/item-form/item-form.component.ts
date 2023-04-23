@@ -9,6 +9,7 @@ import {
   Validators
 } from '@angular/forms';
 import { ValidateMinNum } from 'src/app/shared/minNum.validator';
+import { Item } from 'src/app/shared/models/invoice.model';
 
 
 
@@ -16,13 +17,12 @@ import { ValidateMinNum } from 'src/app/shared/minNum.validator';
   selector: 'app-item-form',
   templateUrl: './item-form.component.html',
   styleUrls: ['./item-form.component.scss'],
-  viewProviders: [
-    { provide: ControlContainer, useExisting: FormGroupDirective }
-  ]
+  viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
+
 export class ItemFormComponent implements OnInit {
-  @Input()
-  isSaving!: boolean;
+  @Input() isSaving!: boolean;
+  @Input() itemsFromInvoiceToEdit: Item[] | undefined;
   invoiceForm!: FormGroup;
 
 
@@ -33,28 +33,41 @@ export class ItemFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.invoiceForm = this.formParent.form;
+    if (this.itemsFromInvoiceToEdit) {
+      this.itemsFromInvoiceToEdit.forEach(item => {
+        this.addItem(item)
+      });
+    }
+    else {
+      this.addItem();
+    };
+
   }
 
   get items(): FormArray {
     return this.invoiceForm.get('items') as FormArray;
   }
 
-  addItem() {
+  addItem(item?: Item) {
     if (!this.invoiceForm.contains('items')) {
       this.invoiceForm.addControl(
         'items',
         this.formBuilder.array([
-          this.insertNewItemForm()
+          this.insertNewItemForm(item)
         ])
       )
     } else {
 
-      this.items.push(this.insertNewItemForm());
+      this.items.push(this.insertNewItemForm(item));
     }
   }
 
   removeItem(item: number) {
+    //console.log('removeItem', this.items.length)
     this.items.removeAt(item);
+    if (this.items.length <= 0) {
+      this.addItem();
+    }
   };
 
   getValueForItemsTotal(item: any, index: number, e: Event) {
@@ -65,12 +78,13 @@ export class ItemFormComponent implements OnInit {
   }
 
 
-  insertNewItemForm(): FormGroup {
+  insertNewItemForm(item?: Item): FormGroup {
+
     return new FormGroup({
-      'name': new FormControl('', Validators.required),
-      'quantity': new FormControl('', [Validators.required, ValidateMinNum]),
-      'price': new FormControl('', [Validators.required, ValidateMinNum]),
-      'total': new FormControl(''),
+      'name': new FormControl(item ? item.name : '', Validators.required),
+      'quantity': new FormControl(item ? item.quantity : '', [Validators.required, ValidateMinNum]),
+      'price': new FormControl(item ? item.price : '', [Validators.required, ValidateMinNum]),
+      'total': new FormControl(item ? item.total : '')
     })
   }
 

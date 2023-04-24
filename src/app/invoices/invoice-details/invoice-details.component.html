@@ -25,7 +25,7 @@
                     class="btn btn-danger text-white rounded-pill me-2 pt-1">
                     Delete
                 </button>
-                <button *ngIf="!isPaid" type="button" (click)="onMarkAsPaid(invoice)"
+                <button *ngIf="!isPaid && invoice.status != 'draft'" type="button" (click)="onMarkAsPaid(invoice)"
                     class="btn btn-primary rounded-pill text-white pt-1">
                     Mark as Paid
                 </button>

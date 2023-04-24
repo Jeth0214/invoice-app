@@ -65,10 +65,10 @@
                     <!-- <input type="date" formControlName="createdAt" class="form-control" aria-label="Created At"> -->
 
                     <div class="position-relative m-0 p-0 date-picker">
-                        <input class="form-control" [placeholder]="dateToday | date : 'dd MMM YYYY'"
-                            [value]="dateToday | date : 'dd MMM YYYY'" name="createdAt" formControlName="createdAt"
-                            ngbDatepicker #d="ngbDatepicker" (dateSelect)="
-                            onDateSelect($event)" autocomplete="off" />
+                        <input class="form-control" [placeholder]="createdDate | date : 'dd MMM YYYY'" name="createdAt"
+                            [value]="createdDate | date : 'dd MMM YYYY'" ngbDatepicker #d="ngbDatepicker" (dateSelect)="
+                            onDateSelect($event)" autocomplete="off"
+                            [class.border-danger]="isSaving && formValidation['invoiceDate'].errors?.['required']" />
                         <button class=" btn text-primary border-0 position-absolute top-0 end-0" (click)="d.toggle()"
                             type="button"><i class="fa-regular fa-calendar"></i></button>
                     </div>

@@ -38,9 +38,7 @@ export class ItemFormComponent implements OnInit {
         this.addItem(item)
       });
     }
-    else {
-      this.addItem();
-    };
+
 
   }
 

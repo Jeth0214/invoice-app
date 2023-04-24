@@ -19,7 +19,7 @@ export class AddEditInvoicesComponent implements OnInit {
   showInvalidMessage: boolean = false;
   showNeedItemMessage: boolean = false;
   selectedTerms!: string;
-  dateToday = new Date();
+  createdDate = '';
   isDropDownOpen = false;
 
   terms: Term[] = [
@@ -39,43 +39,40 @@ export class AddEditInvoicesComponent implements OnInit {
   ngOnInit(): void {
     this.setInvoiceForm();
     // console.log(this.invoice)
-    if (this.invoice) {
-      console.log('Invoice from detail page: ', this.invoice);
-      this.invoiceForm.patchValue({ 'description': this.invoice.description });
-      this.invoiceForm.patchValue({ 'createdAt': this.invoice.createdAt });
-      this.invoiceForm.patchValue({ 'paymentTerms': this.invoice.paymentTerms });
-      this.invoiceForm.patchValue({ 'clientName': this.invoice.clientName });
-      this.invoiceForm.patchValue({ 'clientEmail': this.invoice.clientEmail });
-      this.dateToday = new Date(this.invoice.createdAt);
-    }
+    // if (this.invoice) {
+    //   console.log('Invoice from detail page: ', this.invoice);
+    //   this.invoiceForm.patchValue({ 'description': this.invoice.description });
+    //   this.invoiceForm.patchValue({ 'invoiceDate': this.invoice.createdAt });
+    //   this.invoiceForm.patchValue({ 'paymentTerms': this.invoice.paymentTerms });
+    //   this.invoiceForm.patchValue({ 'clientName': this.invoice.clientName });
+    //   this.invoiceForm.patchValue({ 'clientEmail': this.invoice.clientEmail });
+    //   this.createdDate = this.invoice.createdAt;
+    // }
     this.selectedTerms = this.terms[0].name;
   }
 
+  //Set the form
   setInvoiceForm() {
     this.invoiceForm = this.formBuilder.group({
       description: ['', Validators.required],
-      createdAt: [this.calculatePaymentDue(0, new Date()), Validators.required],
+      invoiceDate: [this.formatDateToday(new Date()), Validators.required],
       paymentTerms: [1, Validators.required],
       clientName: ['', Validators.required],
       clientEmail: ['', [Validators.required, Validators.email]]
     });
   }
 
-  checkFormValues() {
-    return Object.keys(this.invoiceForm.controls).forEach(key => { console.log(key) }
-    )
-  }
-
-
+  // use getter to get form info easily
   get formValidation(): { [key: string]: AbstractControl } {
     return this.invoiceForm.controls;
   }
 
   onSaveNewInvoice(saveAs: string) {
-    // console.log(saveAs);
-    // console.log('status', this.invoiceForm.status);
-    // console.log('invoice', this.invoiceForm.value);
-    //console.log('item', this.invoiceForm.get('items')?.value.length);
+    console.log('status', this.invoiceForm.status);
+    console.log('invoice', this.invoiceForm.value);
+    // console.log('item', this.invoiceForm.get('items')?.value.length);
+    // console.log('payment Term ', this.invoiceForm.get('items')?.value.length);
+    // this.checkFormValues()
 
     //check if save status is 'pending' or 'draft;
     // if draft , get the form value and save
@@ -91,7 +88,7 @@ export class AddEditInvoicesComponent implements OnInit {
       if (this.invoiceForm.invalid) {
         this.showInvalidMessage = true;
       }
-      if (itemslength == undefined || itemslength < 1) {
+      if (itemslength == undefined || itemslength <= 0) {
         this.showNeedItemMessage = true;
       }
       if (this.invoiceForm.valid && itemslength > 0) {
@@ -104,10 +101,39 @@ export class AddEditInvoicesComponent implements OnInit {
   saveInvoiceData(saveAs: string): void {
     this.showInvalidMessage = false;
     this.showNeedItemMessage = false;
+    let dataToSend = this.setInvoiceDataToSend(saveAs)
+    // console.log('Invoice Data: ', invoiceData);
+    if (this.invoice) {
+      this.invoiceService.updateInvoice(dataToSend).subscribe((response) => {
+        // Todo: If backend is ready, check if the invoice was created or updated successfully
+        console.log('Edit Response: ' + response);
+        // setTimeout(() => {
+        //   this.onDiscard();
+        // }, 1000);
+      })
+    } else {
+      // send data for storage
+      this.invoiceService.addInvoice(dataToSend).subscribe((invoice: Invoice) => {
+        // Todo: If backend is ready, check if the invoice was created or updated successfully
+        console.log('Edit Response: ' + invoice);
+        // setTimeout(() => {
+        //   this.onDiscard();
+        // }, 1000);
+      })
+    }
+  }
+
+  setInvoiceDataToSend(saveAs: string) {
     // store invoice form inputs to as initial invoice data
-    let invoiceData: Invoice = {
+    let invoiceData = {
       ...this.invoiceForm.value
     };
+
+    // remove invoiceDate from data to send
+    delete invoiceData.invoiceDate;
+
+    //set the invoice createdAt property to createdDate,
+    invoiceData.createdAt = this.createdDate;
 
     // calculate all items sum and assign it  to invoice total data
     // check if the items exist especially on 'draft' status
@@ -135,25 +161,8 @@ export class AddEditInvoicesComponent implements OnInit {
 
     //set the invoice status according to saveAs state
     invoiceData.status = saveAs;
-    console.log('Invoice Data: ', invoiceData);
-    if (this.invoice) {
-      this.invoiceService.updateInvoice(invoiceData).subscribe((response) => {
-        // Todo: If backend is ready, check if the invoice was created or updated successfully
-        console.log('Edit Response: ' + response);
-        setTimeout(() => {
-          this.onDiscard();
-        }, 1000);
-      })
-    } else {
-      // send data for storage
-      this.invoiceService.addInvoice(invoiceData).subscribe((invoice: Invoice) => {
-        // Todo: If backend is ready, check if the invoice was created or updated successfully
-        console.log('Edit Response: ' + invoice);
-        setTimeout(() => {
-          this.onDiscard();
-        }, 1000);
-      })
-    }
+
+    return invoiceData
   }
 
   resetForm(): void {
@@ -181,12 +190,11 @@ export class AddEditInvoicesComponent implements OnInit {
 
 
   calculatePaymentDue(paymentTerm: number = 0, createdDate: string | Date): string {
-    var result = new Date(createdDate);
+    // console.log('Term: ', paymentTerm);
+    // console.log('Created Term: ', createdDate);
+    let result = new Date(createdDate);
     result.setDate(result.getDate() + paymentTerm);
-    let day = result.getDate();
-    let year = result.getFullYear();
-    let month = result.getMonth() + 1;
-    return `${year}-${month}-${day}`;
+    return this.formatDateToday(result);
   }
 
   generateId(): string {
@@ -201,11 +209,22 @@ export class AddEditInvoicesComponent implements OnInit {
   }
 
   onDateSelect(date: NgbDate) {
-    this.dateToday = new Date(date.year, date.month - 1, date.day);
-    console.log('Selected Date' + date);
-    //this.calculatePaymentDue(this.dateToday)
+    this.createdDate = this.formatDateToday(new Date(`${date.year}-${date.month}-${date.day}`));
+    this.invoiceForm.patchValue({ 'invoiceDate': this.createdDate })
+    // console.log('created Date', this.createdDate)
+    // console.log('Selected Date ', date);
   }
 
 
+  // format the date 
+  formatDateToday(date: Date) {
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
+    let formattedDate = `${year}-${month}-${day}`;
+    //  console.log('Converted Date: ', formattedDate);
+    this.createdDate = formattedDate;
+    return formattedDate;
+  }
 
 }

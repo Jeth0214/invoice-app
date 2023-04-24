@@ -42,6 +42,8 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
       if (id) {
         this.invoiceService.getInvoice(id).subscribe(data => {
           this.invoice = data;
+          console.log('Invoice details: ', this.invoice);
+
           if (this.invoice.status === 'paid') {
             this.isPaid = true
           }

@@ -68,7 +68,8 @@
                         <input class="form-control" [placeholder]="createdDate | date : 'dd MMM YYYY'" name="createdAt"
                             [value]="createdDate | date : 'dd MMM YYYY'" ngbDatepicker #d="ngbDatepicker" (dateSelect)="
                             onDateSelect($event)" autocomplete="off"
-                            [class.border-danger]="isSaving && formValidation['invoiceDate'].errors?.['required']" />
+                            [class.border-danger]="(isSaving && formValidation['invoiceDate'].errors?.['required'])  "
+                            readonly (click)="d.toggle()" />
                         <button class=" btn text-primary border-0 position-absolute top-0 end-0" (click)="d.toggle()"
                             type="button"><i class="fa-regular fa-calendar"></i></button>
                     </div>

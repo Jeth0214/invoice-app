@@ -31,7 +31,9 @@
     }
 
     &:focus {
-        border: 1px solid #0C0E16
+        background-color: #373B53;
+        color: #DFE3FA;
+        border: 1px solid #373B53;
     }
 }
 

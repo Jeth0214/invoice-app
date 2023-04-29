@@ -39,15 +39,15 @@ export class AddEditInvoicesComponent implements OnInit {
   ngOnInit(): void {
     this.setInvoiceForm();
     // console.log(this.invoice)
-    // if (this.invoice) {
-    //   console.log('Invoice from detail page: ', this.invoice);
-    //   this.invoiceForm.patchValue({ 'description': this.invoice.description });
-    //   this.invoiceForm.patchValue({ 'invoiceDate': this.invoice.createdAt });
-    //   this.invoiceForm.patchValue({ 'paymentTerms': this.invoice.paymentTerms });
-    //   this.invoiceForm.patchValue({ 'clientName': this.invoice.clientName });
-    //   this.invoiceForm.patchValue({ 'clientEmail': this.invoice.clientEmail });
-    //   this.createdDate = this.invoice.createdAt;
-    // }
+    if (this.invoice) {
+      console.log('Invoice from detail page: ', this.invoice);
+      this.invoiceForm.patchValue({ 'description': this.invoice.description });
+      this.invoiceForm.patchValue({ 'invoiceDate': this.invoice.createdAt });
+      this.invoiceForm.patchValue({ 'paymentTerms': this.invoice.paymentTerms });
+      this.invoiceForm.patchValue({ 'clientName': this.invoice.clientName });
+      this.invoiceForm.patchValue({ 'clientEmail': this.invoice.clientEmail });
+      this.createdDate = this.invoice.createdAt;
+    }
     this.selectedTerms = this.terms[0].name;
   }
 
@@ -70,32 +70,19 @@ export class AddEditInvoicesComponent implements OnInit {
   onSaveNewInvoice(saveAs: string) {
     console.log('status', this.invoiceForm.status);
     console.log('invoice', this.invoiceForm.value);
-    // console.log('item', this.invoiceForm.get('items')?.value.length);
-    // console.log('payment Term ', this.invoiceForm.get('items')?.value.length);
-    // this.checkFormValues()
 
-    //check if save status is 'pending' or 'draft;
-    // if draft , get the form value and save
-    if (saveAs === 'draft') {
-      this.isSaving = false;
-      this.saveInvoiceData(saveAs)
+    this.isSaving = true;
+    let itemslength = this.invoiceForm.get('items')?.value.length;
+    //check if form is valid
+    if (this.invoiceForm.invalid) {
+      this.showInvalidMessage = true;
     }
-    // if pending or editing, validate the form  before saving
-    if (saveAs == 'pending') {
-      this.isSaving = true;
-      let itemslength = this.invoiceForm.get('items')?.value.length;
-      //check if form is valid
-      if (this.invoiceForm.invalid) {
-        this.showInvalidMessage = true;
-      }
-      if (itemslength == undefined || itemslength <= 0) {
-        this.showNeedItemMessage = true;
-      }
-      if (this.invoiceForm.valid && itemslength > 0) {
-        this.saveInvoiceData(saveAs);
-      }
+    if (itemslength == undefined || itemslength <= 0) {
+      this.showNeedItemMessage = true;
     }
-
+    if (this.invoiceForm.valid && itemslength > 0) {
+      this.saveInvoiceData(saveAs);
+    }
   }
 
   saveInvoiceData(saveAs: string): void {
@@ -103,22 +90,22 @@ export class AddEditInvoicesComponent implements OnInit {
     this.showNeedItemMessage = false;
     let dataToSend = this.setInvoiceDataToSend(saveAs)
     // console.log('Invoice Data: ', invoiceData);
-    if (this.invoice) {
+    if (this.invoice && this.title === 'Edit') {
       this.invoiceService.updateInvoice(dataToSend).subscribe((response) => {
         // Todo: If backend is ready, check if the invoice was created or updated successfully
-        console.log('Edit Response: ' + response);
-        // setTimeout(() => {
-        //   this.onDiscard();
-        // }, 1000);
+        console.log('Edit Response: ', response);
+        setTimeout(() => {
+          this.onDiscard();
+        }, 1000);
       })
     } else {
       // send data for storage
       this.invoiceService.addInvoice(dataToSend).subscribe((invoice: Invoice) => {
         // Todo: If backend is ready, check if the invoice was created or updated successfully
-        console.log('Edit Response: ' + invoice);
-        // setTimeout(() => {
-        //   this.onDiscard();
-        // }, 1000);
+        console.log('Create Response: ' + invoice);
+        setTimeout(() => {
+          this.onDiscard();
+        }, 1000);
       })
     }
   }
@@ -132,19 +119,15 @@ export class AddEditInvoicesComponent implements OnInit {
     // remove invoiceDate from data to send
     delete invoiceData.invoiceDate;
 
-    //set the invoice createdAt property to createdDate,
+    //set the invoice createdAt property from createdDate,
     invoiceData.createdAt = this.createdDate;
 
     // calculate all items sum and assign it  to invoice total data
-    // check if the items exist especially on 'draft' status
-    let itemsValues = this.invoiceForm.get('items')?.value;
+    let itemsValues = this.invoiceForm.get('items')!.value;
     if (itemsValues) {
       invoiceData.total = itemsValues.reduce((total: any, item: any) => {
         return total + +item.total;
       }, 0);
-    } else {
-      invoiceData.total = 0;
-      invoiceData.items = []
     }
 
     // check first if the status is edit 
@@ -172,7 +155,7 @@ export class AddEditInvoicesComponent implements OnInit {
     this.selectedTerms = this.terms[0].name;
     this.invoiceForm.reset();
     this.invoiceForm.removeControl('items');
-    this.invoiceForm.patchValue({ 'createdAt': this.calculatePaymentDue(0, new Date()) });
+    this.invoiceForm.patchValue({ 'createdAt': this.formatDateToday(new Date()) });
     this.invoiceForm.patchValue({ 'paymentTerms': 1 });
   }
 

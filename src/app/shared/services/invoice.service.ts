@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { Invoice } from '../models/invoice.model';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,14 @@ export class InvoiceService {
     headers: new HttpHeaders({ 'Content-type': 'application/json' })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private storageService: StorageService) { }
 
   getAllInvoices(): Observable<Invoice[]> {
     return this.http.get<Invoice[]>(this.url).pipe(
+      tap((invoices: Invoice[]) => {
+        console.log('All invoices From api', invoices);
+        this.storageService.getAllInvoiceFromApiToStore(invoices);
+      }),
       catchError(this.errorHandler<Invoice[]>('getAllInvoices', []))
     );
   }
@@ -30,7 +35,11 @@ export class InvoiceService {
 
   addInvoice(invoice: Invoice): Observable<Invoice> {
     return this.http.post<Invoice>(this.url, invoice, this.httpOptions).pipe(
-      tap(invoice => console.log(invoice)),
+      tap(invoice => {
+        console.log('Added invoice', invoice);
+        this.storageService.addInvoice(invoice);
+
+      }),
       catchError(this.errorHandler<Invoice>('addInvoice'))
     );
   }
@@ -44,7 +53,10 @@ export class InvoiceService {
 
   deleteInvoice(id: string): Observable<Invoice> {
     return this.http.delete<Invoice>(`${this.url}/${id}`, this.httpOptions).pipe(
-      tap(_ => console.log('Delete Invoice', id)),
+      tap(__ => {
+        console.log('Delete Invoice', id);
+        this.storageService.deleteInvoice(id)
+      }),
       catchError(this.errorHandler<Invoice>('deleteInvoice'))
     )
   }

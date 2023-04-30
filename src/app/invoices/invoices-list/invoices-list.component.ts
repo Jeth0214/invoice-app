@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AddEditInvoicesComponent } from '../add-edit-invoices/add-edit-invoices.component';
 import { Invoice } from '../../shared/models/invoice.model';
 import { InvoiceService } from '../../shared/services/invoice.service';
+import { StorageService } from 'src/app/shared/services/storage.service';
 
 @Component({
   selector: 'app-invoices-list',
@@ -25,20 +26,33 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     status: new FormControl('', Validators.required)
   });
 
-  constructor(private invoiceService: InvoiceService, private offcanvasService: NgbOffcanvas) {
+  constructor(
+    private invoiceService: InvoiceService,
+    private offcanvasService: NgbOffcanvas,
+    private storageService: StorageService
+  ) {
   }
 
   ngOnInit(): void {
-    this.getAllInvoice();
-    this.openOffCanvas();
+    this.getAllInvoices();
   }
 
   ngAfterViewInit() {
-    this.getAllInvoice();
+    this.getAllInvoices();
   }
 
 
-  getAllInvoice() {
+
+  getAllInvoices() {
+    this.invoices = this.storageService.getAllInvoices();
+    console.log('Invoices From Storage ', this.invoices)
+    if (this.invoices.length <= 0) {
+      this.getAllInvoicesFromApi();
+    }
+  }
+
+
+  getAllInvoicesFromApi() {
     this.invoiceService.getAllInvoices().subscribe(data => {
       if (data.length > 0) {
 
@@ -65,9 +79,9 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     this.isDropDownOpen = !this.isDropDownOpen;
   }
 
-  openOffCanvas() {
-    const offCanvasRef = this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
-    offCanvasRef.componentInstance.title = "New Invoice";
+  openOffCanvas(content: any) {
+    this.offcanvasService.open(content, { panelClass: 'off-canvas-width', animation: true });
+    // offCanvasRef.componentInstance.title = "New Invoice";
   }
 
   private showInvoiceLengthMessage(total: number, stat: string) {

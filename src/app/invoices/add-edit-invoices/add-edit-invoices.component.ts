@@ -33,7 +33,7 @@ export class AddEditInvoicesComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private invoiceService: InvoiceService,
-    private activeOffcanvas: NgbActiveOffcanvas,
+    //private activeOffcanvas: NgbActiveOffcanvas,
   ) { }
 
   ngOnInit(): void {
@@ -161,7 +161,6 @@ export class AddEditInvoicesComponent implements OnInit {
 
 
   selectTerms(term: Term): void {
-    console.log('Selected Term :' + term.name)
     this.isDropDownOpen = false
     this.selectedTerms = term.name;
     this.invoiceForm.patchValue({ 'paymentTerms': term.value })
@@ -188,7 +187,7 @@ export class AddEditInvoicesComponent implements OnInit {
 
   onDiscard() {
     this.resetForm();
-    this.activeOffcanvas.dismiss()
+    // this.activeOffcanvas.dismiss('test');
   }
 
   onDateSelect(date: NgbDate) {

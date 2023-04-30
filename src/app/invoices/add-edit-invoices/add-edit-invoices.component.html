@@ -61,12 +61,13 @@
             <div class="row my-4">
                 <!-- Created At -->
                 <div class="col-12 col-md-6 mb-2 mb-md-0  ">
-                    <label for="createdAt" class="form-label text-primary">Invoice Date</label>
+                    <label for="invoiceDate" class="form-label text-primary">Invoice Date</label>
                     <!-- <input type="date" formControlName="createdAt" class="form-control" aria-label="Created At"> -->
 
                     <div class="position-relative m-0 p-0 date-picker">
-                        <input class="form-control" [placeholder]="createdDate | date : 'dd MMM YYYY'" name="createdAt"
-                            [value]="createdDate | date : 'dd MMM YYYY'" ngbDatepicker #d="ngbDatepicker" (dateSelect)="
+                        <input class="form-control" [placeholder]="createdDate | date : 'dd MMM YYYY'"
+                            name="invoiceDate" [value]="createdDate | date : 'dd MMM YYYY'" ngbDatepicker
+                            #d="ngbDatepicker" (dateSelect)="
                             onDateSelect($event)" autocomplete="off"
                             [class.border-danger]="(isSaving && formValidation['invoiceDate'].errors?.['required'])  "
                             readonly (click)="d.toggle()" />

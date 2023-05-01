@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveOffcanvas, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveOffcanvas, NgbDate, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { Invoice, Item, Term, Address } from '../../shared/models/invoice.model';
 import { InvoiceService } from '../../shared/services/invoice.service';
 
@@ -13,6 +13,7 @@ export class AddEditInvoicesComponent implements OnInit {
   // data from invoice list or invoice details offcanvas instance
   @Input() title!: string;
   @Input() invoice: Invoice | undefined;
+  @Output() emitInvoice = new EventEmitter();
 
   invoiceForm!: FormGroup;
   isSaving: boolean = false;
@@ -33,12 +34,12 @@ export class AddEditInvoicesComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private invoiceService: InvoiceService,
-    //private activeOffcanvas: NgbActiveOffcanvas,
+    private offcanvasService: NgbOffcanvas,
   ) { }
 
   ngOnInit(): void {
     this.setInvoiceForm();
-    // console.log(this.invoice)
+    console.log(this.invoice)
     if (this.invoice) {
       console.log('Invoice from detail page: ', this.invoice);
       this.invoiceForm.patchValue({ 'description': this.invoice.description });
@@ -68,8 +69,8 @@ export class AddEditInvoicesComponent implements OnInit {
   }
 
   onSaveNewInvoice(saveAs: string) {
-    console.log('status', this.invoiceForm.status);
-    console.log('invoice', this.invoiceForm.value);
+    // console.log('status', this.invoiceForm.status);
+    // console.log('invoice', this.invoiceForm.value);
 
     this.isSaving = true;
     let itemslength = this.invoiceForm.get('items')?.value.length;
@@ -94,6 +95,7 @@ export class AddEditInvoicesComponent implements OnInit {
       this.invoiceService.updateInvoice(dataToSend).subscribe((response) => {
         // Todo: If backend is ready, check if the invoice was created or updated successfully
         console.log('Edit Response: ', response);
+        this.emitInvoice.emit(response)
         setTimeout(() => {
           this.onDiscard();
         }, 1000);
@@ -103,6 +105,7 @@ export class AddEditInvoicesComponent implements OnInit {
       this.invoiceService.addInvoice(dataToSend).subscribe((invoice: Invoice) => {
         // Todo: If backend is ready, check if the invoice was created or updated successfully
         console.log('Create Response: ' + invoice);
+        this.emitInvoice.emit(true)
         setTimeout(() => {
           this.onDiscard();
         }, 1000);
@@ -155,7 +158,6 @@ export class AddEditInvoicesComponent implements OnInit {
     this.selectedTerms = this.terms[0].name;
     this.invoiceForm.reset();
     this.invoiceForm.removeControl('items');
-    this.invoiceForm.patchValue({ 'createdAt': this.formatDateToday(new Date()) });
     this.invoiceForm.patchValue({ 'paymentTerms': 1 });
   }
 
@@ -187,7 +189,7 @@ export class AddEditInvoicesComponent implements OnInit {
 
   onDiscard() {
     this.resetForm();
-    // this.activeOffcanvas.dismiss('test');
+    this.offcanvasService.dismiss();
   }
 
   onDateSelect(date: NgbDate) {

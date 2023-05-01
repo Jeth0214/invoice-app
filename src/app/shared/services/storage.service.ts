@@ -22,9 +22,23 @@ export class StorageService {
     return [...this.invoices]
   }
 
+  getInvoice(id: string) {
+    return this.invoices.filter(invoice => { return invoice.id === id })[0]
+  }
+
   addInvoice(newInvoice: Invoice) {
     console.log('add invoice to storage', newInvoice)
     this.invoices.push(newInvoice);
+    return this.updateStorage();
+  }
+
+  updateInvoice(invoice: Invoice) {
+    let index = this.findInvoiceIndex(invoice.id);
+    console.log(index);
+    if (index < 0) {
+      return;
+    }
+    this.invoices[index] = invoice;
     return this.updateStorage();
   }
 
@@ -37,5 +51,9 @@ export class StorageService {
     console.log('Updated invoices from storage', this.invoices)
     localStorage.setItem(STORAGENAME, JSON.stringify(this.invoices));
     return this.invoices
+  }
+
+  private findInvoiceIndex(id: string) {
+    return this.invoices.findIndex(invoice => invoice.id === id);
   }
 }

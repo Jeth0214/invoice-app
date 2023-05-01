@@ -46,7 +46,10 @@ export class InvoiceService {
 
   updateInvoice(invoice: Invoice): Observable<any> {
     return this.http.put(this.url, invoice, this.httpOptions).pipe(
-      tap(_ => console.log(invoice)),
+      tap(_ => {
+        console.log('Updated Invoice', invoice);
+        this.storageService.updateInvoice(invoice);
+      }),
       catchError(this.errorHandler<any>('updateInvoice'))
     );
   }

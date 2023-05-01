@@ -106,5 +106,5 @@
 </div>
 
 <ng-template #content let-offcanvas>
-    <app-add-edit-invoices></app-add-edit-invoices>
+    <app-add-edit-invoices (emitInvoice)="getUpdateInvoices($event)" [title]="'New Invoice'"></app-add-edit-invoices>
 </ng-template>

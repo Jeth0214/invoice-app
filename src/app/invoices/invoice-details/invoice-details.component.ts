@@ -4,6 +4,8 @@ import { NgbModal, NgbModalRef, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
 import { Invoice } from '../../shared/models/invoice.model';
 import { InvoiceService } from '../../shared/services/invoice.service';
 import { AddEditInvoicesComponent } from '../add-edit-invoices/add-edit-invoices.component';
+import { StorageService } from 'src/app/shared/services/storage.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-invoice-details',
@@ -17,13 +19,15 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
   showNoInvoice: boolean = false;
   invoice!: Invoice;
   isPaid: boolean = false;
+  id: string = '';
 
   constructor(
     private invoiceService: InvoiceService,
     private activatedRoute: ActivatedRoute,
     private offcanvasService: NgbOffcanvas,
     private modalService: NgbModal,
-    private router: Router
+    private router: Router,
+    private storageService: StorageService,
   ) { }
 
   ngOnInit(): void {
@@ -40,25 +44,49 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
     this.activatedRoute.paramMap.subscribe((param: ParamMap) => {
       let id = param.get('id');
       if (id) {
-        this.invoiceService.getInvoice(id).subscribe(data => {
-          this.invoice = data;
-          console.log('Invoice details: ', this.invoice);
-
-          if (this.invoice.status === 'paid') {
-            this.isPaid = true
-          }
-        })
+        this.id = id;
+        this.getInvoiceFromLocalStorage(id);
+        if (!this.invoice) {
+          this.getInvoiceFromApi(id)
+        }
       } else {
-        this.showNoInvoice = true;
+        this.router.navigate(['/invoices'])
         return;
       }
     })
   }
 
-  onEdit() {
-    const offCanvasRef = this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
-    offCanvasRef.componentInstance.title = `Edit`;
-    offCanvasRef.componentInstance.invoice = this.invoice;
+  getInvoiceFromLocalStorage(id: string) {
+    this.invoice = this.storageService.getInvoice(id);
+    this.isInvoicePaid(this.invoice?.status);
+  };
+
+
+  getInvoiceFromApi(id: string) {
+    this.invoiceService.getInvoice(id).subscribe({
+      next: (response: Invoice) => {
+        if (response) {
+          this.invoice = response;
+          this.isInvoicePaid(response?.status)
+        } else {
+          this.showNoInvoice = true;
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+
+    })
+  }
+
+  isInvoicePaid(status?: string): void {
+    if (this.invoice && status === 'paid') {
+      this.isPaid = true
+    }
+  }
+
+  onEdit(content: any) {
+    this.offcanvasService.open(content, { panelClass: 'off-canvas-width', animation: true });
   }
 
 
@@ -80,6 +108,10 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
     this.invoiceService.updateInvoice(invoice).subscribe(data => {
       this.isPaid = true
     })
+  };
+
+  updateInvoice(event: Invoice) {
+    this.invoice = event
   }
 
 }

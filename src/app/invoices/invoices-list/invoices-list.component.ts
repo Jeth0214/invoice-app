@@ -44,11 +44,15 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
 
 
   getAllInvoices() {
-    this.invoices = this.storageService.getAllInvoices();
-    console.log('Invoices From Storage ', this.invoices)
+    this.getInvoicesFromLocalStorage();
     if (this.invoices.length <= 0) {
       this.getAllInvoicesFromApi();
     }
+  }
+
+  getInvoicesFromLocalStorage() {
+    this.invoices = this.storageService.getAllInvoices();
+    console.log('Invoices From Storage ', this.invoices)
   }
 
 
@@ -91,6 +95,13 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
       this.totalInvoicesMessage = `no ${stat} invoices`;
     } else {
       this.totalInvoicesMessage = 'No invoices';
+    }
+  }
+
+  getUpdateInvoices(event: any) {
+    console.log('event', event)
+    if (event) {
+      this.getInvoicesFromLocalStorage()
     }
   }
 

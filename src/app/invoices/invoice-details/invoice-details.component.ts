@@ -111,6 +111,7 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
   };
 
   updateInvoice(event: Invoice) {
+    console.log(event)
     this.invoice = event
   }
 

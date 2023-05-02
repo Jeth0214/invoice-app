@@ -12,7 +12,7 @@ import { StorageService } from 'src/app/shared/services/storage.service';
   templateUrl: './invoices-list.component.html',
   styleUrls: ['./invoices-list.component.scss']
 })
-export class InvoicesListComponent implements OnInit, AfterViewInit {
+export class InvoicesListComponent implements OnInit {
 
   invoices: Invoice[] = [];
   tempInvoicesArray: Invoice[] = [];
@@ -35,24 +35,27 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getAllInvoices();
+
   }
 
-  ngAfterViewInit() {
-    this.getAllInvoices();
-  }
 
 
 
   getAllInvoices() {
-    this.getInvoicesFromLocalStorage();
-    if (this.invoices.length <= 0) {
-      this.getAllInvoicesFromApi();
+    console.log(localStorage.getItem("invoices"))
+    if (localStorage.getItem("invoices") == null) {
+      this.getAllInvoicesFromApi()
+    } else {
+      this.getInvoicesFromLocalStorage()
     }
   }
 
   getInvoicesFromLocalStorage() {
     this.invoices = this.storageService.getAllInvoices();
-    console.log('Invoices From Storage ', this.invoices)
+    console.log('Invoices From Storage ', this.invoices);
+    if (this.invoices.length < 1) {
+      this.hasInvoices = true;
+    }
   }
 
 
@@ -98,11 +101,10 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getUpdateInvoices(event: any) {
-    console.log('event', event)
-    if (event) {
-      this.getInvoicesFromLocalStorage()
-    }
+  getUpdateInvoices(invoice: Invoice) {
+    console.log('Emitted invoice', invoice);
+    this.hasInvoices = false;
+    this.invoices.push(invoice)
   }
 
 }

@@ -94,21 +94,19 @@ export class AddEditInvoicesComponent implements OnInit {
     if (this.invoice && this.title === 'Edit') {
       this.invoiceService.updateInvoice(dataToSend).subscribe((response) => {
         // Todo: If backend is ready, check if the invoice was created or updated successfully
-        console.log('Edit Response: ', response);
-        this.emitInvoice.emit(response)
-        setTimeout(() => {
-          this.onDiscard();
-        }, 1000);
+        this.emitInvoice.emit(dataToSend)
+        this.onDiscard();
       })
     } else {
       // send data for storage
       this.invoiceService.addInvoice(dataToSend).subscribe((invoice: Invoice) => {
         // Todo: If backend is ready, check if the invoice was created or updated successfully
-        console.log('Create Response: ' + invoice);
-        this.emitInvoice.emit(true)
-        setTimeout(() => {
+        console.log('Create Response: ', invoice);
+        if (invoice) {
+
+          this.emitInvoice.emit(invoice)
           this.onDiscard();
-        }, 1000);
+        }
       })
     }
   }

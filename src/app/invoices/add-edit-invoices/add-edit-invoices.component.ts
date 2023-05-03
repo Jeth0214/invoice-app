@@ -39,7 +39,7 @@ export class AddEditInvoicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.setInvoiceForm();
-    console.log(this.invoice)
+    //  console.log(this.invoice)
     if (this.invoice) {
       console.log('Invoice from detail page: ', this.invoice);
       this.invoiceForm.patchValue({ 'description': this.invoice.description });

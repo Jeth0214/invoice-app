@@ -42,7 +42,7 @@ export class InvoicesListComponent implements OnInit {
 
 
   getAllInvoices() {
-    console.log(localStorage.getItem("invoices"))
+    //console.log(localStorage.getItem("invoices"))
     if (localStorage.getItem("invoices") == null) {
       this.getAllInvoicesFromApi()
     } else {
@@ -52,28 +52,32 @@ export class InvoicesListComponent implements OnInit {
 
   getInvoicesFromLocalStorage() {
     this.invoices = this.storageService.getAllInvoices();
-    console.log('Invoices From Storage ', this.invoices);
-    if (this.invoices.length < 1) {
-      this.hasInvoices = true;
-    }
+    //  console.log('Invoices From Storage ', this.invoices);
+    this.showInvoicesStatus(this.invoices)
   }
 
 
   getAllInvoicesFromApi() {
-    this.invoiceService.getAllInvoices().subscribe(data => {
-      if (data.length > 0) {
-
-        this.tempInvoicesArray = data;
-        this.invoices = data;
-        this.showInvoiceLengthMessage(data.length, 'total');
-      } else {
-        this.hasInvoices = true;
-
-      }
+    this.invoiceService.getAllInvoices().subscribe((response: Invoice[]) => {
+      this.showInvoicesStatus(response)
     })
   }
 
+  showInvoicesStatus(response: Invoice[]) {
+    if (response.length > 0) {
+
+      this.tempInvoicesArray = response;
+      this.invoices = response;
+      this.showInvoiceLengthMessage(response.length, 'total');
+    } else {
+      this.hasInvoices = true;
+
+    }
+  }
+
   selectStatus(status: string) {
+    console.log('Filter by', status);
+    console.log('invoices before filter ', this.invoices)
     this.isDropDownOpen = false;
     let stat = status.toLowerCase();
     this.showAllInvoices = stat !== 'total' ? true : false;

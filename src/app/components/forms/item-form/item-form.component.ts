@@ -82,7 +82,7 @@ export class ItemFormComponent implements OnInit {
       'name': new FormControl(item ? item.name : '', Validators.required),
       'quantity': new FormControl(item ? item.quantity : '', [Validators.required, ValidateMinNum]),
       'price': new FormControl(item ? item.price : '', [Validators.required, ValidateMinNum]),
-      'total': new FormControl(item ? item.total : '')
+      'total': new FormControl(item ? item.total : '', Validators.required)
     })
   }
 

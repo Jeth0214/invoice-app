@@ -103,9 +103,9 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
 
 
   onMarkAsPaid(invoice: Invoice) {
-    this.invoice.status = 'paid';
     console.log('mark as paid this invoice', invoice);
     this.invoiceService.updateInvoice(invoice).subscribe(data => {
+      this.invoice.status = 'paid';
       this.isPaid = true
     })
   };

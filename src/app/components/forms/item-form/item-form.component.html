@@ -1,10 +1,10 @@
 <!-- Item Lists -->
 <h2>Item List</h2>
 <div class="row d-none d-md-flex text-primary">
-    <div class="col-md-4">Item Name</div>
-    <div class="col-md-2">Qty.</div>
-    <div class="col-md-3">Price</div>
-    <div class="col-md-2">Total</div>
+    <div class="col-md-4 pe-md-1">Item Name</div>
+    <div class="col-md-1 px-md-1">Qty.</div>
+    <div class="col-md-3 px-md-1">Price</div>
+    <div class="col-md-3 px-md-1">Total</div>
     <div class="col-md-1"></div>
 </div>
 <ng-container *ngIf="items">
@@ -17,29 +17,35 @@
                 </div>
             </div>
             <div class="row my-2 ">
-                <div class="col-12 mb-3 mb-md-0 col-md-4">
+                <div class="col-12 mb-3 mb-md-0 col-md-4 pe-md-1">
                     <label for="name" class="form-label text-primary mb-0 d-inline d-md-none">Item Name</label>
                     <input formControlName="name" type="text" class="form-control"
                         [class.border-danger]="isSaving && item.get('name')?.errors" autocomplete="off">
                 </div>
-                <div class="col-3 col-md-2">
+                <div class="col-3 col-md-1 px-md-1">
                     <label for="quantity" class="form-label text-primary mb-0 d-inline d-md-none">Qty.</label>
                     <input formControlName="quantity" type="number" class="form-control" min="1"
                         (input)="getValueForItemsTotal(item, i, $event)"
                         [class.border-danger]="isSaving && item.get('quantity')?.errors?.['minNum']" autocomplete="off">
                 </div>
-                <div class="col-4 col-md-3">
+                <div class="col-4 col-md-3 px-md-1">
                     <label for="price" class="form-label text-primary mb-0 d-inline d-md-none">Price</label>
                     <input formControlName="price" type="number" class="form-control" min="1"
                         (input)="getValueForItemsTotal(item, i, $event)"
                         [class.border-danger]="isSaving &&  item.get('price')?.errors?.['minNum']" autocomplete="off">
                 </div>
-                <div class="col-4 col-md-2">
+                <div class="col-4 col-md-3 px-md-1 d-flex flex-column  "
+                    [class.justify-content-center]="item.get('price')?.valid && item.get('quantity')?.valid">
                     <label for="total" class="form-label text-primary mb-0 d-inline d-md-none">Total</label>
-                    <input formControlName="total" type="number"
+                    <!-- <input formControlName="total" type="number"
                         [value]="item.value.quantity * item.value.price | number: '1.2-2'"
                         class="form-control border border-0 px-0" min="1" aria-label="Disabled input" [disabled]="true"
-                        readonly>
+                        readonly> -->
+                    <ng-container *ngIf="item.get('price')?.valid && item.get('quantity')?.valid">
+
+                        <p class="mb-0">{{ (item.get('price')?.value * item.get('quantity')?.value) | number: '1.2-2'}}
+                        </p>
+                    </ng-container>
                 </div>
                 <div class="col-1 col-md-1 align-self-end p-0">
                     <button type="button" class="btn btn-link"><i class="fa-solid fa-trash"

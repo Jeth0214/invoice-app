@@ -21,6 +21,7 @@ export class AddressFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log('address type: ', this.addressType)
     this.invoiceForm = this.formParent.form;
     this.invoiceForm.addControl(
       this.addressType,
@@ -56,6 +57,20 @@ export class AddressFormComponent implements OnInit {
   }
   get country() {
     return this.address.get('country');
+  }
+
+  setAddressForm() {
+    if (this.addressType === 'senderAddress' && !this.addressData) {
+      this.invoiceForm.addControl(
+        this.addressType,
+        this.formBuilder.group({
+          street: ['19 Union Terrace', Validators.required],
+          city: ['London', Validators.required],
+          postCode: ['E1 3EZ', Validators.required],
+          country: ['United Kingdom', Validators.required]
+        })
+      )
+    }
   }
 
 }

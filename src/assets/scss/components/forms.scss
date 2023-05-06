@@ -4,7 +4,9 @@
     display: none
 }
 
-.form-control {
+.form-control,
+.form-control:disabled,
+.form-control[readonly] {
     background-color: var(--bg-form);
     border-color: var(--border-form);
     color: var(--text-secondary);
@@ -24,11 +26,7 @@ label,
     color: var(--text-tertiary) !important;
 }
 
-.form-control:disabled,
-.form-control[readonly] {
-    background-color: transparent;
-    color: var(--text-secondary);
-}
+
 
 .form-check-input:checked {
     background-color: #7C5DFA;

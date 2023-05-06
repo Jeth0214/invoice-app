@@ -39,9 +39,7 @@
             text-align: center;
         }
 
-        // .form-select[title="Select year"] {
-        //     padding-left: 0;
-        // }
+
 
         .ngb-dp-weekdays {
             display: none;
@@ -59,7 +57,7 @@
         }
 
         [ngbDatepickerDayView].outside {
-            opacity: .08;
+            opacity: .4;
             color: var(--text-secondary) !important;
         }
 
@@ -69,6 +67,7 @@
 
         .text-white {
             color: var(--primary-color) !important;
+            font-weight: 700 !important;
         }
     }
 

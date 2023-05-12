@@ -1,0 +1,76 @@
+@use '../abstracts/' as *;
+
+.dropdown-toggle::after {
+    display: none
+}
+
+.form-control,
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: var(--bg-form);
+    border-color: var(--border-form);
+    color: var(--text-secondary);
+
+    // border-color: var()
+    &:focus {
+        background-color: var(--bg-form);
+        border-color: #9277FF;
+        color: var(--text-secondary);
+    }
+}
+
+;
+
+label,
+.form-label {
+    color: var(--text-tertiary) !important;
+}
+
+
+
+.form-check-input:checked {
+    background-color: #7C5DFA;
+    border-color: #7C5DFA;
+}
+
+.form-check-input:checked[type=radio] {
+    background-image: url(../../images/icon-check.svg);
+    background-repeat: no-repeat;
+    background-size: 12px;
+    background-position: center;
+
+}
+
+.form-check-input[type=radio] {
+    border-radius: 2px;
+
+}
+
+
+
+.form-check-input {
+    background: #DFE3FA;
+    cursor: pointer;
+
+    &:hover {
+        border: 1px solid #7C5DFA;
+        cursor: pointer;
+    }
+}
+
+;
+
+.form-check {
+    cursor: pointer;
+
+    label {
+        cursor: pointer;
+    }
+
+    &:hover {
+        .form-check-input {
+            border: 1px solid #7C5DFA;
+
+        }
+    }
+}

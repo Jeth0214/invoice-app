@@ -85,10 +85,10 @@
                         <div class="col-5">
                             <p>Item Name</p>
                         </div>
-                        <div class="col-3">
+                        <div class="col-2">
                             <p>Qty.</p>
                         </div>
-                        <div class="col-2">
+                        <div class="col-3">
                             <p>Price</p>
                         </div>
                         <div class="col-2">
@@ -103,16 +103,16 @@
                                     <div class="col-12 col-md-7 text-2 fw-bold">
                                         {{item.name}}
                                     </div>
-                                    <div class="col-3 col-md-3 px-md-0 d-flex justify-content-between fw-bold">
+                                    <div class="col-3 col-md-1 px-md-0 d-flex justify-content-between fw-bold">
                                         <span class="me-md-0 ">{{item.quantity}}</span>
                                         <span class="d-inline d-md-none">x</span>
                                     </div>
-                                    <div class="col-9 col-md-2 text-md-end px-0 fw-bold">
+                                    <div class="col-9 col-md-4 text-md-center px-0 fw-bold">
                                         {{item.price | currency:'GBP':'symbol-narrow'}}
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4 col-md-3 text-end text-2 fw-bold">
+                            <div class="col-4 col-md-3 text-end text-2 px-0  pe-md-2 fw-bold ">
                                 {{ item.total | currency:'GBP':'symbol-narrow' }}
                             </div>
                         </div>
@@ -182,7 +182,7 @@
                 <p class="mb-0 lh-sm">
                     We cannot see invoice with the id of <span class="fw-bold">{{id}}</span>.
                 </p>
-                <p class="">
+                <p>
                     Please try again or <a routerLink="/invoices" class="fw-bold text-1 text-decoration-none">create a
                         new one</a> .
                 </p>

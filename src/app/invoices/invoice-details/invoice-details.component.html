@@ -18,14 +18,14 @@
 
             </div>
             <div class="invoice__action-buttons d-none d-md-block">
-                <button type="button" (click)="onEdit()" class="btn btn-edit  rounded-pill me-2 pt-1">
+                <button type="button" (click)="onEdit(offConvassContent)" class="btn btn-edit  rounded-pill me-2 pt-1">
                     Edit
                 </button>
                 <button type="button" (click)="onDelete(content)"
                     class="btn btn-danger text-white rounded-pill me-2 pt-1">
                     Delete
                 </button>
-                <button *ngIf="!isPaid" type="button" (click)="onMarkAsPaid(invoice)"
+                <button *ngIf="!isPaid && invoice.status != 'draft'" type="button" (click)="onMarkAsPaid(invoice)"
                     class="btn btn-primary rounded-pill text-white pt-1">
                     Mark as Paid
                 </button>
@@ -154,7 +154,8 @@
 <div *ngIf="invoice"
     class="invoice__action-buttons bg-container    d-md-none shadow-sm justify-content-between gap-1  mt-3 row  px-2 py-3  mx-0 ">
     <div class="col-3 p-0  ">
-        <button type="button" (click)="onEdit()" class="w-100 btn btn-light text-primary rounded-pill  py-3">
+        <button type="button" (click)="onEdit(offConvassContent)"
+            class="w-100 btn btn-light text-primary rounded-pill  py-3">
             Edit
         </button>
     </div>
@@ -170,3 +171,30 @@
         </button>
     </div>
 </div>
+
+<!-- No invoice Found -->
+<ng-container *ngIf="showNoInvoice ">
+    <div class="d-flex justify-content-center align-items-center mt-4">
+        <div class="text-center mt-4">
+            <img src="../../../assets/images/illustration-empty.svg" alt="empty image">
+            <h2 class="my-3">There is nothing here.</h2>
+            <div class="text-1">
+                <p class="mb-0 lh-sm">
+                    We cannot see invoice with the id of <span class="fw-bold">{{id}}</span>.
+                </p>
+                <p class="">
+                    Please try again or <a routerLink="/invoices" class="fw-bold text-1 text-decoration-none">create a
+                        new one</a> .
+                </p>
+            </div>
+        </div>
+
+    </div>
+</ng-container>
+
+
+<!-- Off Canvas -->
+<ng-template #offConvassContent let-offcanvas>
+    <app-add-edit-invoices (emitInvoice)="updateInvoice($event)" [title]="'Edit'"
+        [invoice]="invoice"></app-add-edit-invoices>
+</ng-template>

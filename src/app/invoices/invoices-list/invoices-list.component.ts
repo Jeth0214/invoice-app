@@ -5,13 +5,14 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AddEditInvoicesComponent } from '../add-edit-invoices/add-edit-invoices.component';
 import { Invoice } from '../../shared/models/invoice.model';
 import { InvoiceService } from '../../shared/services/invoice.service';
+import { StorageService } from 'src/app/shared/services/storage.service';
 
 @Component({
   selector: 'app-invoices-list',
   templateUrl: './invoices-list.component.html',
   styleUrls: ['./invoices-list.component.scss']
 })
-export class InvoicesListComponent implements OnInit, AfterViewInit {
+export class InvoicesListComponent implements OnInit {
 
   invoices: Invoice[] = [];
   tempInvoicesArray: Invoice[] = [];
@@ -25,34 +26,58 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     status: new FormControl('', Validators.required)
   });
 
-  constructor(private invoiceService: InvoiceService, private offcanvasService: NgbOffcanvas) {
+  constructor(
+    private invoiceService: InvoiceService,
+    private offcanvasService: NgbOffcanvas,
+    private storageService: StorageService
+  ) {
   }
 
   ngOnInit(): void {
-    this.getAllInvoice();
-    this.openOffCanvas();
-  }
+    this.getAllInvoices();
 
-  ngAfterViewInit() {
-    this.getAllInvoice();
   }
 
 
-  getAllInvoice() {
-    this.invoiceService.getAllInvoices().subscribe(data => {
-      if (data.length > 0) {
 
-        this.tempInvoicesArray = data;
-        this.invoices = data;
-        this.showInvoiceLengthMessage(data.length, 'total');
-      } else {
-        this.hasInvoices = true;
 
-      }
+  getAllInvoices() {
+    //console.log(localStorage.getItem("invoices"))
+    if (localStorage.getItem("invoices") == null) {
+      this.getAllInvoicesFromApi()
+    } else {
+      this.getInvoicesFromLocalStorage()
+    }
+  }
+
+  getInvoicesFromLocalStorage() {
+    this.invoices = this.storageService.getAllInvoices();
+    //  console.log('Invoices From Storage ', this.invoices);
+    this.showInvoicesStatus(this.invoices)
+  }
+
+
+  getAllInvoicesFromApi() {
+    this.invoiceService.getAllInvoices().subscribe((response: Invoice[]) => {
+      this.showInvoicesStatus(response)
     })
   }
 
+  showInvoicesStatus(response: Invoice[]) {
+    if (response.length > 0) {
+
+      this.tempInvoicesArray = response;
+      this.invoices = response;
+      this.showInvoiceLengthMessage(response.length, 'total');
+    } else {
+      this.hasInvoices = true;
+
+    }
+  }
+
   selectStatus(status: string) {
+    console.log('Filter by', status);
+    console.log('invoices before filter ', this.invoices)
     this.isDropDownOpen = false;
     let stat = status.toLowerCase();
     this.showAllInvoices = stat !== 'total' ? true : false;
@@ -65,9 +90,9 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     this.isDropDownOpen = !this.isDropDownOpen;
   }
 
-  openOffCanvas() {
-    const offCanvasRef = this.offcanvasService.open(AddEditInvoicesComponent, { panelClass: 'off-canvas-width' });
-    offCanvasRef.componentInstance.title = "New Invoice";
+  openOffCanvas(content: any) {
+    this.offcanvasService.open(content, { panelClass: 'off-canvas-width', animation: true });
+    // offCanvasRef.componentInstance.title = "New Invoice";
   }
 
   private showInvoiceLengthMessage(total: number, stat: string) {
@@ -78,6 +103,12 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     } else {
       this.totalInvoicesMessage = 'No invoices';
     }
+  }
+
+  getUpdateInvoices(invoice: Invoice) {
+    console.log('Emitted invoice', invoice);
+    this.hasInvoices = false;
+    this.invoices.push(invoice)
   }
 
 }

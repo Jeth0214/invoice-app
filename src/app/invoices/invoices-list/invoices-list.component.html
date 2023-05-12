@@ -22,15 +22,15 @@
                         </button>
                         <div class="px-2 " ngbDropdownMenu aria-labelledby="invoiceDropdown">
                             <div class="form-check" *ngFor="let stat of status">
-                                <input formControlName="status" class="form-check-input rounded " value="{{ stat }}"
+                                <input formControlName="status" class="form-check-input   " value="{{ stat }}"
                                     type="radio" id="{{stat}}" (change)="selectStatus(stat); myDrop.close()">
                                 <label class="form-check-label text-2" for="{{ stat }}">
                                     {{stat}}
                                 </label>
                             </div>
                             <div class="form-check" *ngIf="showAllInvoices">
-                                <input formControlName="status" class="form-check-input rounded" value="total"
-                                    type="radio" id="all" (change)="selectStatus('total'); myDrop.close()">
+                                <input formControlName="status" class="form-check-input " value="total" type="radio"
+                                    id="all" (change)="selectStatus('total'); myDrop.close()">
                                 <label class="form-check-label text-2" for="total">
                                     All Invoices
                                 </label>
@@ -40,7 +40,8 @@
                 </form>
             </div>
 
-            <button type="button" class="btn btn-primary rounded-pill d-flex text-white" (click)="openOffCanvas()">
+            <button type="button" class="btn btn-primary rounded-pill d-flex text-white"
+                (click)="openOffCanvas(content)">
                 <i class="fa fa-plus-circle me-2" aria-hidden="true"></i>
                 <span> New <span class="d-none d-md-inline">Invoice</span></span>
             </button>
@@ -103,3 +104,7 @@
     </ng-container>
 
 </div>
+
+<ng-template #content let-offcanvas>
+    <app-add-edit-invoices (emitInvoice)="getUpdateInvoices($event)" [title]="'New Invoice'"></app-add-edit-invoices>
+</ng-template>

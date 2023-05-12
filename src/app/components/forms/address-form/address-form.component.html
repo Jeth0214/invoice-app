@@ -1,7 +1,13 @@
 <ng-container [formGroupName]="addressType">
     <div class="mb-3">
-        <label for="street" class="form-label text-primary"
-            [class.text-danger]="isSaving && street?.errors">Street</label>
+        <div class="d-flex justify-content-between">
+            <label for="street" class="form-label text-primary"
+                [class.text-danger]="isSaving && street?.errors">Street</label>
+            <div *ngIf="isSaving && address.invalid " class="text-danger">
+                <p>Can't be empty</p>
+            </div>
+        </div>
+
         <input formControlName="street" type="text" class="form-control" id="street"
             [class.border-danger]="isSaving && street?.errors" autocomplete="off">
     </div>

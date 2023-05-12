@@ -1,0 +1,6 @@
+@use '../abstracts/' as *;
+
+.modal-content {
+    border-radius: rem(8);
+    overflow: hidden;
+}

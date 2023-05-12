@@ -1,0 +1,33 @@
+@use '../abstracts/' as *;
+
+// this styling is intended for theming only
+.text-1 {
+    color: var(--text-primary);
+}
+
+.text-2 {
+    color: var(--text-secondary);
+}
+
+.text-3 {
+    color: var(--text-tertiary);
+}
+
+// Card , OffCanvas
+.bg-container {
+    background-color: var(--bg-container);
+}
+
+// Inputs , Dropdowns and Date picker
+.bg-element {
+    background-color: var(--bg-element);
+}
+
+// amount due in Invoice Details
+.bg-amount-due {
+    background-color: var(--bg-item);
+}
+
+.bg-draft {
+    background-color: rgba(var(--bg-status-draft)) !important;
+}

@@ -165,7 +165,7 @@
         </button>
     </div>
     <div class="col-5 p-0">
-        <button type="button" (click)="onMarkAsPaid(invoice)"
+        <button *ngIf="!isPaid && invoice.status != 'draft'" type="button" (click)="onMarkAsPaid(invoice)"
             class="w-100 btn btn-primary rounded-pill text-white py-3">
             Mark as Paid
         </button>

@@ -22,6 +22,8 @@ export class AddEditInvoicesComponent implements OnInit {
   selectedTerms!: string;
   createdDate = '';
   isDropDownOpen = false;
+  showSpinner: boolean = false;
+  status = '';
 
   terms: Term[] = [
     { name: "Net 1 Day", value: 1 },
@@ -39,8 +41,8 @@ export class AddEditInvoicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.setInvoiceForm();
-    //  console.log(this.invoice)
     if (this.invoice) {
+      console.log(this.invoice)
       console.log('Invoice from detail page: ', this.invoice);
       this.invoiceForm.patchValue({ 'description': this.invoice.description });
       this.invoiceForm.patchValue({ 'invoiceDate': this.invoice.createdAt });
@@ -49,7 +51,7 @@ export class AddEditInvoicesComponent implements OnInit {
       this.invoiceForm.patchValue({ 'clientEmail': this.invoice.clientEmail });
       this.createdDate = this.invoice.createdAt;
     }
-    this.selectedTerms = this.terms[0].name;
+    this.getSelectedTerm()
   }
 
   //Set the form
@@ -89,11 +91,14 @@ export class AddEditInvoicesComponent implements OnInit {
   saveInvoiceData(saveAs: string): void {
     this.showInvalidMessage = false;
     this.showNeedItemMessage = false;
+    this.status = saveAs;
+    this.showSpinner = true;
     let dataToSend = this.setInvoiceDataToSend(saveAs)
     // console.log('Invoice Data: ', invoiceData);
     if (this.invoice && this.title === 'Edit') {
       this.invoiceService.updateInvoice(dataToSend).subscribe((response) => {
         // Todo: If backend is ready, check if the invoice was created or updated successfully
+        this.showSpinner = false;
         this.emitInvoice.emit(dataToSend)
         this.onDiscard();
       })
@@ -101,7 +106,7 @@ export class AddEditInvoicesComponent implements OnInit {
       // send data for storage
       this.invoiceService.addInvoice(dataToSend).subscribe((invoice: Invoice) => {
         // Todo: If backend is ready, check if the invoice was created or updated successfully
-        console.log('Create Response: ', invoice);
+        this.showSpinner = false;
         if (invoice) {
 
           this.emitInvoice.emit(invoice)
@@ -209,4 +214,13 @@ export class AddEditInvoicesComponent implements OnInit {
     return formattedDate;
   }
 
+  // get selecterm on edit status
+  getSelectedTerm() {
+    if (this.invoice) {
+      let getTermIndex = this.terms.findIndex(term => { return term.value === this.invoice!.paymentTerms });
+      this.selectedTerms = this.terms[getTermIndex].name;
+    } else {
+      this.selectedTerms = this.terms[0].name;
+    }
+  }
 }

@@ -129,14 +129,25 @@
                     <span *ngIf="invoice">Cancel</span>
                     <span *ngIf="!invoice">Discard</span>
                 </button>
-                <button *ngIf="!invoice" type="submit" (click)="onSaveNewInvoice('draft')"
-                    class="btn btn-draft  rounded-pill pt-1"> Save as
-                    Draft </button>
-                <button type="submit" (click)="onSaveNewInvoice('pending')"
-                    class="btn btn-primary rounded-pill text-white ms-2 pt-1">
-                    <span *ngIf="invoice"> Save Changes </span>
-                    <span *ngIf="!invoice"> Save & Send </span>
-                </button>
+                <ng-container *ngIf="showSpinner else notSaving">
+                    <button type="submit" class="btn rounded-pill pt-1"
+                        [ngClass]="status == 'draft' ? 'btn-draft' : 'btn-primary'" disabled>
+                        <span class="spinner-border  spinner-border-sm text-white me-2" role="status"></span>
+                        <span class="text-white ">Saving...</span>
+                    </button>
+                </ng-container>
+                <ng-template #notSaving>
+                    <button *ngIf="!invoice" type="submit" (click)="onSaveNewInvoice('draft')"
+                        class="btn btn-draft  rounded-pill pt-1">
+                        Save as
+                        Draft </button>
+                    <button type="submit" (click)="onSaveNewInvoice('pending')"
+                        class="btn btn-primary rounded-pill text-white ms-2 pt-1">
+                        <span *ngIf="invoice"> Save Changes </span>
+                        <span *ngIf="!invoice"> Save & Send </span>
+                    </button>
+                </ng-template>
+
             </div>
         </form>
     </div>

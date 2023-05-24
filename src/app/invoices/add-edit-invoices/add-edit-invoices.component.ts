@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { NgbActiveOffcanvas, NgbDate, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { Invoice, Item, Term, Address } from '../../shared/models/invoice.model';
 import { InvoiceService } from '../../shared/services/invoice.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-add-edit-invoices',
@@ -15,6 +16,7 @@ export class AddEditInvoicesComponent implements OnInit {
   @Input() invoice: Invoice | undefined;
   @Output() emitInvoice = new EventEmitter();
 
+
   invoiceForm!: FormGroup;
   isSaving: boolean = false;
   showInvalidMessage: boolean = false;
@@ -24,6 +26,8 @@ export class AddEditInvoicesComponent implements OnInit {
   isDropDownOpen = false;
   showSpinner: boolean = false;
   status = '';
+
+  isDraftSubject:Subject<any> = new Subject<any>();
 
   terms: Term[] = [
     { name: "Net 1 Day", value: 1 },
@@ -61,7 +65,7 @@ export class AddEditInvoicesComponent implements OnInit {
       invoiceDate: [this.formatDateToday(new Date()), Validators.required],
       paymentTerms: [1, Validators.required],
       clientName: ['', Validators.required],
-      clientEmail: ['', [Validators.required, Validators.email]]
+      clientEmail: ['']
     });
   }
 
@@ -114,6 +118,31 @@ export class AddEditInvoicesComponent implements OnInit {
         }
       })
     }
+  }
+
+  onSaveAsDraft() {
+    console.log('Save as Draft');
+    this.isDraftSubject.next(true);
+    this.isSaving = true;
+    let itemslength = this.invoiceForm.get('items')?.value.length;
+    //check if form is valid
+    if (this.invoiceForm.invalid) {
+      this.showInvalidMessage = true;
+    }
+    if (itemslength == undefined || itemslength <= 0) {
+      this.showNeedItemMessage = true;
+    }
+  }
+
+  onSaveAndSend() {
+    console.log('Save and Send');
+    this.isDraftSubject.next(false);
+    
+  }
+
+  onSaveChanges() {
+    console.log('Save Changes');
+    
   }
 
   setInvoiceDataToSend(saveAs: string) {

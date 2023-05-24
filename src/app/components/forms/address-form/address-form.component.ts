@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, ControlContainer, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
 import { Address, Invoice } from 'src/app/shared/models/invoice.model';
 
 @Component({
@@ -8,10 +9,11 @@ import { Address, Invoice } from 'src/app/shared/models/invoice.model';
   styleUrls: ['./address-form.component.scss'],
   viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
-export class AddressFormComponent implements OnInit {
+export class AddressFormComponent implements OnInit{
   @Input() addressType!: string;
   @Input() isSaving!: boolean;
   @Input() addressData: Address | undefined;
+  @Input() isDraftSubject:Subject<boolean> | undefined;;
 
   invoiceForm!: FormGroup;
 
@@ -21,26 +23,25 @@ export class AddressFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('address type: ', this.addressType)
+    // console.log('address type: ', this.addressType);
+    // console.log('is Save As Draft? : ', this.isSaveAsDraft);
+    this.isDraftSubject?.subscribe( event => console.log(event) );
     this.invoiceForm = this.formParent.form;
     this.invoiceForm.addControl(
       this.addressType,
-      this.formBuilder.group({
-        street: ['', Validators.required],
-        city: ['', Validators.required],
-        postCode: ['', Validators.required],
-        country: ['', Validators.required]
-      })
+      this.formBuilder.group(this.setAddressFormGroup(this.addressData))
     )
-    if (this.addressData) {
-      (<FormGroup>this.invoiceForm.controls[this.addressType]).patchValue({
-        'street': this.addressData.street,
-        'city': this.addressData.city,
-        'postCode': this.addressData.postCode,
-        'country': this.addressData.country,
-      })
-    }
+    // if (this.addressData) {
+    //   (<FormGroup>this.invoiceForm.controls[this.addressType]).patchValue({
+    //     'street': this.addressData.street,
+    //     'city': this.addressData.city,
+    //     'postCode': this.addressData.postCode,
+    //     'country': this.addressData.country,
+    //   })
+    // }
   };
+
+  
 
   get address() {
     return this.invoiceForm.get(this.addressType) as FormGroup;
@@ -59,18 +60,13 @@ export class AddressFormComponent implements OnInit {
     return this.address.get('country');
   }
 
-  setAddressForm() {
-    if (this.addressType === 'senderAddress' && !this.addressData) {
-      this.invoiceForm.addControl(
-        this.addressType,
-        this.formBuilder.group({
-          street: ['19 Union Terrace', Validators.required],
-          city: ['London', Validators.required],
-          postCode: ['E1 3EZ', Validators.required],
-          country: ['United Kingdom', Validators.required]
-        })
-      )
+  
+  setAddressFormGroup(addressData: Address | undefined) {
+    return {
+        street: [ addressData?.street ? addressData?.street : ''],
+        city: [addressData?.city ? addressData?.city : ''],
+        postCode: [addressData?.postCode ? addressData?.postCode : ''],
+        country: [addressData?.country ? addressData?.country : '']
     }
   }
-
 }

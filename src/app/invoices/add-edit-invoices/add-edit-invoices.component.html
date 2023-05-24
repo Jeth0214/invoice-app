@@ -17,7 +17,7 @@
                 </h2>
                 <!-- Sender Adress -->
                 <app-address-form [addressType]="'senderAddress'" [isSaving]="isSaving"
-                    [addressData]="invoice?.senderAddress"></app-address-form>
+                    [addressData]="invoice?.senderAddress" [isDraftSubject]="isDraftSubject"></app-address-form>
             </div>
 
             <!-- Bill to section -->
@@ -54,7 +54,7 @@
                 </div>
                 <!-- Client Address -->
                 <app-address-form [addressType]="'clientAddress'" [isSaving]="isSaving"
-                    [addressData]="invoice?.clientAddress"></app-address-form>
+                    [addressData]="invoice?.clientAddress" [isDraftSubject]="isDraftSubject"></app-address-form>
             </div>
 
             <!-- Invoice info section -->
@@ -137,15 +137,24 @@
                     </button>
                 </ng-container>
                 <ng-template #notSaving>
-                    <button *ngIf="!invoice" type="submit" (click)="onSaveNewInvoice('draft')"
-                        class="btn btn-draft  rounded-pill pt-1">
-                        Save as
-                        Draft </button>
-                    <button type="submit" (click)="onSaveNewInvoice('pending')"
-                        class="btn btn-primary rounded-pill text-white ms-2 pt-1">
-                        <span *ngIf="invoice"> Save Changes </span>
-                        <span *ngIf="!invoice"> Save & Send </span>
-                    </button>
+                    <ng-container *ngIf="!invoice else saveChanges">
+
+                        <button  type="submit" (click)="onSaveAsDraft()"
+                            class="btn btn-draft  rounded-pill pt-1">
+                            Save as
+                            Draft </button>
+                        <button type="submit" (click)="onSaveAndSend()"
+                            class="btn btn-primary rounded-pill text-white ms-2 pt-1">
+                            Save & Send
+                        </button>
+                    </ng-container>
+                    <ng-template #saveChanges>
+                        <button type="submit" (click)="onSaveChanges()"
+                            class="btn btn-primary rounded-pill text-white ms-2 pt-1">
+                             Save Changes 
+                        </button>
+                    </ng-template>
+                    
                 </ng-template>
 
             </div>

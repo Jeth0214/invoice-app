@@ -16,6 +16,7 @@ export class AddressFormComponent implements OnInit{
   @Input() isDraftSubject:Subject<boolean> | undefined;;
 
   invoiceForm!: FormGroup;
+  showAddressErrors: boolean | undefined;
 
   constructor(
     private formParent: FormGroupDirective,
@@ -25,12 +26,21 @@ export class AddressFormComponent implements OnInit{
   ngOnInit(): void {
     // console.log('address type: ', this.addressType);
     // console.log('is Save As Draft? : ', this.isSaveAsDraft);
-    this.isDraftSubject?.subscribe( event => console.log(event) );
     this.invoiceForm = this.formParent.form;
     this.invoiceForm.addControl(
       this.addressType,
       this.formBuilder.group(this.setAddressFormGroup(this.addressData))
-    )
+      );
+      // this.addValidation();
+      this.isDraftSubject!.subscribe( isDraft => {
+        console.log('isDraft', isDraft) ;
+        // if(isDraft) { this.addValidation();}
+        console.log('address Type: ', this.addressType);
+    
+          this.showAddressErrors = isDraft && this.addressType == 'clientAddress' ?  false : true;
+      }
+    );
+      
     // if (this.addressData) {
     //   (<FormGroup>this.invoiceForm.controls[this.addressType]).patchValue({
     //     'street': this.addressData.street,
@@ -63,10 +73,18 @@ export class AddressFormComponent implements OnInit{
   
   setAddressFormGroup(addressData: Address | undefined) {
     return {
-        street: [ addressData?.street ? addressData?.street : ''],
-        city: [addressData?.city ? addressData?.city : ''],
-        postCode: [addressData?.postCode ? addressData?.postCode : ''],
-        country: [addressData?.country ? addressData?.country : '']
+        street: [ addressData?.street ? addressData?.street : '' , [Validators.required]],
+        city: [addressData?.city ? addressData?.city : '' , [Validators.required]],
+        postCode: [addressData?.postCode ? addressData?.postCode : '' , [Validators.required]],
+        country: [addressData?.country ? addressData?.country : '' , [Validators.required]]
     }
+  }
+
+
+  addValidation() {
+    this.street?.setValidators([Validators.required]);
+    this.postCode?.setValidators([Validators.required]);
+    this.city?.setValidators([Validators.required]);
+    this.country?.setValidators([Validators.required]);
   }
 }

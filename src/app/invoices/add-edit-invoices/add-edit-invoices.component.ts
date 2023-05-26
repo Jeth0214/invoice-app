@@ -46,13 +46,13 @@ export class AddEditInvoicesComponent implements OnInit {
   ngOnInit(): void {
     this.setInvoiceForm();
     if (this.invoice) {
-      console.log(this.invoice)
-      console.log('Invoice from detail page: ', this.invoice);
-      this.invoiceForm.patchValue({ 'description': this.invoice.description });
-      this.invoiceForm.patchValue({ 'invoiceDate': this.invoice.createdAt });
-      this.invoiceForm.patchValue({ 'paymentTerms': this.invoice.paymentTerms });
-      this.invoiceForm.patchValue({ 'clientName': this.invoice.clientName });
-      this.invoiceForm.patchValue({ 'clientEmail': this.invoice.clientEmail });
+      // console.log(this.invoice)
+      // console.log('Invoice from detail page: ', this.invoice);
+      // this.invoiceForm.patchValue({ 'description': this.invoice.description });
+      // this.invoiceForm.patchValue({ 'invoiceDate': this.invoice.createdAt });
+      // this.invoiceForm.patchValue({ 'paymentTerms': this.invoice.paymentTerms });
+      // this.invoiceForm.patchValue({ 'clientName': this.invoice.clientName });
+      // this.invoiceForm.patchValue({ 'clientEmail': this.invoice.clientEmail });
       this.createdDate = this.invoice.createdAt;
     }
     this.getSelectedTerm()
@@ -61,11 +61,11 @@ export class AddEditInvoicesComponent implements OnInit {
   //Set the form
   setInvoiceForm() {
     this.invoiceForm = this.formBuilder.group({
-      description: ['', Validators.required],
-      invoiceDate: [this.formatDateToday(new Date()), Validators.required],
-      paymentTerms: [1, Validators.required],
-      clientName: ['', Validators.required],
-      clientEmail: ['']
+      description: [ this.invoice ? this.invoice.description : '', Validators.required],
+      invoiceDate: [  this.invoice ? this.invoice.createdAt : this.formatDateToday(new Date()), Validators.required],
+      paymentTerms: [  this.invoice ? this.invoice.paymentTerms : 1, Validators.required],
+      clientName: [  this.invoice ? this.invoice.clientName : '', Validators.required],
+      clientEmail: [  this.invoice ? this.invoice.clientEmail : '', Validators.email]
     });
   }
 
@@ -74,27 +74,8 @@ export class AddEditInvoicesComponent implements OnInit {
     return this.invoiceForm.controls;
   }
 
-  onSaveNewInvoice(saveAs: string) {
-    // console.log('status', this.invoiceForm.status);
-    // console.log('invoice', this.invoiceForm.value);
-
-    this.isSaving = true;
-    let itemslength = this.invoiceForm.get('items')?.value.length;
-    //check if form is valid
-    if (this.invoiceForm.invalid) {
-      this.showInvalidMessage = true;
-    }
-    if (itemslength == undefined || itemslength <= 0) {
-      this.showNeedItemMessage = true;
-    }
-    if (this.invoiceForm.valid && itemslength > 0) {
-      this.saveInvoiceData(saveAs);
-    }
-  }
-
   saveInvoiceData(saveAs: string): void {
-    this.showInvalidMessage = false;
-    this.showNeedItemMessage = false;
+    
     this.status = saveAs;
     this.showSpinner = true;
     let dataToSend = this.setInvoiceDataToSend(saveAs)
@@ -102,6 +83,8 @@ export class AddEditInvoicesComponent implements OnInit {
     if (this.invoice && this.title === 'Edit') {
       this.invoiceService.updateInvoice(dataToSend).subscribe((response) => {
         // Todo: If backend is ready, check if the invoice was created or updated successfully
+        this.showInvalidMessage = false;
+    this.showNeedItemMessage = false;
         this.showSpinner = false;
         this.emitInvoice.emit(dataToSend)
         this.onDiscard();
@@ -111,6 +94,8 @@ export class AddEditInvoicesComponent implements OnInit {
       this.invoiceService.addInvoice(dataToSend).subscribe((invoice: Invoice) => {
         // Todo: If backend is ready, check if the invoice was created or updated successfully
         this.showSpinner = false;
+        this.showInvalidMessage = false;
+    this.showNeedItemMessage = false;
         if (invoice) {
 
           this.emitInvoice.emit(invoice)
@@ -121,23 +106,35 @@ export class AddEditInvoicesComponent implements OnInit {
   }
 
   onSaveAsDraft() {
-    console.log('Save as Draft');
+    // console.log('Save as Draft');
     this.isDraftSubject.next(true);
     this.isSaving = true;
-    let itemslength = this.invoiceForm.get('items')?.value.length;
-    //check if form is valid
-    if (this.invoiceForm.invalid) {
-      this.showInvalidMessage = true;
-    }
-    if (itemslength == undefined || itemslength <= 0) {
-      this.showNeedItemMessage = true;
-    }
+    
+    let requiredFieldsArray = ['description', 'clientName', 'senderAddress']; 
+    let validityArray: any = [];
+    requiredFieldsArray.forEach((field) => {
+      if (!this.invoiceForm.controls[field].valid) {
+        validityArray.push(field);
+      }
+     })
+    if(validityArray.length > 0 || this.showNeedItemMessage) {return}; 
+    this.saveInvoiceData('draft');
   }
 
   onSaveAndSend() {
     console.log('Save and Send');
     this.isDraftSubject.next(false);
-    
+    this.isSaving = true;
+    this.invoiceForm.controls["clientEmail"].setValidators(Validators.required);
+    this.invoiceForm.controls["clientEmail"].updateValueAndValidity({onlySelf: true});
+    this.showNeedItemMessage = this.itemsHasErrors();
+      this.showInvalidMessage = this.invoiceForm.invalid ? true : false;
+    console.log(this.invoiceForm.value);
+    console.log(this.invoiceForm.valid);
+    console.log(this.showNeedItemMessage);
+    if (this.invoiceForm.valid && !this.showNeedItemMessage) {
+      this.saveInvoiceData('pending');
+    }
   }
 
   onSaveChanges() {
@@ -182,6 +179,11 @@ export class AddEditInvoicesComponent implements OnInit {
 
     return invoiceData
   }
+
+  /*
+  * HELPERS METHODS
+  */
+
 
   resetForm(): void {
     this.isSaving = false;
@@ -251,5 +253,10 @@ export class AddEditInvoicesComponent implements OnInit {
     } else {
       this.selectedTerms = this.terms[0].name;
     }
+  }
+
+  itemsHasErrors() : boolean {
+    let itemslength = this.invoiceForm.get('items')?.value.length;
+    return (itemslength == undefined || itemslength <= 0) ? true : false;
   }
 }

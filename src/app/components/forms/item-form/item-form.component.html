@@ -41,7 +41,7 @@
                         [value]="item.value.quantity * item.value.price | number: '1.2-2'"
                         class="form-control border border-0 px-0" min="1" aria-label="Disabled input" [disabled]="true"
                         readonly> -->
-                    <ng-container *ngIf="item.get('price')?.valid && item.get('quantity')?.valid">
+                    <ng-container *ngIf="item.get('price')?.value && item.get('quantity')?.value">
 
                         <p class="mb-0">{{ (item.get('price')?.value * item.get('quantity')?.value) | number: '1.2-2'}}
                         </p>

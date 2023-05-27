@@ -1,7 +1,7 @@
 @use '../abstracts/' as *;
 
 .off-canvas-width {
-    width: 700px !important;
+    width: rem(800) !important;
     overflow-y: scroll;
     border-radius: 0;
     background-color: var(--bg-offcanvas);

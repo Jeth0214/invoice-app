@@ -33,22 +33,9 @@ export class AddressFormComponent implements OnInit{
       );
       // this.addValidation();
       this.isDraftSubject!.subscribe( isDraft => {
-        console.log('isDraft', isDraft) ;
-        // if(isDraft) { this.addValidation();}
-        console.log('address Type: ', this.addressType);
-    
           this.showAddressErrors = isDraft && this.addressType == 'clientAddress' ?  false : true;
       }
     );
-      
-    // if (this.addressData) {
-    //   (<FormGroup>this.invoiceForm.controls[this.addressType]).patchValue({
-    //     'street': this.addressData.street,
-    //     'city': this.addressData.city,
-    //     'postCode': this.addressData.postCode,
-    //     'country': this.addressData.country,
-    //   })
-    // }
   };
 
   

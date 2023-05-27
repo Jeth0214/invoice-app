@@ -1,14 +1,14 @@
 @use '../abstracts/' as *;
 
 .add-edit {
-    max-width: rem(544);
+    max-width: rem(600);
     margin-inline: auto;
     scroll-behavior: smooth;
     margin-top: rem(100);
     padding-inline: rem(20);
 
     @include breakpoint-up('medium') {
-        padding-inline: rem(55) 0;
+        padding-inline: rem(45) 0;
     }
 
     .fa-trash {

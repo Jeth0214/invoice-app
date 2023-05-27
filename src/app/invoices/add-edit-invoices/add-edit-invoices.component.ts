@@ -74,42 +74,11 @@ export class AddEditInvoicesComponent implements OnInit {
     return this.invoiceForm.controls;
   }
 
-  saveInvoiceData(saveAs: string): void {
-    
-    this.status = saveAs;
-    this.showSpinner = true;
-    let dataToSend = this.setInvoiceDataToSend(saveAs)
-    // console.log('Invoice Data: ', invoiceData);
-    if (this.invoice && this.title === 'Edit') {
-      this.invoiceService.updateInvoice(dataToSend).subscribe((response) => {
-        // Todo: If backend is ready, check if the invoice was created or updated successfully
-        this.showInvalidMessage = false;
-    this.showNeedItemMessage = false;
-        this.showSpinner = false;
-        this.emitInvoice.emit(dataToSend)
-        this.onDiscard();
-      })
-    } else {
-      // send data for storage
-      this.invoiceService.addInvoice(dataToSend).subscribe((invoice: Invoice) => {
-        // Todo: If backend is ready, check if the invoice was created or updated successfully
-        this.showSpinner = false;
-        this.showInvalidMessage = false;
-    this.showNeedItemMessage = false;
-        if (invoice) {
-
-          this.emitInvoice.emit(invoice)
-          this.onDiscard();
-        }
-      })
-    }
-  }
-
   onSaveAsDraft() {
     // console.log('Save as Draft');
     this.isDraftSubject.next(true);
     this.isSaving = true;
-    
+    this.showNeedItemMessage = this.itemsHasErrors();
     let requiredFieldsArray = ['description', 'clientName', 'senderAddress']; 
     let validityArray: any = [];
     requiredFieldsArray.forEach((field) => {
@@ -125,7 +94,7 @@ export class AddEditInvoicesComponent implements OnInit {
     console.log('Save and Send');
     this.isDraftSubject.next(false);
     this.isSaving = true;
-    this.invoiceForm.controls["clientEmail"].setValidators(Validators.required);
+    this.invoiceForm.controls["clientEmail"].setValidators([Validators.required, Validators.email]);
     this.invoiceForm.controls["clientEmail"].updateValueAndValidity({onlySelf: true});
     this.showNeedItemMessage = this.itemsHasErrors();
       this.showInvalidMessage = this.invoiceForm.invalid ? true : false;
@@ -139,6 +108,18 @@ export class AddEditInvoicesComponent implements OnInit {
 
   onSaveChanges() {
     console.log('Save Changes');
+    if(this.invoice?.status === 'draft' && (this.invoiceForm.valid && !this.showNeedItemMessage)) {
+      this.onSaveAndSend();
+      // if  {
+      //   this.onSaveAndSend();
+      // } else {
+      //   this.onSaveAsDraft();
+      // }
+    } else if(this.invoiceForm.valid && !this.showNeedItemMessage) {
+      this.onSaveAndSend();
+    } else {
+      this.onSaveAsDraft();
+    }
     
   }
 
@@ -180,6 +161,39 @@ export class AddEditInvoicesComponent implements OnInit {
     return invoiceData
   }
 
+  /**
+   * Save Invoice to backend/ localstorage
+   */
+
+  saveInvoiceData(saveAs: string): void {
+    this.status = saveAs;
+    this.showSpinner = true;
+    let dataToSend = this.setInvoiceDataToSend(saveAs)
+    // console.log('Invoice Data: ', invoiceData);
+    if (this.invoice && this.title === 'Edit') {
+      this.invoiceService.updateInvoice(dataToSend).subscribe((response) => {
+        // Todo: If backend is ready, check if the invoice was created or updated successfully
+        this.showInvalidMessage = false;
+    this.showNeedItemMessage = false;
+        this.showSpinner = false;
+        this.emitInvoice.emit(dataToSend)
+        this.onDiscard();
+      })
+    } else {
+      // send data for storage
+      this.invoiceService.addInvoice(dataToSend).subscribe((invoice: Invoice) => {
+        // Todo: If backend is ready, check if the invoice was created or updated successfully
+        this.showSpinner = false;
+        this.showInvalidMessage = false;
+    this.showNeedItemMessage = false;
+        if (invoice) {
+
+          this.emitInvoice.emit(invoice)
+          this.onDiscard();
+        }
+      })
+    }
+  }
   /*
   * HELPERS METHODS
   */
@@ -256,6 +270,7 @@ export class AddEditInvoicesComponent implements OnInit {
   }
 
   itemsHasErrors() : boolean {
+    if(!this.invoiceForm.get('items')?.valid){ return true; };
     let itemslength = this.invoiceForm.get('items')?.value.length;
     return (itemslength == undefined || itemslength <= 0) ? true : false;
   }

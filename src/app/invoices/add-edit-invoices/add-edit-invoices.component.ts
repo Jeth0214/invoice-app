@@ -76,6 +76,8 @@ export class AddEditInvoicesComponent implements OnInit {
 
   onSaveAsDraft() {
     // console.log('Save as Draft');
+    this.invoiceForm.controls["clientEmail"].setValidators(null);
+    this.invoiceForm.controls["clientEmail"].updateValueAndValidity({onlySelf: true});
     this.isDraftSubject.next(true);
     this.isSaving = true;
     this.showNeedItemMessage = this.itemsHasErrors();
@@ -108,19 +110,12 @@ export class AddEditInvoicesComponent implements OnInit {
 
   onSaveChanges() {
     console.log('Save Changes');
-    if(this.invoice?.status === 'draft' && (this.invoiceForm.valid && !this.showNeedItemMessage)) {
-      this.onSaveAndSend();
-      // if  {
-      //   this.onSaveAndSend();
-      // } else {
-      //   this.onSaveAsDraft();
-      // }
-    } else if(this.invoiceForm.valid && !this.showNeedItemMessage) {
+    let statusToPending = this.invoiceForm.valid && !this.showNeedItemMessage ? true : false;
+    if((this.invoice?.status === 'draft' && statusToPending) || statusToPending ) {
       this.onSaveAndSend();
     } else {
       this.onSaveAsDraft();
     }
-    
   }
 
   setInvoiceDataToSend(saveAs: string) {

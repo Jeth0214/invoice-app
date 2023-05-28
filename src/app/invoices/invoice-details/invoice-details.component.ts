@@ -93,6 +93,7 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
 
   onEdit(content: any) {
     this.modalService.dismissAll();
+    document.body.style.overflow = 'unset';
     this.offcanvasService.open(content, { panelClass: 'off-canvas-width', animation: true });
   }
 

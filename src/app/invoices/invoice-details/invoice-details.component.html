@@ -31,8 +31,9 @@
                 </button>
             </div>
         </div>
+        <button printSectionId="print-section" ngxPrint>print</button> 
 
-        <div class="card shadow-sm border-0 bg-container p-4 p-md-5 text-3 invoice mb-4">
+        <div id="print-section" class="card shadow-sm border-0 bg-container p-4 p-md-5 text-3 invoice mb-4">
             <div class="d-flex flex-column flex-md-row justify-content-between mb-2">
                 <div class=" invoice__description">
                     <h1 class="h5">#<span class="fw-bold text-2">{{ invoice.id }}</span> </h1>

@@ -10,6 +10,8 @@ import { InvoicesModule } from './invoices/invoices.module';
 import { SideNavBarComponent } from './layout/side-nav-bar/side-nav-bar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgxPrintModule } from 'ngx-print';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ),
     NgbModule,
     NgxSpinnerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxPrintModule
+
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -31,15 +31,17 @@
                 </button>
             </div>
         </div>
-        <button printSectionId="print-section" ngxPrint>print</button> 
+        <button (click)="onPrint()" printSectionId="print-section" printTitle="Invoice App"   [useExistingCss]="true" ngxPrint styleSheetFile="../../../assets/scss/print.scss">print</button> 
 
-        <div id="print-section" class="card shadow-sm border-0 bg-container p-4 p-md-5 text-3 invoice mb-4">
-            <div class="d-flex flex-column flex-md-row justify-content-between mb-2">
+        <div id="print-section" class="card shadow-sm border-0 bg-container p-4 p-md-5 print__text--3 text-3 invoice mb-4">
+            <div class="d-flex  flex-row justify-content-between mb-2">
                 <div class=" invoice__description">
-                    <h1 class="h5">#<span class="fw-bold text-2">{{ invoice.id }}</span> </h1>
-                    <p>{{ invoice.description }}</p>
+                    <h1 class="h5 "><span class="print_id">#</span> <span class="fw-bold text-2">{{ invoice.id }}</span> </h1>
+                    <p class="mb-1 d-none print__project-description">Project Description</p>
+                    <p class="print_invoice-info">{{ invoice.description }}</p>
                 </div>
-                <div class=" invoice__sender-add">
+                <div id="invoice__sender-add" class=" invoice__sender-add">
+                    <p class="mb-1 d-none print__bill-from">Bill From</p>
                     <p class="mb-0 text-md-end">{{ invoice.senderAddress.street }}</p>
                     <p class="mb-0 text-md-end">{{ invoice.senderAddress.city }}</p>
                     <p class="mb-0 text-md-end">{{ invoice.senderAddress.postCode }}</p>
@@ -79,7 +81,7 @@
                     </p>
                 </div>
             </div>
-            <div class="invoice__item bg-element rounded-3 overflow-hidden mt-5">
+            <div class="invoice__item print__items bg-element rounded-3 overflow-hidden mt-5">
                 <div class="p-4">
 
                     <div class="invoice__items-headers row pb-0 mb-2 d-none d-md-flex">

@@ -1,0 +1,28 @@
+@use './abstracts/' as *;
+
+    p   {
+        color: #7E88C3;
+    }
+
+    div.invoice__sender-add {
+        padding-right: 20px !important;
+    }
+
+    p.print__bill-from, p.print__project-description {
+        display: block !important;
+    }
+
+    p.print_invoice-info {
+        color: #0C0E16;
+        font-weight: 700 !important;
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem !important;
+    }
+
+    h1 span.print_id {
+        color: #7E88C3
+    }
+
+    div.print__items {
+        background-color: #7E88C3 !important;
+    }

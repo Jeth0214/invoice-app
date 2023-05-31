@@ -132,8 +132,5 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
     this.invoice = event
   }
 
-  onPrint() {
-    console.log('Printing Invoice');
-  }
 
 }

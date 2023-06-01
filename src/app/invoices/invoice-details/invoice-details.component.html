@@ -16,7 +16,7 @@
                     <span>{{ invoice.status | titlecase }}</span>
                 </div>
                 <button 
-                class="btn btn-secondary print__btn px-2"  
+                class="btn btn-draft print__btn px-2 d-none d-md-inline-block"  
                 printSectionId="print-section" 
                 printTitle="Invoice App"   
                 [useExistingCss]="true" 
@@ -51,7 +51,7 @@
                     <p class="print_invoice-info">{{ invoice.description }}</p>
                 </div>
                 <div id="invoice__sender-add" class=" invoice__sender-add">
-                    <p class="mb-1 d-none print__bill-from">Bill From</p>
+                    <p class="mb-1 text-md-end d-none print__bill-from">Bill From</p>
                     <p class="mb-0 text-md-end">{{ invoice.senderAddress.street }}</p>
                     <p class="mb-0 text-md-end">{{ invoice.senderAddress.city }}</p>
                     <p class="mb-0 text-md-end">{{ invoice.senderAddress.postCode }}</p>

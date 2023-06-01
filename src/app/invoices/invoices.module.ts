@@ -9,6 +9,7 @@ import { InvoiceDetailsComponent } from './invoice-details/invoice-details.compo
 import { RouterModule } from '@angular/router';
 import { AddEditInvoicesComponent } from './add-edit-invoices/add-edit-invoices.component';
 import { ComponentsModule } from '../components/components.module';
+import { NgxPrintModule } from 'ngx-print';
 
 
 
@@ -27,7 +28,8 @@ import { ComponentsModule } from '../components/components.module';
     NgxSpinnerModule,
     RouterModule,
     ComponentsModule,
-    ComponentsModule
+    HttpClientModule,
+    NgxPrintModule
   ],
   exports: [
     InvoicesListComponent,

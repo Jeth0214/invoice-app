@@ -15,11 +15,15 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
 
-  // no invoice div to add later
+  
   showNoInvoice: boolean = false;
   invoice!: Invoice;
   isPaid: boolean = false;
   id: string = '';
+
+  modalTitle: string = '';
+  modalMessage: string = '';
+  toDelete: boolean = true;
 
   constructor(
     private invoiceService: InvoiceService,
@@ -54,6 +58,8 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
         return;
       }
     })
+
+    this.modalMessage = `Are you sure you want to delete invoice ${this.invoice.id} This action cannot be undone.`
   }
 
   getInvoiceFromLocalStorage(id: string) {
@@ -86,11 +92,16 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
   }
 
   onEdit(content: any) {
+    this.modalService.dismissAll();
+    document.body.style.overflow = 'unset';
     this.offcanvasService.open(content, { panelClass: 'off-canvas-width', animation: true });
   }
 
 
   onDelete(content: any) {
+    this.modalTitle = `Confirm Deletion`
+    this.modalMessage = `Are you sure you want to delete invoice ${this.invoice.id} This action cannot be undone.`
+    this.toDelete = true;
     this.modalService.open(content, { centered: true });
   }
 
@@ -102,9 +113,18 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
   }
 
 
-  onMarkAsPaid(invoice: Invoice) {
-    console.log('mark as paid this invoice', invoice);
-    this.invoiceService.updateInvoice(invoice).subscribe(data => {
+  onMarkAsPaid(invoice: Invoice, content: any) {
+    if(invoice.status === 'draft') {
+      this.modalTitle = 'Mark Invoice as Paid';
+      this.modalMessage = `Please complete the invoice form to mark this as paid.`;
+      this.toDelete = false;
+      this.modalService.open(content, { centered: true });
+      return
+    }
+    let paidInvoice =  invoice;
+    paidInvoice.status = 'paid';
+    this.invoiceService.updateInvoice(paidInvoice).subscribe(data => {
+      console.log(data);
       this.invoice.status = 'paid';
       this.isPaid = true
     })
@@ -114,5 +134,6 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
     console.log(event)
     this.invoice = event
   }
+
 
 }

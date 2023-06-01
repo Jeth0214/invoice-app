@@ -1,8 +1,8 @@
 <!-- Item Lists -->
 <h2>Item List</h2>
 <div class="row d-none d-md-flex text-primary">
-    <div class="col-md-4 pe-md-1">Item Name</div>
-    <div class="col-md-1 px-md-1">Qty.</div>
+    <div class="col-md-3 pe-md-1">Item Name</div>
+    <div class="col-md-2 px-md-1">Qty.</div>
     <div class="col-md-3 px-md-1">Price</div>
     <div class="col-md-3 px-md-1">Total</div>
     <div class="col-md-1"></div>
@@ -12,27 +12,28 @@
         <div *ngFor="let item of items.controls; index as i" [formGroupName]="i" class="">
             <div class="d-flex justify-content-center mb-1">
                 <div class="text-danger"
-                    *ngIf="isSaving && ( item.get('price')?.errors?.['minNum'] || item.get('quantity')?.errors?.['minNum'])">
+                    *ngIf="isSaving && ( item.get('price')?.errors|| item.get('quantity')?.errors)">
                     <div>Make sure to have a name and price or qty must be greater than 0. </div>
                 </div>
             </div>
-            <div class="row my-2 ">
-                <div class="col-12 mb-3 mb-md-0 col-md-4 pe-md-1">
+            <div class="row my-2 align-items-center">
+                <div class="col-12 mb-3 mb-md-0 col-md-3 pe-md-1">
                     <label for="name" class="form-label text-primary mb-0 d-inline d-md-none">Item Name</label>
                     <input formControlName="name" type="text" class="form-control"
-                        [class.border-danger]="isSaving && item.get('name')?.errors" autocomplete="off">
+                        [class.border-danger]="((isSaving && item.get('name')?.errors) || 
+                        (item.get('name')?.errors && item.get('name')?.touched))" autocomplete="off">
                 </div>
-                <div class="col-3 col-md-1 px-md-1">
+                <div class="col-3 col-md-2 px-md-1">
                     <label for="quantity" class="form-label text-primary mb-0 d-inline d-md-none">Qty.</label>
-                    <input formControlName="quantity" type="number" class="form-control" min="1"
+                    <input formControlName="quantity" type="number" class="form-control" 
                         (input)="getValueForItemsTotal(item, i, $event)"
-                        [class.border-danger]="isSaving && item.get('quantity')?.errors?.['minNum']" autocomplete="off">
+                        [class.border-danger]="isSaving && item.get('quantity')?.errors" autocomplete="off">
                 </div>
                 <div class="col-4 col-md-3 px-md-1">
                     <label for="price" class="form-label text-primary mb-0 d-inline d-md-none">Price</label>
-                    <input formControlName="price" type="number" class="form-control" min="1"
+                    <input formControlName="price" type="number" class="form-control" 
                         (input)="getValueForItemsTotal(item, i, $event)"
-                        [class.border-danger]="isSaving &&  item.get('price')?.errors?.['minNum']" autocomplete="off">
+                        [class.border-danger]="isSaving &&   item.get('price')?.errors " autocomplete="off">
                 </div>
                 <div class="col-4 col-md-3 px-md-1 d-flex flex-column  "
                     [class.justify-content-center]="item.get('price')?.valid && item.get('quantity')?.valid">

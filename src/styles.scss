@@ -9,10 +9,12 @@ $theme-colors: (
     "dark": #212529,
 );
 
+@import 'ngx-toastr/toastr';
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;700&display=swap');
 @import "node_modules/bootstrap/scss/bootstrap";
 @import './assets/scss/abstracts/';
 @import "./assets/scss/main.scss";
+
 
 :root {
 

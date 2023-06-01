@@ -2,34 +2,34 @@
     <div class="mb-3">
         <div class="d-flex justify-content-between">
             <label for="street" class="form-label text-primary"
-                [class.text-danger]="isSaving && street?.errors">Street</label>
-            <div *ngIf="isSaving && address.invalid " class="text-danger">
+                [class.text-danger]="showAddressErrors && street?.errors">Street</label>
+            <div *ngIf="showAddressErrors && address.invalid " class="text-danger">
                 <p>Can't be empty</p>
             </div>
         </div>
 
         <input formControlName="street" type="text" class="form-control" id="street"
-            [class.border-danger]="isSaving && street?.errors" autocomplete="off">
+            [class.border-danger]="showAddressErrors && street?.errors" autocomplete="off">
     </div>
 
     <div class="row">
         <div class="col">
             <label for="city" class="form-label text-primary"
-                [class.text-danger]="isSaving && city?.errors">City</label>
+                [class.text-danger]="showAddressErrors && city?.errors">City</label>
             <input formControlName="city" type="text" class="form-control" id="city"
-                [class.border-danger]="isSaving && city?.errors" autocomplete="off">
+                [class.border-danger]="showAddressErrors && city?.errors" autocomplete="off">
         </div>
         <div class="col">
             <label for="postCode" class="form-label text-primary"
-                [class.text-danger]="isSaving && postCode?.errors">Post Code</label>
+                [class.text-danger]="showAddressErrors && postCode?.errors">Post Code</label>
             <input formControlName="postCode" type="text" class="form-control" id="postCode"
-                [class.border-danger]="isSaving && postCode?.errors" autocomplete="off">
+                [class.border-danger]="showAddressErrors && postCode?.errors" autocomplete="off">
         </div>
         <div class="col">
             <label for="country" class="form-label text-primary"
-                [class.text-danger]="isSaving && country?.errors">Country</label>
+                [class.text-danger]="showAddressErrors && country?.errors">Country</label>
             <input formControlName="country" type="text" class="form-control" id="country"
-                [class.border-danger]="isSaving && country?.errors" autocomplete="off">
+                [class.border-danger]="showAddressErrors && country?.errors" autocomplete="off">
         </div>
     </div>
 </ng-container>

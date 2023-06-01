@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, ControlContainer, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
 import { Address, Invoice } from 'src/app/shared/models/invoice.model';
 
 @Component({
@@ -8,12 +9,14 @@ import { Address, Invoice } from 'src/app/shared/models/invoice.model';
   styleUrls: ['./address-form.component.scss'],
   viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
-export class AddressFormComponent implements OnInit {
+export class AddressFormComponent implements OnInit{
   @Input() addressType!: string;
   @Input() isSaving!: boolean;
   @Input() addressData: Address | undefined;
+  @Input() isDraftSubject:Subject<boolean> | undefined;;
 
   invoiceForm!: FormGroup;
+  showAddressErrors: boolean | undefined;
 
   constructor(
     private formParent: FormGroupDirective,
@@ -21,26 +24,21 @@ export class AddressFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('address type: ', this.addressType)
+    // console.log('address type: ', this.addressType);
+    // console.log('is Save As Draft? : ', this.isSaveAsDraft);
     this.invoiceForm = this.formParent.form;
     this.invoiceForm.addControl(
       this.addressType,
-      this.formBuilder.group({
-        street: ['', Validators.required],
-        city: ['', Validators.required],
-        postCode: ['', Validators.required],
-        country: ['', Validators.required]
-      })
-    )
-    if (this.addressData) {
-      (<FormGroup>this.invoiceForm.controls[this.addressType]).patchValue({
-        'street': this.addressData.street,
-        'city': this.addressData.city,
-        'postCode': this.addressData.postCode,
-        'country': this.addressData.country,
-      })
-    }
+      this.formBuilder.group(this.setAddressFormGroup(this.addressData))
+      );
+      // this.addValidation();
+      this.isDraftSubject!.subscribe( isDraft => {
+          this.showAddressErrors = isDraft && this.addressType == 'clientAddress' ?  false : true;
+      }
+    );
   };
+
+  
 
   get address() {
     return this.invoiceForm.get(this.addressType) as FormGroup;
@@ -59,18 +57,21 @@ export class AddressFormComponent implements OnInit {
     return this.address.get('country');
   }
 
-  setAddressForm() {
-    if (this.addressType === 'senderAddress' && !this.addressData) {
-      this.invoiceForm.addControl(
-        this.addressType,
-        this.formBuilder.group({
-          street: ['19 Union Terrace', Validators.required],
-          city: ['London', Validators.required],
-          postCode: ['E1 3EZ', Validators.required],
-          country: ['United Kingdom', Validators.required]
-        })
-      )
+  
+  setAddressFormGroup(addressData: Address | undefined) {
+    return {
+        street: [ addressData?.street ? addressData?.street : '' , [Validators.required]],
+        city: [addressData?.city ? addressData?.city : '' , [Validators.required]],
+        postCode: [addressData?.postCode ? addressData?.postCode : '' , [Validators.required]],
+        country: [addressData?.country ? addressData?.country : '' , [Validators.required]]
     }
   }
 
+
+  addValidation() {
+    this.street?.setValidators([Validators.required]);
+    this.postCode?.setValidators([Validators.required]);
+    this.city?.setValidators([Validators.required]);
+    this.country?.setValidators([Validators.required]);
+  }
 }

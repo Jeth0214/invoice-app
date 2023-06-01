@@ -69,9 +69,10 @@ export class ItemFormComponent implements OnInit {
   };
 
   getValueForItemsTotal(item: any, index: number, e: Event) {
+    console.log(item.value.quantity , item.value.price)
     if (item.value.quantity && item.value.price) {
       let total: number = item.value.quantity * item.value.price;
-      this.items.controls[index].patchValue({ 'total': +total.toFixed(2) })
+      this.items.controls[index].patchValue({ 'total': +total.toFixed(2) }) 
     }
   }
 

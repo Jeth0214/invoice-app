@@ -1,0 +1,70 @@
+
+    p   {
+        color: #7E88C3;
+    }
+
+    div.invoice__sender-add {
+        padding-left: 15px !important;
+        flex: 0 0 auto;
+        width: 50%;
+    }
+
+    p.print__bill-from, p.print__project-description {
+        display: block !important;
+    }
+
+    .print_invoice-info {
+        color: #0C0E16;
+        font-weight: 700 !important;
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem !important;
+    }
+
+    div.print__id-section {
+        flex-direction: row !important;
+    }
+
+    .print__btn {
+        display: none !important;
+    }
+
+    h1 span.print_id {
+        color: #7E88C3
+    }
+
+    div.print__items {
+        border: 1px solid #7E88C3 !important;
+    }
+
+    div.invoice__items-headers {
+        display: flex !important;
+    }
+
+    span.print__multiply {
+        display: none !important;
+    }
+
+    div.print__item-descriptions {
+        flex: 0 0 auto !important;
+        width: 75% !important;
+    }
+
+    div.print__item-name {
+        flex: 0 0 auto;
+        width: 58.33333333%;
+    }
+    div.print__item-qty{
+        flex: 0 0 auto;
+        width: 8.33333333%;;
+    }
+    div.print__item-price {
+        flex: 0 0 auto;
+        width: 33.33333333%;
+        text-align: center;
+    }
+
+    div.print__item-subTotal {
+        flex: 0 0 auto !important;
+        width: 25% !important;
+        padding-right: 10px !important;
+    }

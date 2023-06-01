@@ -121,7 +121,10 @@ export class InvoiceDetailsComponent implements OnInit, AfterViewInit {
       this.modalService.open(content, { centered: true });
       return
     }
-    this.invoiceService.updateInvoice(invoice).subscribe(data => {
+    let paidInvoice =  invoice;
+    paidInvoice.status = 'paid';
+    this.invoiceService.updateInvoice(paidInvoice).subscribe(data => {
+      console.log(data);
       this.invoice.status = 'paid';
       this.isPaid = true
     })

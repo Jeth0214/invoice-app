@@ -11,6 +11,7 @@ import { SideNavBarComponent } from './layout/side-nav-bar/side-nav-bar.componen
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPrintModule } from 'ngx-print';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -28,8 +29,8 @@ import { NgxPrintModule } from 'ngx-print';
     NgbModule,
     NgxSpinnerModule,
     BrowserAnimationsModule,
-    NgxPrintModule
-
+    NgxPrintModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],

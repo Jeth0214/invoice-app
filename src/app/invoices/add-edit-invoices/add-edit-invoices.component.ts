@@ -44,15 +44,9 @@ export class AddEditInvoicesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.invoice);
     this.setInvoiceForm();
     if (this.invoice) {
-      // console.log(this.invoice)
-      // console.log('Invoice from detail page: ', this.invoice);
-      // this.invoiceForm.patchValue({ 'description': this.invoice.description });
-      // this.invoiceForm.patchValue({ 'invoiceDate': this.invoice.createdAt });
-      // this.invoiceForm.patchValue({ 'paymentTerms': this.invoice.paymentTerms });
-      // this.invoiceForm.patchValue({ 'clientName': this.invoice.clientName });
-      // this.invoiceForm.patchValue({ 'clientEmail': this.invoice.clientEmail });
       this.createdDate = this.invoice.createdAt;
     }
     this.getSelectedTerm()
@@ -92,7 +86,7 @@ export class AddEditInvoicesComponent implements OnInit {
     this.saveInvoiceData('draft');
   }
 
-  onSaveAndSend() {
+  onSaveAndSend(status: string="pending") {
     console.log('Save and Send');
     this.isDraftSubject.next(false);
     this.isSaving = true;
@@ -100,22 +94,19 @@ export class AddEditInvoicesComponent implements OnInit {
     this.invoiceForm.controls["clientEmail"].updateValueAndValidity({onlySelf: true});
     this.showNeedItemMessage = this.itemsHasErrors();
       this.showInvalidMessage = this.invoiceForm.invalid ? true : false;
-    console.log(this.invoiceForm.value);
-    console.log(this.invoiceForm.valid);
-    console.log(this.showNeedItemMessage);
     if (this.invoiceForm.valid && !this.showNeedItemMessage) {
       this.saveInvoiceData('pending');
     }
   }
 
   onSaveChanges() {
-    console.log('Save Changes');
-    let statusToPending = this.invoiceForm.valid && !this.showNeedItemMessage ? true : false;
-    if((this.invoice?.status === 'draft' && statusToPending) || statusToPending ) {
-      this.onSaveAndSend();
+    let validData = this.invoiceForm.valid && !this.showNeedItemMessage ? true : false;
+    if(this.invoice?.status == 'paid' && validData  ) { this.onSaveAndSend('paid'); };
+    if((this.invoice?.status === 'draft' && validData) || validData ) {
+      this.onSaveAndSend('pending');
     } else {
       this.onSaveAsDraft();
-    }
+    };
   }
 
   setInvoiceDataToSend(saveAs: string) {
